@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SongTrack extends Pivot
 {
-    protected $guarded = ['id'];
 
+    use SoftDeletes;
+
+    protected $guarded = ['id'];
 
     public function songs()
     {

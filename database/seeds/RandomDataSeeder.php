@@ -19,24 +19,34 @@ class RandomDataSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         $user = factory(\App\Models\User::class)->create();
-
-        $song = factory(\App\Models\Song::class)->create([
-            'user_id' => $user->id,
-        ]);
+        $user2 = factory(\App\Models\User::class)->create();
 
         
 
-        $company = factory(\App\Models\Company::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $songs = factory(\App\Models\Song::class,100)->create([
+            'user_id' => $user->id,
+        ])->each(function ($song) use ($user, $user2){
 
-        $account->default_company_id = $company->id;
-        $account->save();
+            $tracks = factory(\App\Models\Track::class,3)->create([
+                'user_id' => $user->id,
+            ]);
 
-        $user = factory(\App\Models\User::class)->create([
-            'account_id' => $account->id,
-            'confirmation_code' => $this->createDbHash(config('database.default'))
-        ]);
+            $song->tracks()->attach($tracks);
+
+
+            $song_comments = factory(\App\Models\SongComment::class,5)->create([
+                'user_id' => $user->id,
+                'song_id' => $song->id,
+            ]);
+
+            $song_comments = factory(\App\Models\SongComment::class,5)->create([
+                'user_id' => $user2->id,
+                'song_id' => $song->id,
+            ]);
+
+        });
+
+
 
     }
 

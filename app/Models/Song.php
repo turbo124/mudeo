@@ -3,21 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Song extends Model
 {
+    use SoftDeletes;
+
     public function tracks()
     {
-        $this->morphMany(Track::class, 'trackable');
+        return $this->belongsToMany(Track::class)->withTimestamps();
     }
 
     public function comments()
     {
-        $this->hasMany(SongComment::class);
+        return $this->hasMany(SongComment::class);
     }
 
     public function tags()
     {
-    	$this->morphMany(Tag::clasls, 'taggable');
+    	return $this->morphMany(Tag::class, 'taggable');
     }
 }

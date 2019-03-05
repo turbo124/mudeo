@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Track extends Model
 {
+    use SoftDeletes;
+
     public function songs()
     {
-        return $this->morphedByMany(Song::class, 'trackable');
+        return $this->belongsToMany(Song::class)->withTimestamps();
     }
 
     public function comments()

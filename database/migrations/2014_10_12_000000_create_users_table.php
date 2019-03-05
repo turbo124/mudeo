@@ -25,7 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('oauth_user_id')->nullable()->unique();
             $table->unsignedInteger('oauth_provider_id')->nullable()->unique();
-            $table->string('server_name');
+            $table->string('server_name')->nullable();
+            $table->boolean('is_flagged')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -56,7 +57,7 @@ class CreateUsersTable extends Migration
             $table->string('url');
             $table->unsignedInteger('duration');
             $table->unsignedInteger('likes');
-            $table->boolean('flagged')->default(false);
+            $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
@@ -69,19 +70,16 @@ class CreateUsersTable extends Migration
 
         Schema::create('song_track', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('track_id');
-            $table->unsignedInteger('song_id');
+            $table->unsignedBigInteger('track_id');
+            $table->unsignedBigInteger('song_id');
             $table->boolean('is_public')->default(false);
-            $table->boolean('is_flagged');
+            $table->boolean('is_flagged')->default(false);
             $table->boolean('is_locked')->default(false); // locks user out of account
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-
-            $table->index(['account_id', 'company_id']);
-
+            $table->foreign('song_id')->references('id')->on('songs');
+            $table->foreign('track_id')->references('id')->on('tracks');
 
         });
 
@@ -96,9 +94,13 @@ class CreateUsersTable extends Migration
         Schema::create('song_comments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('song_id');
+
             $table->boolean('is_flagged')->default(false);
             $table->text('description');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -107,9 +109,11 @@ class CreateUsersTable extends Migration
         Schema::create('track_comments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('track_id');
             $table->boolean('is_flagged')->default(false);
             $table->text('description');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('track_id')->references('id')->on('songs')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

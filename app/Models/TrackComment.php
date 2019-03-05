@@ -4,12 +4,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TrackComment extends Model
 {
+    use SoftDeletes;
+
     public function track()
     {
-        $this->belongsTo(Track::class);
+        return  $this->belongsTo(Track::class);
     }
 
 }
