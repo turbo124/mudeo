@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:api']], function () {
+
+	Route::resource('songs', 'SongController'); // name = (songs. index / create / show / update / destroy / edit
+	Route::resource('tracks', 'TrackController'); // name = (tracks. index / create / show / update / destroy / edit
+	Route::resource('comments', 'CommentController'); // name = (comments. index / create / show / update / destroy / edit
+	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
+
 });

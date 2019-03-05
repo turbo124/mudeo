@@ -21,16 +21,18 @@ class CreateTracksTable extends Migration
             $table->unsignedInteger('likes');
             $table->boolean('flagged')->default(false);
             $table->boolean('is_public')->default(false);
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('trackable_id');
             $table->string('trackable_type');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
 
-        Schema::create('trackables' function (Blueprint $table) {
+
+        Schema::create('trackables', function (Blueprint $table) {
            $table->bigIncrements('track_id');
            $table->unsignedInteger('trackable_id');
            $table->string('trackable_type'); 

@@ -15,6 +15,7 @@ class CreateSongsTable extends Migration
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('url');
             $table->string('description');
@@ -22,12 +23,15 @@ class CreateSongsTable extends Migration
             $table->unsignedInteger('likes');
             $table->boolean('flagged')->default(false);
             $table->boolean('is_public')->default(false);
-            $table->unsignedInteger('user_id')->index();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
+
+
+
     }
 
     /**

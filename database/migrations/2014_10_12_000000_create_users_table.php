@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('oauth_user_id')->nullable()->unique();
             $table->unsignedInteger('oauth_provider_id')->nullable()->unique();
+            $table->string('server_name');
             $table->rememberToken();
             $table->timestamps();
 

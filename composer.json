@@ -13,7 +13,10 @@
         "laravel/framework": "5.8.*",
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
-        "league/fractal": "^0.17.0"
+        "league/fractal": "^0.17.0",
+        "predis/predis": "^1.1",
+        "superbalist/flysystem-google-storage": "^7.2",
+        "tamayo/laravel-scout-elastic": "^4.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
