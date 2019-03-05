@@ -19,6 +19,5 @@ $factory->define(TrackComment::class, function (Faker $faker) {
     return [
         'description' => $faker->text(100),
         'is_flagged' => $faker->boolean,
-        'is_public' => $faker->boolean
     ];
 });

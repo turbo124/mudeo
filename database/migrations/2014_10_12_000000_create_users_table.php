@@ -113,7 +113,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_flagged')->default(false);
             $table->text('description');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('track_id')->references('id')->on('songs')->onDelete('cascade');
+            $table->foreign('track_id')->references('id')->on('tracks')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

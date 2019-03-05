@@ -29,7 +29,12 @@ class RandomDataSeeder extends Seeder
 
             $tracks = factory(\App\Models\Track::class,3)->create([
                 'user_id' => $user->id,
-            ]);
+            ])->each(function ($track) use($user){
+                $track_comments = factory(\App\Models\TrackComment::class,5)->create([
+                    'user_id' => $user->id,
+                    'track_id' => $track->id,
+                ]);
+            });
 
             $song->tracks()->attach($tracks);
 
