@@ -13,7 +13,7 @@ class Song extends Model
 
     public function comments()
     {
-        $this->morphMany(Comment::class, 'commentable');
+        $this->hasMany(SongComment::class);
     }
 
     public function tags()

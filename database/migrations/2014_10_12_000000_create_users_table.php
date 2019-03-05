@@ -13,6 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('first_name');
@@ -27,8 +28,110 @@ class CreateUsersTable extends Migration
             $table->string('server_name');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+
+
+        Schema::create('songs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('title');
+            $table->string('url');
+            $table->string('description');
+            $table->unsignedInteger('duration');
+            $table->unsignedInteger('likes');
+            $table->boolean('is_flagged')->default(false);
+            $table->boolean('is_public')->default(false);
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
+
+        Schema::create('tracks', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->string('description');
+            $table->string('url');
+            $table->unsignedInteger('duration');
+            $table->unsignedInteger('likes');
+            $table->boolean('flagged')->default(false);
+            $table->boolean('is_public')->default(false);
+            $table->unsignedBigInteger('user_id');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+        });
+
+
+        Schema::create('song_track', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('track_id');
+            $table->unsignedInteger('song_id');
+            $table->boolean('is_public')->default(false);
+            $table->boolean('is_flagged');
+            $table->boolean('is_locked')->default(false); // locks user out of account
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+
+            $table->index(['account_id', 'company_id']);
+
+
+        });
+
+/*
+        Schema::create('trackables', function (Blueprint $table) {
+           $table->bigIncrements('track_id');
+           $table->unsignedInteger('trackable_id');
+           $table->string('trackable_type'); 
+        });
+*/
+
+        Schema::create('song_comments', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->boolean('is_flagged')->default(false);
+            $table->text('description');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
+
+        });
+
+        Schema::create('track_comments', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->boolean('is_flagged')->default(false);
+            $table->text('description');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
+
+        });
+
+
+        Schema::create('tags', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->boolean('is_flagged')->default(false);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+
+        Schema::create('taggable', function (Blueprint $table) {
+           $table->bigIncrements('tag_id');
+           $table->unsignedInteger('taggable_id');
+           $table->string('taggable_type'); 
+        });
+
+
     }
 
     /**

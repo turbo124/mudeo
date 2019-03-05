@@ -13,11 +13,11 @@ class Track extends Model
 
     public function comments()
     {
-        $this->morphMany(Comment::class, 'commentable');
+        return $this->hasMany(TrackComment::class);
     }
 
     public function tags()
     {
-    	$this->morphMany(Tag::clasls, 'taggable');
+    	return $this->morphMany(Tag::class, 'taggable');
     }
 }
