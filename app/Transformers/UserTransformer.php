@@ -2,6 +2,10 @@
 
 namespace App\Ninja\Transformers;
 
+use App\Models\Song;
+use App\Models\SongComment;
+use App\Models\Track;
+use App\Models\TrackComment;
 use App\Models\User;
 
 class UserTransformer extends EntityTransformer
@@ -12,7 +16,8 @@ class UserTransformer extends EntityTransformer
     protected $availableIncludes = [
         'songs',
         'tracks',
-        'comments'
+        'track_comments',
+        'song_comments',
     ];
 
     public function transform(User $user)
@@ -30,5 +35,33 @@ class UserTransformer extends EntityTransformer
             'oauth_provider_id' => $user->oauth_provider_id,
             'is_flagged' => (bool) $user->is_flagged,
         ];
+    }
+
+    public function includeSongs(User $user)
+    {
+        $transformer = new SongTransformer($this->serializer);
+
+        return $this->includeCollection($user->songs, $transformer, Song::class);
+    }
+
+    public function includeTracks(User $user)
+    {
+        $transformer = new TrackTransformer($this->serializer);
+
+        return $this->includeCollection($user->tracks, $transformer, Track::class);
+    }
+
+    public function includeSongComments(User $user)
+    {
+        $transformer = new SongCommentsTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_comments, $transformer, SongComment::class);
+    }
+
+    public function includeTrackComments(User $user)
+    {
+        $transformer = new SongCommentsTransformer($this->serializer);
+
+        return $this->includeCollection($user->track_comments, $transformer, TrackComment::class);
     }
 }

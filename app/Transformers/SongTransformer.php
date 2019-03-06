@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Song;
+use App\Models\Track;
 
 class SongTransformer extends EntityTransformer
 {
@@ -28,5 +29,12 @@ class SongTransformer extends EntityTransformer
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
         ];
+    }
+
+    public function includeTracks(Song $song)
+    {
+        $transformer = new TrackTransformer($this->serializer);
+
+        return $this->includeCollection($song->tracks, $transformer, 'tracks');
     }
 }

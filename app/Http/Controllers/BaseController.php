@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Transformers\ArraySerializer;
 use App\Transformers\EntityTransformer;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Resource\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use League\Fractal\Serializer\ArraySerializer;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\JsonApiSerializer;
 
 class BaseController extends Controller
@@ -40,7 +40,7 @@ class BaseController extends Controller
         $includes = $transformer->getDefaultIncludes();
         $includes = $this->getRequestIncludes($includes);
 
-        //$query->with($includes);
+        $query->with($includes);
 
         $data = $this->createCollection($query, $transformer, $this->entityType);
 
@@ -99,6 +99,17 @@ class BaseController extends Controller
         $data = $this->createItem($item, $transformer, $this->entityType);
 
         return $this->response($data);
+    }
+
+    protected function createItem($data, $transformer, $entityType)
+    {
+        if ($this->serializer && $this->serializer != EntityTransformer::API_SERIALIZER_JSON) {
+            $entityType = null;
+        }
+
+        $resource = new Item($data, $transformer, $entityType);
+
+        return $this->manager->createData($resource)->toArray();
     }
 
     public static function getApiHeaders($count = 0)

@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Track;
 use App\Models\TrackComment;
 
 class TrackCommentTransformer extends EntityTransformer
@@ -24,5 +25,12 @@ class TrackCommentTransformer extends EntityTransformer
             'updated_at' => $comment->updated_at,
             'deleted_at' => $comment->deleted_at,
         ];
+    }
+
+    public function includeTrack(TrackComment $comment)
+    {
+        $transformer = new TrackTransformer($this->serializer);
+
+        return $this->includeItem($comment->track, $transformer, Track::class);
     }
 }

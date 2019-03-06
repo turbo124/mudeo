@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use Auth;
 use League\Fractal\TransformerAbstract;
 
 class EntityTransformer extends TransformerAbstract
@@ -19,7 +18,7 @@ class EntityTransformer extends TransformerAbstract
 
     protected function includeCollection($data, $transformer, $entityType)
     {
-        if ($this->serializer && $this->serializer != API_SERIALIZER_JSON) {
+        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) {
             $entityType = null;
         }
 
@@ -28,7 +27,7 @@ class EntityTransformer extends TransformerAbstract
 
     protected function includeItem($data, $transformer, $entityType)
     {
-        if ($this->serializer && $this->serializer != API_SERIALIZER_JSON) {
+        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) {
             $entityType = null;
         }
 

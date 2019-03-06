@@ -19,7 +19,7 @@ class SongController extends BaseController
     public function index()
     {
 
-        $songs = Song::all();
+        $songs = Song::orderBy('updated_at', 'desc');
         
         return $this->listResponse($songs);
 

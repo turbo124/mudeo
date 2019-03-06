@@ -2,7 +2,9 @@
 
 namespace App\Transformers;
 
+use App\Models\Song;
 use App\Models\SongComment;
+use App\Transformers\SongTransformer;
 
 class SongCommentTransformer extends EntityTransformer
 {
@@ -27,5 +29,12 @@ class SongCommentTransformer extends EntityTransformer
             'updated_at' => $comment->updated_at,
             'deleted_at' => $comment->deleted_at,
         ];
+    }
+
+    public function includeSong(SongComment $comment)
+    {
+        $transformer = new SongTransformer($this->serializer);
+
+        return $this->includeItem($comment->song, $transformer, class_basename(Song::class));
     }
 }

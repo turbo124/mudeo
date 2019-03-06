@@ -2,7 +2,9 @@
 
 namespace App\Transformers;
 
+use App\Models\Song;
 use App\Models\Tag;
+use App\Transformers\SongTransformer;
 
 class TagTransformer extends EntityTransformer
 {
@@ -23,5 +25,19 @@ class TagTransformer extends EntityTransformer
             'updated_at' => $tag->updated_at,
             'deleted_at' => $tag->deleted_at,
         ];
+    }
+
+    public function includeTracks(Tag $tag)
+    {
+        $transformer = new TrackTransformer($this->serializer);
+
+        return $this->includeCollection($tag->tracks, $transformer, Track::class);
+    }
+
+    public function includeTracks(Song $song)
+    {
+        $transformer = new SongTransformer($this->serializer);
+
+        return $this->includeCollection($tag->songs, $transformer, Song::class);
     }
 }
