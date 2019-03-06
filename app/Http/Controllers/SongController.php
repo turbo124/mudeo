@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Song;
+use App\Models\Song;
 use Illuminate\Http\Request;
 
-class SongController extends Controller
+class SongController extends BaseController
 {
     /**
      * Display a listing of the resource.

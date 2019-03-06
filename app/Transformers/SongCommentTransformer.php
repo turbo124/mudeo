@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\SongComment;
 
-
 class SongCommentTransformer extends EntityTransformer
 {
 

@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\Tag;
 
-
 class TagTransformer extends EntityTransformer
 {
 

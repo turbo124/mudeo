@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Track;
+use App\Models\Track;
 use Illuminate\Http\Request;
 
-class TrackController extends Controller
+class TrackController extends BaseController
 {
     /**
      * Display a listing of the resource.

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SongComment extends Model
+class SongComment extends EntityModel
 {
 
 	use SoftDeletes;
