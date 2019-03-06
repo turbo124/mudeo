@@ -40,8 +40,6 @@ class OAuth {
         $payload = $this->providerInstance->getTokenResponse($token);
         $oauthUserId = $this->providerInstance->harvestSubField($payload);
 
-        LookupUser::setServerByField('oauth_user_key', $this->providerId . '-' . $oauthUserId);
-
         if($this->providerInstance)
           $user = User::where('oauth_user_id', $oauthUserId)->where('oauth_provider_id', $this->providerId)->first();
 

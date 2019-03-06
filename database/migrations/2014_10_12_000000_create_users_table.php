@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('handle');
-            $table->string('gravitar');
+            $table->string('profile_image');
+            $table->string('header_image');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -30,7 +31,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-
 
 
         Schema::create('songs', function (Blueprint $table) {
@@ -72,9 +72,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('track_id');
             $table->unsignedBigInteger('song_id');
-            $table->boolean('is_public')->default(false);
-            $table->boolean('is_flagged')->default(false);
-            $table->boolean('is_locked')->default(false); // locks user out of account
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('volume');
             $table->timestamps();
             $table->softDeletes();
 
@@ -82,14 +81,6 @@ class CreateUsersTable extends Migration
             $table->foreign('track_id')->references('id')->on('tracks');
 
         });
-
-/*
-        Schema::create('trackables', function (Blueprint $table) {
-           $table->bigIncrements('track_id');
-           $table->unsignedInteger('trackable_id');
-           $table->string('trackable_type'); 
-        });
-*/
 
         Schema::create('song_comments', function (Blueprint $table) {
             $table->bigIncrements('id');

@@ -32,6 +32,14 @@ class BaseController extends Controller
         }
     }
 
+    protected function errorResponse($response, $httpErrorCode = 400)
+    {
+        $error['error'] = $response;
+        $error = json_encode($error, JSON_PRETTY_PRINT);
+        $headers = self::getApiHeaders();
+
+        return reqsponse()->make($error, $httpErrorCode, $headers);
+    }
 
 	protected function listResponse($query)
     {
