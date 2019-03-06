@@ -52,7 +52,7 @@ class TrackController extends BaseController
      */
     public function show(Track $track)
     {
-        return $this->itemResponse($track);
+    return $this->itemResponse($track);
     }
 
     /**
