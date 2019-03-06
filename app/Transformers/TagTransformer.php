@@ -34,7 +34,7 @@ class TagTransformer extends EntityTransformer
         return $this->includeCollection($tag->tracks, $transformer, Track::class);
     }
 
-    public function includeTracks(Song $song)
+    public function includeSongs(Song $song)
     {
         $transformer = new SongTransformer($this->serializer);
 

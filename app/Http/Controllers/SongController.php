@@ -54,7 +54,7 @@ class SongController extends BaseController
      */
     public function show(Song $song)
     {
-        //
+        return $this->itemResponse($song);
     }
 
     /**

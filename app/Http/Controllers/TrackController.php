@@ -18,7 +18,9 @@ class TrackController extends BaseController
      */
     public function index()
     {
-        //
+        $tracks = Track::orderBy('updated_at', 'desc');
+        
+        return $this->listResponse($tracks);
     }
 
     /**
@@ -50,7 +52,7 @@ class TrackController extends BaseController
      */
     public function show(Track $track)
     {
-        //
+        return $this->itemResponse($track);
     }
 
     /**

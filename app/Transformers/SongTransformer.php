@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Song;
+use App\Models\SongComment;
 use App\Models\Track;
 
 class SongTransformer extends EntityTransformer
@@ -12,6 +13,8 @@ class SongTransformer extends EntityTransformer
 
     protected $availableIncludes = [
         'tracks',
+        'comments',
+        'tags',
     ];
 
     public function transform(Song $song)
@@ -36,5 +39,19 @@ class SongTransformer extends EntityTransformer
         $transformer = new TrackTransformer($this->serializer);
 
         return $this->includeCollection($song->tracks, $transformer, 'tracks');
+    }
+
+    public function includeComments(Song $song)
+    {
+        $transformer = new SongCommentTransformer($this->serializer);
+
+        return $this->includeCollection($song->comments, $transformer, SongComment::class);
+    }
+
+    public function includeTags(Song $song)
+    {
+        $transformer = new TagTransformer($this->serializer);
+
+        return $this->includeCollection($song->tags, $transformer, Tag::class);
     }
 }
