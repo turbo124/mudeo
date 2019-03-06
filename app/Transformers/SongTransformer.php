@@ -7,7 +7,11 @@ use App\Models\Song;
 class SongTransformer extends EntityTransformer
 {
 
-    protected $defaultIncludes = ['tracks'];
+    protected $defaultIncludes = [];
+
+    protected $availableIncludes = [
+        'tracks',
+    ];
 
     public function transform(Song $song)
     {

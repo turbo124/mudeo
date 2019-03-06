@@ -9,6 +9,13 @@ class SongCommentTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
+    /**
+     * @var array
+     */
+    protected $availableIncludes = [
+        'song',
+    ];
+
     public function transform(SongComment $comment)
     {
         return [

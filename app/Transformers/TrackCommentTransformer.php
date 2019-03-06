@@ -9,6 +9,10 @@ class TrackCommentTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
+    protected $availableIncludes = [
+        'track',
+    ];
+
     public function transform(TrackComment $comment)
     {
         return [

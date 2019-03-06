@@ -9,6 +9,12 @@ class UserTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
+    protected $availableIncludes = [
+        'songs',
+        'tracks',
+        'comments'
+    ];
+
     public function transform(User $user)
     {
         return [

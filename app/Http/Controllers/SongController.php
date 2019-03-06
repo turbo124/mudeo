@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Song;
+use App\Transformers\SongTransformer;
 use Illuminate\Http\Request;
 
 class SongController extends BaseController
 {
+
+    protected $entityType = Song::class;
+    protected $entityTransformer = SongTransformer::class;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,11 @@ class SongController extends BaseController
      */
     public function index()
     {
-        //
+
+        $songs = Song::all();
+        
+        return $this->listResponse($songs);
+
     }
 
     /**

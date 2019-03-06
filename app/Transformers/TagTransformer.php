@@ -9,6 +9,11 @@ class TagTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
+    protected $availableIncludes = [
+        'songs',
+        'tracks',
+    ];
+
     public function transform(Tag $tag)
     {
         return [

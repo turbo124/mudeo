@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Track;
+use App\Transformers\TrackTransformer;
 use Illuminate\Http\Request;
 
 class TrackController extends BaseController
 {
+
+    protected $entityType = Track::class;
+    protected $entityTransformer = TrackTransformer::class;
     /**
      * Display a listing of the resource.
      *

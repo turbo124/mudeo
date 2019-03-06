@@ -9,6 +9,12 @@ class TrackTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
+    protected $availableIncludes = [
+        'songs',
+        'comments',
+        'tags'
+    ];
+
     public function transform(Track $track)
     {
         return [
