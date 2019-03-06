@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ninja\Transformers;
+namespace App\Transformers;
 
 use App\Models\Song;
 use App\Models\SongComment;

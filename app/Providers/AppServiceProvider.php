@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,5 +34,7 @@ class AppServiceProvider extends ServiceProvider
             'tags' => '\App\Models\Tag',
         ]);
         */
+               User::observe(UserObserver::class);
+
     }
 }

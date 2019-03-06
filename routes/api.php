@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::post('auth', 'AuthController@passwordAuth');
+
 //Route::group(['middleware' => ['auth:api']], function () {
 Route::group(['middleware' => []], function () {
 

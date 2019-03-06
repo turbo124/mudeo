@@ -64,9 +64,10 @@ class User extends Authenticatable
         return $this->hasMany(SongComment::class);
     }
 
-
     public function track_comments()
     {
         return $this->hasMany(TrackComment::class);
     }
+
+    
 }
