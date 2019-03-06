@@ -9,12 +9,12 @@ class Tag extends Model
 {
     use SoftDeletes;
 
-    public function songs()
+    public function song()
     {
         return $this->morphedByMany(Song::class, 'taggable');
     }
 
-    public function tracks()
+    public function track()
     {
         return $this->morphedByMany(Track::class, 'taggable');
     }
