@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('auth', 'AuthController@passwordAuth');
+Route::post('user/create', 'UserAccountController@create');
 
 //Route::group(['middleware' => ['auth:api']], function () {
 Route::group(['middleware' => []], function () {

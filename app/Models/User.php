@@ -6,13 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
-    use HasApiTokens;
     /**
      * The attributes that are mass assignable.
      *
@@ -23,12 +21,6 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
         'deleted_at',
-        'password',
-        'primary_contact',
-        'q',
-        'company',
-        'country',
-        'shipping_country'
     ];
 
     /**
@@ -69,5 +61,5 @@ class User extends Authenticatable
         return $this->hasMany(TrackComment::class);
     }
 
-    
+
 }
