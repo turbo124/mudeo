@@ -13,10 +13,7 @@ class UserAccountController extends BaseController
     
     public function create(CreateUserRequest $request) {
 
-    	$user = User::create([
-    		'email' => $request->input('email'),
-    		'password' => Hash::make($request->input('password'))
-    	]);
+    	$user = User::create($request->all());
 
     	$user->save();
     	$user->refresh();
