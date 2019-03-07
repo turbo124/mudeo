@@ -20,7 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('handle')->nullable();
             $table->string('profile_image')->nullable();
+            $table->string('profile_image_url')->nullable();
             $table->string('header_image')->nullable();
+            $table->string('header_image_url')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
@@ -74,8 +76,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('track_id');
             $table->unsignedBigInteger('song_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('volume');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->unsignedBigInteger('volume')->default(5);
             $table->timestamps();
             $table->softDeletes();
 

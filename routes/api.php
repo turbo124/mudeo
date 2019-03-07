@@ -15,11 +15,10 @@ use Illuminate\Http\Request;
 
 Route::post('auth', 'AuthController@passwordAuth');
 Route::post('reset_password', 'AuthController@resetPassword');
-
 Route::post('user/create', 'UserAccountController@create');
 
 //Route::group(['middleware' => ['auth:api']], function () {
-Route::group(['middleware' => []], function () {
+Route::group(['middleware' => ['api']], function () {
 
 	Route::resource('songs', 'SongController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('tracks', 'TrackController'); // name = (tracks. index / create / show / update / destroy / edit
