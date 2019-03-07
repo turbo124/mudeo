@@ -12,6 +12,7 @@ class CreateUserRequest extends Request
     {
         return [
             'email' => 'required|unique:users|string|email|max:100',
+            'handle' => 'required|unique:users|max:100',
            // 'first_name'        => 'required|string|max:100',
            // 'last_name'         =>  'required|string:max:100',
             'password'          => 'required|string|min:6',

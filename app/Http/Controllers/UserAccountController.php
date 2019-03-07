@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
-use App\Transformers\UserTransformer;
+use App\Transformers\UserAccountTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +19,7 @@ class UserAccountController extends BaseController
     	$user->refresh();
 
 
-        $transformer = new UserTransformer();
+        $transformer = new UserAccountTransformer();
 
         $data = $this->createItem($user, $transformer, User::class);
 
