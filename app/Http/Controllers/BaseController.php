@@ -38,7 +38,7 @@ class BaseController extends Controller
         $error = json_encode($error, JSON_PRETTY_PRINT);
         $headers = self::getApiHeaders();
 
-        return reqsponse()->make($error, $httpErrorCode, $headers);
+        return response()->make($error, $httpErrorCode, $headers);
     }
 
 	protected function listResponse($query)

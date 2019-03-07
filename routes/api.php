@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::post('auth', 'AuthController@passwordAuth');
+Route::post('reset_password', 'AuthController@resetPassword');
+
 Route::post('user/create', 'UserAccountController@create');
 
 //Route::group(['middleware' => ['auth:api']], function () {

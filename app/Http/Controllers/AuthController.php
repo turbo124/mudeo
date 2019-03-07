@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Transformers\UserTransformer;
 use App\OAuth\OAuth;
+use App\Transformers\UserTransformer;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends BaseController
 {
+    use SendsPasswordResetEmails;
 
     public function passwordAuth(Request $request)
     {
@@ -33,6 +36,20 @@ class AuthController extends BaseController
         else
             return $this->errorResponse(['message' => 'Invalid credentials'], 401);
     }
+
+    public function resetPassword(Request $request)
+    {
+        $this->validateEmail($request);
+
+        $response = $this->broker()->sendResetLink(
+            $request->only('email')
+        );
+
+        return $response == Password::RESET_LINK_SENT
+                    ? $this->errorResponse(['message' => 'Password reset link sent'], 200)
+                    : $this->errorResponse(['message' => 'Error sending password reset link'], 400);
+    }
+
 
     public function oauthLogin(Request $request)
     {
