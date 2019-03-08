@@ -36,13 +36,13 @@ class RandomDataSeeder extends Seeder
                     'track_id' => $track->id,
                 ]);
 
-            $track->tags()->sync($tags);
+                $track->tags()->sync($tags);
 
             });
 
-            $song->tracks()->sync($tracks);
+                $song->tracks()->sync($tracks);
             
-            $song->tags()->sync($tags);
+                $song->tags()->sync($tags);
 
 
             $song_comments = factory(\App\Models\SongComment::class,5)->create([

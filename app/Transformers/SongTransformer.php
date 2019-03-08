@@ -9,10 +9,11 @@ use App\Models\Track;
 class SongTransformer extends EntityTransformer
 {
 
-    protected $defaultIncludes = [];
+    protected $defaultIncludes = [
+        'tracks'
+    ];
 
     protected $availableIncludes = [
-        'tracks',
         'comments',
         'tags',
     ];
