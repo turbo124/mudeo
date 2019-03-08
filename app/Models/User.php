@@ -23,6 +23,7 @@ class User extends Authenticatable implements CanResetPassword
         'created_at',
         'deleted_at',
         'q',
+        'api_secret',
     ];
 
     /**
