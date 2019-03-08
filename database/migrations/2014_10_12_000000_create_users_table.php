@@ -59,6 +59,7 @@ class CreateUsersTable extends Migration
             $table->string('title')->default('');
             $table->string('description')->default('');
             $table->string('url')->default('');
+            $table->unsignedBigInteger('timestamp')->default(0);
             $table->unsignedInteger('duration')->default(0);
             $table->unsignedInteger('likes')->default(0);
             $table->boolean('is_flagged')->default(false);
