@@ -20,7 +20,7 @@ class TagTransformer extends EntityTransformer
     {
         return [
             'id' => (int) $tag->id,
-            'name' => $tag->name,
+            'name' => $tag->name ?:'',
             'is_flagged' => (bool) $tag->is_flagged,
             'updated_at' => $tag->updated_at,
             'deleted_at' => $tag->deleted_at,

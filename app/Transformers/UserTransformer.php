@@ -24,12 +24,12 @@ class UserTransformer extends EntityTransformer
     {
         return [
             'id' => (int) ($user->id),
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'email' => $user->email,
+            'first_name' => $user->first_name ?:'',
+            'last_name' => $user->last_name ?:'',
+            'email' => $user->email ?:'',
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
-            'handle' => $user->handle,
+            'handle' => $user->handle ?:'',
             'is_flagged' => (bool) $user->is_flagged,
         ];
     }

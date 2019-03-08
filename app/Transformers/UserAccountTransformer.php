@@ -19,12 +19,12 @@ class UserAccountTransformer extends EntityTransformer
     {
         return [
             'id' => (int) ($user->id),
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'email' => $user->email,
+            'first_name' => $user->first_name ?:'',
+            'last_name' => $user->last_name ?:'',
+            'email' => $user->email ?:'',
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
-            'handle' => $user->handle,
+            'handle' => $user->handle ?:'',
             'token' => $user->token,
             'confirmed' => (bool) $user->confirmed,
             'oauth_user_id' => $user->oauth_user_id,

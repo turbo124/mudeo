@@ -129,7 +129,7 @@ class BaseController extends Controller
           //'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, X-Requested-With',
           //'Access-Control-Allow-Credentials' => 'true',
           'X-Total-Count' => $count,
-          'X-Muudeo-Version' => config('muudeo.api_version'),
+          'X-Muudeo-Version' => config('mudeo.api_version'),
           //'X-Rate-Limit-Limit' - The number of allowed requests in the current period
           //'X-Rate-Limit-Remaining' - The number of remaining requests in the current period
           //'X-Rate-Limit-Reset' - The number of seconds left in the current period,

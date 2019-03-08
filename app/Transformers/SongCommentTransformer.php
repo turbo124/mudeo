@@ -24,7 +24,7 @@ class SongCommentTransformer extends EntityTransformer
             'id' => (int) $comment->id,
             'user_id' => (int) $comment->user_id,
             'song_id' => (int) $comment->song_id,
-            'description' => $comment->description,
+            'description' => $comment->description ?:'',
             'is_flagged' => (bool) $comment->is_flagged,
             'updated_at' => $comment->updated_at,
             'deleted_at' => $comment->deleted_at,

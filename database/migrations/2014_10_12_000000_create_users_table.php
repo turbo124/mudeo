@@ -16,19 +16,19 @@ class CreateUsersTable extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('first_name')->default('');
+            $table->string('last_name')->default('');
             $table->string('handle')->nullable();
-            $table->string('profile_image')->nullable();
-            $table->string('profile_image_url')->nullable();
-            $table->string('header_image')->nullable();
-            $table->string('header_image_url')->nullable();
+            $table->string('profile_image')->default('');
+            $table->string('profile_image_url')->default('');
+            $table->string('header_image')->default('');
+            $table->string('header_image_url')->default('');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('oauth_user_id')->nullable()->unique();
             $table->unsignedInteger('oauth_provider_id')->nullable()->unique();
-            $table->string('server_name')->nullable();
+            $table->string('server_name')->default('');
             $table->string('token')->nullable();
             $table->boolean('is_flagged')->default(false);
             $table->rememberToken();
@@ -40,11 +40,11 @@ class CreateUsersTable extends Migration
         Schema::create('songs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->string('url');
-            $table->string('description');
-            $table->unsignedInteger('duration');
-            $table->unsignedInteger('likes');
+            $table->string('title')->default('');
+            $table->string('url')->default('');
+            $table->string('description')->default('');
+            $table->unsignedInteger('duration')->default(0);
+            $table->unsignedInteger('likes')->default(0);
             $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->timestamps();
@@ -56,11 +56,11 @@ class CreateUsersTable extends Migration
 
         Schema::create('tracks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('description');
-            $table->string('url');
-            $table->unsignedInteger('duration');
-            $table->unsignedInteger('likes');
+            $table->string('title')->default('');
+            $table->string('description')->default('');
+            $table->string('url')->default('');
+            $table->unsignedInteger('duration')->default(0);
+            $table->unsignedInteger('likes')->default(0);
             $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->unsignedBigInteger('user_id');
@@ -76,7 +76,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('track_id');
             $table->unsignedBigInteger('song_id');
-            $table->unsignedBigInteger('order_id')->nullable();
+            $table->unsignedBigInteger('order_id')->default(0);
             $table->unsignedBigInteger('volume')->default(5);
             $table->timestamps();
             $table->softDeletes();

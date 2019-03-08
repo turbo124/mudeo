@@ -22,9 +22,9 @@ class TrackTransformer extends EntityTransformer
         return [
             'id' => (int) $track->id,
             'user_id' => (int) $track->user_id,
-            'title' => $track->title,
-            'url' => $track->url,
-            'description' => $track->description,
+            'title' => $track->title ?: '',
+            'url' => $track->url ?:'',
+            'description' => $track->description ?: '',
             'duration' => (int) $track->duration,
             'likes' => (int) $track->likes,
             'is_flagged' => (bool) $track->is_flagged,

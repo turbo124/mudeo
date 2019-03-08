@@ -22,9 +22,9 @@ class SongTransformer extends EntityTransformer
         return [
             'id' => (int) $song->id,
             'user_id' => (int) $song->user_id,
-            'title' => $song->title,
-            'url' => $song->url,
-            'description' => $song->description,
+            'title' => $song->title ?:'',
+            'url' => $song->url ?:'',
+            'description' => $song->description ?:'',
             'duration' => (int) $song->duration,
             'likes' => (int) $song->likes,
             'is_flagged' => (bool) $song->is_flagged,
