@@ -17,7 +17,9 @@ class TokenAuth
     public function handle($request, Closure $next)
     {
 
-        if($request->header('X-API-TOKEN') && ($request->header('X-API-SECRET') == config('mudeo.api_secret')) && $user = User::whereToken($request->header('X-API-TOKEN'))->first()) {
+        if($request->header('X-API-TOKEN') 
+            && ($request->header('X-API-SECRET') == config('mudeo.api_secret')) 
+            && ($user = User::whereToken($request->header('X-API-TOKEN'))->first())) {
 
             auth()->login($user);
         

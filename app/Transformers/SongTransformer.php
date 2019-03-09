@@ -10,7 +10,7 @@ class SongTransformer extends EntityTransformer
 {
 
     protected $defaultIncludes = [
-        'tracks'
+        'song_videos'
     ];
 
     protected $availableIncludes = [
@@ -35,13 +35,14 @@ class SongTransformer extends EntityTransformer
         ];
     }
 
+/*
     public function includeTracks(Song $song)
     {
         $transformer = new TrackTransformer($this->serializer);
 
         return $this->includeCollection($song->tracks, $transformer, 'tracks');
     }
-
+*/
     public function includeComments(Song $song)
     {
         $transformer = new SongCommentTransformer($this->serializer);
@@ -54,5 +55,12 @@ class SongTransformer extends EntityTransformer
         $transformer = new TagTransformer($this->serializer);
 
         return $this->includeCollection($song->tags, $transformer, Tag::class);
+    }
+
+    public function includeSongVideos(Song $song)
+    {
+        $transformer = new SongVideoTransformer($this->serializer);
+
+        return $this->includeCollection($song->song_videos, $transformer, SongVideo::class);
     }
 }

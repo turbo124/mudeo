@@ -49,20 +49,14 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(Song::class);
     }
 
-    public function tracks()
+    public function videos()
     {
-        return $this->hasMany(Track::class);
+        return $this->hasMany(Video::class);
     }
 
     public function song_comments()
     {
         return $this->hasMany(SongComment::class);
     }
-
-    public function track_comments()
-    {
-        return $this->hasMany(TrackComment::class);
-    }
-
 
 }

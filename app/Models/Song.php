@@ -13,9 +13,9 @@ class Song extends EntityModel
         return $this->belongsTo(User::class);
     }
     
-    public function tracks()
+    public function videos()
     {
-        return $this->belongsToMany(Track::class)->withTimestamps();
+        return $this->belongsToMany(Video::class)->withTimestamps();
     }
 
     public function comments()
@@ -26,5 +26,10 @@ class Song extends EntityModel
     public function tags()
     {
     	return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function song_videos()
+    {
+        return $this->hasMany(SongVideo::class);
     }
 }

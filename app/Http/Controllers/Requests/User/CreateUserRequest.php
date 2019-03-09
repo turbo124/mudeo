@@ -4,12 +4,15 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
 use App\Models\Client;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUserRequest extends Request
 {
 
     public function rules()
     {
+        $this->sanitize();
+
         return [
             'email' => 'required|unique:users|string|email|max:100',
             'handle' => 'required|unique:users|max:100',
@@ -18,5 +21,16 @@ class CreateUserRequest extends Request
             'password'          => 'required|string|min:6',
         ];
     }
+
+    public function sanitize()
+{
+    $input = $this->all();
+
+   
+
+    $input['password'] = Hash::make($input['password']);
+
+    $this->replace($input);     
+}
 
 }

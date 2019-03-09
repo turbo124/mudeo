@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\TrackComment;
+use App\Models\Video;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -15,9 +15,14 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(TrackComment::class, function (Faker $faker) {
+$factory->define(Video::class, function (Faker $faker) {
     return [
+        'title' => $faker->text(30),
         'description' => $faker->text(100),
+        'url' => $faker->url,
+        'duration' => $faker->numberBetween(1,200),
+        'likes' => $faker->randomDigit,
         'is_flagged' => $faker->boolean,
+        'is_public' => $faker->boolean
     ];
 });

@@ -4,8 +4,7 @@ namespace App\Transformers;
 
 use App\Models\Song;
 use App\Models\SongComment;
-use App\Models\Track;
-use App\Models\TrackComment;
+use App\Models\Video;
 use App\Models\User;
 
 class UserTransformer extends EntityTransformer
@@ -15,8 +14,7 @@ class UserTransformer extends EntityTransformer
 
     protected $availableIncludes = [
         'songs',
-        'tracks',
-        'track_comments',
+        'videos',
         'song_comments',
     ];
 
@@ -41,11 +39,11 @@ class UserTransformer extends EntityTransformer
         return $this->includeCollection($user->songs, $transformer, Song::class);
     }
 
-    public function includeTracks(User $user)
+    public function includeVideos(User $user)
     {
-        $transformer = new TrackTransformer($this->serializer);
+        $transformer = new VideoTransformer($this->serializer);
 
-        return $this->includeCollection($user->tracks, $transformer, Track::class);
+        return $this->includeCollection($user->videos, $transformer, Video::class);
     }
 
     public function includeSongComments(User $user)

@@ -13,7 +13,7 @@ class TagTransformer extends EntityTransformer
 
     protected $availableIncludes = [
         'songs',
-        'tracks',
+        'videos',
     ];
 
     public function transform(Tag $tag)
@@ -27,11 +27,11 @@ class TagTransformer extends EntityTransformer
         ];
     }
 
-    public function includeTracks(Tag $tag)
+    public function includeVideos(Tag $tag)
     {
-        $transformer = new TrackTransformer($this->serializer);
+        $transformer = new VideoTransformer($this->serializer);
 
-        return $this->includeCollection($tag->tracks, $transformer, Track::class);
+        return $this->includeCollection($tag->videos, $transformer, Video::class);
     }
 
     public function includeSongs(Song $song)

@@ -28,19 +28,11 @@ class RandomDataSeeder extends Seeder
             'user_id' => $user->id,
         ])->each(function ($song) use ($user, $user2, $tags){
 
-            $tracks = factory(\App\Models\Track::class,3)->create([
+            $videos = factory(\App\Models\Video::class,3)->create([
                 'user_id' => $user->id,
-            ])->each(function ($track) use($user, $tags){
-                $track_comments = factory(\App\Models\TrackComment::class,5)->create([
-                    'user_id' => $user->id,
-                    'track_id' => $track->id,
-                ]);
+            ]);
 
-                $track->tags()->sync($tags);
-
-            });
-
-                $song->tracks()->sync($tracks);
+                $song->videos()->sync($videos);
             
                 $song->tags()->sync($tags);
 

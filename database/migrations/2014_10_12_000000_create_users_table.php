@@ -54,7 +54,7 @@ class CreateUsersTable extends Migration
 
         });
 
-        Schema::create('tracks', function (Blueprint $table) {
+        Schema::create('videos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->default('');
             $table->string('description')->default('');
@@ -73,9 +73,9 @@ class CreateUsersTable extends Migration
         });
 
 
-        Schema::create('song_track', function (Blueprint $table) {
+        Schema::create('song_video', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('track_id');
+            $table->unsignedBigInteger('video_id');
             $table->unsignedBigInteger('song_id');
             $table->unsignedBigInteger('order_id')->default(0);
             $table->unsignedBigInteger('volume')->default(5);
@@ -83,7 +83,7 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
 
             $table->foreign('song_id')->references('id')->on('songs');
-            $table->foreign('track_id')->references('id')->on('tracks');
+            $table->foreign('video_id')->references('id')->on('videos');
 
         });
 
@@ -101,20 +101,6 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
 
         });
-
-        Schema::create('track_comments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('track_id');
-            $table->boolean('is_flagged')->default(false);
-            $table->text('description');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('track_id')->references('id')->on('tracks')->onDelete('cascade');
-            $table->timestamps();
-            $table->softDeletes();
-
-        });
-
 
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
