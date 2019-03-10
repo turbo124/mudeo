@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 class CreateSongRequest extends Request
 {
 
+    public function authorize()
+    {
+        return $this->user()->id === $this->song->user_id;
+    }
+    
     public function rules()
     {
         $this->sanitize();

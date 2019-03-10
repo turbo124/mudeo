@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TrackComment;
-use App\Transformers\TrackCommentTransformer;
+use App\Models\Video;
+use App\Transformers\VideoTransformer;
 use Illuminate\Http\Request;
 
-class TrackCommentController extends BaseController
+class VideoController extends BaseController
 {
 
-    protected $entityType = TrackComment::class;
-    protected $entityTransformer = TrackCommentTransformer::class;
-    
+    protected $entityType = Video::class;
+    protected $entityTransformer = VideoTransformer::class;
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +18,9 @@ class TrackCommentController extends BaseController
      */
     public function index()
     {
-        //
+        $videos = Video::orderBy('updated_at', 'desc');
+        
+        return $this->listResponse($videos);
     }
 
     /**
@@ -46,21 +47,21 @@ class TrackCommentController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  \App\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Video $video)
     {
-        //
+    return $this->itemResponse($video);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param  \App\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit(Video $video)
     {
         //
     }
@@ -69,22 +70,27 @@ class TrackCommentController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Comment  $comment
+     * @param  \App\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Video $video)
     {
-        //
+        $video->file($request->all());
+        $video->save();
+
+        return $this->itemResponse($video);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Comment  $comment
+     * @param  \App\Track  $track
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Video $video)
     {
-        //
+        $video->delete();
+
+        return $this->itemResponse($video);
     }
 }

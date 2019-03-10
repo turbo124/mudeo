@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Song\DestroySongRequest;
 use App\Models\Song;
 use App\Transformers\SongTransformer;
 use Illuminate\Http\Request;
@@ -79,7 +80,10 @@ class SongController extends BaseController
      */
     public function update(Request $request, Song $song)
     {
-        //
+        $song->fill($request->all());
+        $save->save()
+
+        return $this->itemResponse($song);
     }
 
     /**
@@ -88,8 +92,10 @@ class SongController extends BaseController
      * @param  \App\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Song $song)
+    public function destroy(DestroySongRequest $request, Song $song)
     {
-        //
+        $song->delete();
+
+        return $this->itemResponse($song);
     }
 }
