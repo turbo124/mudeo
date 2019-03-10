@@ -43,7 +43,9 @@ class SongController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $song = Song::create($request->all());
+
+        return $this->itemResponse($song);
     }
 
     /**
