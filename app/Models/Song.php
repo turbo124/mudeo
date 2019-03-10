@@ -32,4 +32,9 @@ class Song extends EntityModel
     {
         return $this->hasMany(SongVideo::class);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(SongLike::class);
+    }
 }

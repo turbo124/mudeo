@@ -59,4 +59,14 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(SongComment::class);
     }
 
+    public function song_likes()
+    {
+        return $this->hasMany(SongLike::class);
+    }
+
+    public function video_likes()
+    {
+        return $this->hasMany(VideoLike::class);
+    }
+
 }

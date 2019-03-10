@@ -117,7 +117,25 @@ class CreateUsersTable extends Migration
            $table->string('taggable_type'); 
         });
 
+        Schema::create('song_likes', function (Blueprint $table){
+            $table->unsignedBigInteger('tag_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('song_id');
+            $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
+        });
+
+        Schema::create('video_likes', function (Blueprint $table){
+            $table->unsignedBigInteger('tag_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('video_id');
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
+        });
     }
 
     /**

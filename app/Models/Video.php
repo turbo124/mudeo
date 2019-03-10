@@ -17,4 +17,9 @@ class Video extends EntityModel
     {
     	return $this->morphToMany(Tag::class, 'taggable');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(VideoLike::class);
+    }
 }
