@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
 use App\Models\Song;
+use App\Models\Video;
 use App\Transformers\SongTransformer;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,21 @@ class SongController extends BaseController
         $song = Song::create($request->all());
         $song->save();
         
+        if($request->input('videos')) {
+
+            foreach($request->input('videos') as $request_video)
+            {
+
+            $video = Video::create($request_video)->save();
+            $song->videos()->sync($video);
+
+            $song->videos()->updateExistingPivot($video->id, ['volume' => $request_video['volume'], 'order_id' => $request_video['order_id']]);
+
+            }
+            
+        }
+
+
         return $this->itemResponse($song);
     }
 

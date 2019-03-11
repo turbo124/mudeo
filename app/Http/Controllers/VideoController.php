@@ -43,12 +43,18 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-        $song = Song::find($request->input('song_id'))->first();
-
+        
         $video = Video::create($request->all());
+        
         $video->save();
 
-        $song->videos()->sync($video);
+        if($request->input('song_id')) {
+
+            $song = Song::find($request->input('song_id'))->first();
+
+            $song->videos()->sync($video);
+
+        }
 
         if($request->file('video'))
             $request->file('video')->store('videos');
