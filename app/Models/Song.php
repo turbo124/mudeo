@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Song extends EntityModel
 {
+        protected $guarded = [
+        'id',
+        'updated_at',
+        'created_at',
+        'deleted_at',
+        'q',
+        'api_secret',
+    ];
+
     use SoftDeletes;
 
     public function user()
@@ -33,7 +42,7 @@ class Song extends EntityModel
         return $this->hasMany(SongVideo::class);
     }
 
-    public function likes()
+    public function song_likes()
     {
         return $this->hasMany(SongLike::class);
     }

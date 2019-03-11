@@ -20,8 +20,7 @@ Route::post('user/create', 'UserAccountController@create');
 Route::group(['middleware' => ['token_auth']], function () {
 
 	Route::resource('songs', 'SongController'); // name = (songs. index / create / show / update / destroy / edit
-	Route::resource('tracks', 'TrackController'); // name = (tracks. index / create / show / update / destroy / edit
-	Route::resource('track_comments', 'TrackCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
+	Route::resource('videos', 'VideoController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
 	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Video\CreateVideoRequest;
+use App\Models\Song;
 use App\Models\Video;
 use App\Transformers\VideoTransformer;
 use Illuminate\Http\Request;
@@ -30,7 +32,7 @@ class VideoController extends BaseController
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -39,9 +41,19 @@ class VideoController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateVideoRequest $request)
     {
-        //
+        $song = Song::find($request->input('song_id'))->first();
+
+        $video = Video::create($request->all());
+        $video->save();
+
+        $song->videos()->sync($video);
+
+        if($request->file('video'))
+            $request->file('video')->store('videos');
+
+        return $this->itemResponse($video);
     }
 
     /**

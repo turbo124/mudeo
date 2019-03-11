@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
 use App\Models\Song;
 use App\Transformers\SongTransformer;
@@ -42,10 +43,11 @@ class SongController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSongRequest $request)
     {
         $song = Song::create($request->all());
-
+        $song->save();
+        
         return $this->itemResponse($song);
     }
 
@@ -81,7 +83,7 @@ class SongController extends BaseController
     public function update(Request $request, Song $song)
     {
         $song->fill($request->all());
-        $save->save()
+        $save->save();
 
         return $this->itemResponse($song);
     }

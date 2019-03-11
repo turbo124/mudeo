@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserAccountController extends BaseController
 {
-    
+    protected $entityType = User::class;
+    protected $entityTransformer = UserAccountTransformer::class;
+
     public function create(CreateUserRequest $request) {
 
     	$user = User::create($request->all());
@@ -18,10 +20,7 @@ class UserAccountController extends BaseController
     	$user->save();
     	$user->refresh();
 
-
-        $transformer = new UserAccountTransformer();
-
-        $data = $this->createItem($user, $transformer, User::class);
+        $data = $this->itemResponse($user);
 
     	return response()->json($data, 200);
 
