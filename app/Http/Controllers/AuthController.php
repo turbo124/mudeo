@@ -80,7 +80,9 @@ class AuthController extends BaseController
         $transformer = new UserTransformer($request->serializer, $request->token_name);
         $data = $this->createItem($user, $transformer, 'user');
 
-        return $this->response($data);
+        return response()->json($data, 200);
+
+        //return $this->response($data);
     }
     
 }

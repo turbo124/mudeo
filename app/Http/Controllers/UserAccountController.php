@@ -20,7 +20,7 @@ class UserAccountController extends BaseController
     	$user->save();
     	$user->refresh();
 
-        $data = $this->itemResponse($user);
+        $data = $this->createItem($user, new UserAccountTransformer(), User::class);
 
     	return response()->json($data, 200);
 
