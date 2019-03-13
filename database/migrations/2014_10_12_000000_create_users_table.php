@@ -40,6 +40,7 @@ class CreateUsersTable extends Migration
         Schema::create('songs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('genre_id');
             $table->string('title')->default('');
             $table->string('url')->default('');
             $table->string('description')->default('');
