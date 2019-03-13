@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\OAuth\OAuth;
+use App\Transformers\UserAccountTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
@@ -71,18 +72,12 @@ class AuthController extends BaseController
 
     private function processLogin(Request $request, $createToken = true)
     {
-        // Create a new token only if one does not already exist
         $user = auth()->user();
-        
-       // if ($createToken)
-       //     $this->accountRepo->createTokens($user, $request->token_name);
 
-        $transformer = new UserTransformer($request->serializer, $request->token_name);
-        $data = $this->createItem($user, $transformer, 'user');
+        $data = $this->createItem($user, new UserAccountTransformer(), User::class);
 
         return response()->json($data, 200);
 
-        //return $this->response($data);
     }
     
 }

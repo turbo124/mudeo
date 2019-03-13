@@ -22,7 +22,8 @@ class SongController extends BaseController
     public function index()
     {
 
-        $songs = Song::orderBy('updated_at', 'desc');
+        $songs = Song::orderBy('updated_at', 'desc')
+                        ->with('song_videos', 'videos');
         
         return $this->listResponse($songs);
 
@@ -49,20 +50,23 @@ class SongController extends BaseController
         $song = Song::create($request->all());
         $song->save();
         
-        if($request->input('videos')) {
+        $song->song_videos()->sync($request->input('song_videos'));
 
-            foreach($request->input('videos') as $request_video)
+        /*
+        if($request->input('song_videos')) {
+
+            foreach($request->input('song_videos') as $song_video)
             {
 
-            $video = Video::create($request_video)->save();
-            $song->videos()->sync($video);
+            $video = Video::create($song_video['video'])->save();
+            $song->videos()->sync($song_video);
 
-            $song->videos()->updateExistingPivot($video->id, ['volume' => $request_video['volume'], 'order_id' => $request_video['order_id']]);
+            //$song->videos()->updateExistingPivot($video->id, ['volume' => $request_video['volume'], 'order_id' => $request_video['order_id']]);
 
             }
             
         }
-
+        */
 
         return $this->itemResponse($song);
     }

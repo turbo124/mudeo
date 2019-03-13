@@ -14,6 +14,7 @@ class Song extends EntityModel
         'q',
         'api_secret',
         'videos',
+        'song_videos'
     ];
 
     use SoftDeletes;
@@ -40,7 +41,7 @@ class Song extends EntityModel
 
     public function song_videos()
     {
-        return $this->hasMany(SongVideo::class)->withPivot('volume', 'order_id');;
+        return $this->hasMany(SongVideo::class);
     }
 
     public function song_likes()

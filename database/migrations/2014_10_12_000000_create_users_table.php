@@ -44,7 +44,8 @@ class CreateUsersTable extends Migration
             $table->string('url')->default('');
             $table->string('description')->default('');
             $table->unsignedInteger('duration')->default(0);
-            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('like_count')->default(0);
+            $table->unsignedInteger('play_count')->default(0);
             $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->timestamps();
@@ -61,7 +62,8 @@ class CreateUsersTable extends Migration
             $table->string('url')->default('');
             $table->unsignedBigInteger('timestamp')->default(0);
             $table->unsignedInteger('duration')->default(0);
-            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('like_count')->default(0);
+            $table->unsignedInteger('play_count')->default(0);
             $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->unsignedBigInteger('user_id');

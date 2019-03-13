@@ -10,7 +10,10 @@ class SongVideo extends Pivot
 
     use SoftDeletes;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'volume',
+        'order_id'
+    ];
 
     public function songs()
     {
