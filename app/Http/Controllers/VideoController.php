@@ -58,8 +58,13 @@ class VideoController extends BaseController
 
         }
 
-        if($request->file('video'))
-            $request->file('video')->store('videos');
+        if($request->file('video')) {
+            $file_path = $request->file('video')->store('videos');
+
+            $video->url = config('mudeo.asset_url') . $file_path;
+            $video->save();
+
+        }
 
         return $this->itemResponse($video);
     }
