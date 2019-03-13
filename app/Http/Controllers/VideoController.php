@@ -7,6 +7,7 @@ use App\Models\Song;
 use App\Models\Video;
 use App\Transformers\VideoTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class VideoController extends BaseController
 {
@@ -43,6 +44,7 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
+        Log::error($request->all());
         
         $video = Video::create($request->all());
         
