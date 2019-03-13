@@ -40,7 +40,7 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
 
     }
-
+/*
     public function testLoginUser()
     {
         $response = $this->withHeaders([
@@ -62,11 +62,12 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
-
+*/
     public function testSaveSong()
     {
 
         $song = [
+            'id' => 1,
             'user_id' => 1,
             'title' => 'testing',
             'description' =>'description',
@@ -74,11 +75,14 @@ class ExampleTest extends TestCase
             'is_flagged' => false,
             'is_public' => true,
             'song_videos' => [
-                'volume' => 100,
-                'order_id' => 1,
-                'video' =>[
-                    'title' => 'the video',
-                    'description' => 'the video description'
+                    [
+                    'volume' => 100,
+                    'order_id' => 1,
+                    'video' =>[
+                        'id' => 1,
+                        'title' => 'the video',
+                        'description' => 'the video description'
+                    ],
                 ]
             ]
         ];
@@ -99,7 +103,7 @@ class ExampleTest extends TestCase
 
 
     }
-
+/*
     public function testCreateVideo()
     {
 
@@ -117,4 +121,5 @@ class ExampleTest extends TestCase
         // Assert the file was stored...
         Storage::disk('avatars')->assertExists($file->hashName());
     }
+    */
 }

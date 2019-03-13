@@ -21,7 +21,7 @@ $factory->define(Video::class, function (Faker $faker) {
         'description' => $faker->text(100),
         'url' => $faker->url,
         'duration' => $faker->numberBetween(1,200),
-        'likes' => $faker->randomDigit,
+        'like_count' => $faker->randomDigit,
         'is_flagged' => $faker->boolean,
         'is_public' => $faker->boolean
     ];

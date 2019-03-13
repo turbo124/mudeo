@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
 use App\Models\Song;
+use App\Models\SongVideo;
 use App\Models\Video;
 use App\Transformers\SongTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SongController extends BaseController
 {
@@ -50,23 +52,27 @@ class SongController extends BaseController
         $song = Song::create($request->all());
         $song->save();
         
-        $song->song_videos()->sync($request->input('song_videos'));
-
-        /*
+        
         if($request->input('song_videos')) {
+
 
             foreach($request->input('song_videos') as $song_video)
             {
 
-            $video = Video::create($song_video['video'])->save();
-            $song->videos()->sync($song_video);
+                $sv = SongVideo::firstOrNew([
+                    'song_id' => $song->id,
+                    'video_id' => $song_video['video']['id']
+                ]);
 
-            //$song->videos()->updateExistingPivot($video->id, ['volume' => $request_video['volume'], 'order_id' => $request_video['order_id']]);
+                $sv->volume = $song_video['volume'];
+                $sv->order_id = $song_video['order_id'];
+
+                $sv->save();
 
             }
             
         }
-        */
+        
 
         return $this->itemResponse($song);
     }

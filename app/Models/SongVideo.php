@@ -12,7 +12,9 @@ class SongVideo extends Pivot
 
     protected $fillable = [
         'volume',
-        'order_id'
+        'order_id',
+        'song_id',
+        'video_id'
     ];
 
     public function songs()
