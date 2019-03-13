@@ -32,7 +32,7 @@ class CreateSongRequest extends Request
         $input = $this->all();
         
         $input['user_id'] = auth()->user()->id;
-        
+        $input['url'] = 'http://google.com';
         $this->replace($input);     
     }
 

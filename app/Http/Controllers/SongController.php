@@ -50,7 +50,6 @@ class SongController extends BaseController
     public function store(CreateSongRequest $request)
     {
         $song = Song::create($request->all());
-        $song->url = 'http://www.google.com';
         $song->save();
         
         
