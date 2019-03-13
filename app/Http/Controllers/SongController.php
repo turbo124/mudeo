@@ -109,7 +109,7 @@ class SongController extends BaseController
     public function update(Request $request, Song $song)
     {
         $song->fill($request->all());
-        $save->save();
+        $song->save();
 
         return $this->itemResponse($song);
     }
