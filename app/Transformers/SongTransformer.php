@@ -16,6 +16,7 @@ class SongTransformer extends EntityTransformer
     protected $availableIncludes = [
         'comments',
         'tags',
+        'user'
     ];
 
     public function transform(Song $song)
@@ -62,5 +63,12 @@ class SongTransformer extends EntityTransformer
         $transformer = new SongVideoTransformer($this->serializer);
 
         return $this->includeCollection($song->song_videos, $transformer, SongVideo::class);
+    }
+
+    public function includeUer(Song $song)
+    {
+        $transformter = new UserTransformer($this->serializer);
+
+        return $this->includeItem($song->user, $transformer, User::class);
     }
 }

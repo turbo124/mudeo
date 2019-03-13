@@ -19,8 +19,7 @@ class UserAccountTransformer extends EntityTransformer
     {
         return [
             'id' => (int) ($user->id),
-            'first_name' => $user->first_name ?:'',
-            'last_name' => $user->last_name ?:'',
+            'name' => $user->name ?:'',
             'email' => $user->email ?:'',
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,

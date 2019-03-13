@@ -33,6 +33,9 @@ class CreateSongRequest extends Request
         
         $input['user_id'] = auth()->user()->id;
         $input['url'] = 'http://google.com';
+        $input['description'] = $input['description'] ?: 'No description';
+        $input['title'] = $input['title'] ?: 'No title';
+        
         $this->replace($input);     
     }
 
