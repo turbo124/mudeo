@@ -20,6 +20,7 @@ class Song extends EntityModel
         'song_videos',
 	'isChanged',
 	'user',
+	'include',
     ];
 
     use SoftDeletes;
