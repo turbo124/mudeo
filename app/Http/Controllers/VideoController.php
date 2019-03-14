@@ -71,27 +71,35 @@ class VideoController extends BaseController
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
 
-/*
+
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
                 'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
             ]);
 
 
-            // $ffmpeg = FFMpeg::create();
+            //$ffmpeg = FFMpeg::create();
 
             $tmp_file_name = sha1(time()) . '.jpg';
 
             $vid = $ffmpeg->open($request->file('video'));
+            $vid_object = $vid->frame(TimeCode::fromSeconds(1))->save('', false, true);
 
-            $tmp_file = Storage::disk('local')->put(public_path($tmp_file_name , $vid->frame(TimeCode::fromSeconds(1))->save($hashids->encode('', false, true)));
+            //$tmp_file = Storage::disk('local')->put($tmp_file_name , base64_decode($vid_object));
+            $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
-            $file_path = Storage::disk('gcs')->put('videos/' . $hashids->encode( auth()->user()->id ) . '/' , $tmp_file);
+            Log::error($tmp_file);
+
+            $disk = Storage::disk('gcs');
+
+            $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( auth()->user()->id ) . '_' .$tmp_file_name;
+
+            $disk->put($remote_storage_file_name, Storage::disk('local')->get($tmp_file_name));
 
             Storage::disk('local')->delete($tmp_file_name);
 
-            $video->thumbnail_url = config('mudeo.asset_url') . $file_path;
-  */
+            $video->thumbnail_url = config('mudeo.asset_url') . '/' . $disk->url($remote_storage_file_name);
+  
         }      
 
         return $this->itemResponse($video);

@@ -30,6 +30,13 @@ class UserTransformer extends EntityTransformer
             'deleted_at' => $user->deleted_at,
             'handle' => $user->handle ?:'',
             'is_flagged' => (bool) $user->is_flagged,
+            'facebook_social_url' => $user->facebook_social_url ?: '',
+            'youtube_social_url' => $user->youtube_social_url ?: '',
+            'instagram_social_url' => $user->instagram_social_url ?: '',
+            'soundcloud_social_url' => $user->soundcloud_social_url ?: '',
+            'twitch_social_url' => $user->twitch_social_url ?: '',
+            'twitter_social_url' => $user->twitter_social_url ?: '',
+            'website_social_url' => $user->website_social_url ?: '',
         ];
     }
 

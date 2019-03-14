@@ -19,9 +19,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->firstName,
         'handle' => $faker->userName,
-        'profile_image' => $faker->image($dir = null, $width=640, $height=480, 'cats', false),
         'profile_image_url' => $faker->imageUrl($width=640, $height=480, 'cats'),
-        'header_image' => $faker->image($dir=null, $width=640, $height=480, 'cats', false),
         'header_image_url' => $faker->imageUrl($width=640, $height=480, 'cats'),
         'is_flagged' => $faker->boolean,
         'token' => str_random(64),

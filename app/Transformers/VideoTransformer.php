@@ -24,6 +24,7 @@ class VideoTransformer extends EntityTransformer
             'user_id' => (int) $video->user_id,
             'title' => $video->title ?: '',
             'url' => $video->url ?:'',
+            'thumbnail_url' => $video->thumbnail_url ?:'',
             'description' => $video->description ?: '',
             'duration' => (int) $video->duration,
             'likes' => (int) $video->likes,

@@ -51,7 +51,9 @@ class SongController extends BaseController
     {
         $song = Song::create($request->all());
         $song->save();
-        
+
+        $song->url = config('mudeo.app_url') . '/api/songs/' . $song->id;
+        $song->save();
         
         if($request->input('song_videos')) {
 
