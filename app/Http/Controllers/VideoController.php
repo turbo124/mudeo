@@ -99,6 +99,7 @@ class VideoController extends BaseController
             Storage::disk('local')->delete($tmp_file_name);
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
+            $video->save();
   
         }      
 
