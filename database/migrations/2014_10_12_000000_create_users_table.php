@@ -18,9 +18,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->default('');
             $table->string('handle')->nullable();
-            $table->string('profile_image')->default('');
             $table->string('profile_image_url')->default('');
-            $table->string('header_image')->default('');
             $table->string('header_image_url')->default('');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -40,6 +38,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('genre_id');
+            $table->unsignedBigInteger('parent_id')->default(0);
             $table->string('title')->default('');
             $table->string('url')->default('');
             $table->string('description')->default('');
@@ -60,6 +59,7 @@ class CreateUsersTable extends Migration
             $table->string('title')->default('');
             $table->string('description')->default('');
             $table->string('url')->default('');
+            $table->string('thumbnail_url')->default('');
             $table->unsignedBigInteger('timestamp')->default(0);
             $table->unsignedInteger('duration')->default(0);
             $table->unsignedInteger('like_count')->default(0);

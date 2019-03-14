@@ -6,8 +6,12 @@ use App\Http\Requests\Video\CreateVideoRequest;
 use App\Models\Song;
 use App\Models\Video;
 use App\Transformers\VideoTransformer;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends BaseController
 {
@@ -59,12 +63,33 @@ class VideoController extends BaseController
         }
 
         if($request->file('video')) {
-            $file_path = $request->file('video')->store('videos');
+
+            $hashids = new Hashids('', 10);
+
+            $file_path = $request->file('video')->store( 'videos/' . $hashids->encode( auth()->user()->id ) );
 
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
 
-        }
+
+            $ffmpeg = FFMpeg::create([
+                'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
+            ]);
+
+
+            // $ffmpeg = FFMpeg::create();
+
+            $vid = $ffmpeg->open($request->file('video'));
+
+            $file_path = Storage::disk('gcs')->put('videos/' . $hashids->encode( auth()->user()->id ), 
+                $vid
+                ->frame(TimeCode::fromSeconds(1))
+                ->save('frame.jpg')
+            );
+
+            $video->thumbnail_url = config('mudeo.asset_url') . $file_path;
+        }      
 
         return $this->itemResponse($video);
     }

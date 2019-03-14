@@ -24,4 +24,6 @@ Route::group(['middleware' => ['token_auth']], function () {
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
 	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
 
+	Route::post('user/profile_image', 'UserController@storeProfileImage');
+	Route::post('user/header_image', 'UserController@storeBackgroundImage');
 });

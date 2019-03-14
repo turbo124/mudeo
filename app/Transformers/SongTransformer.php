@@ -31,6 +31,8 @@ class SongTransformer extends EntityTransformer
             'likes' => (int) $song->likes,
             'is_flagged' => (bool) $song->is_flagged,
             'is_public' => (bool) $song->is_public,
+            'genre_id' => (int) $song->genre_id,
+            'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
         ];
@@ -65,9 +67,9 @@ class SongTransformer extends EntityTransformer
         return $this->includeCollection($song->song_videos, $transformer, SongVideo::class);
     }
 
-    public function includeUer(Song $song)
+    public function includeUser(Song $song)
     {
-        $transformter = new UserTransformer($this->serializer);
+        $transformer = new UserTransformer($this->serializer);
 
         return $this->includeItem($song->user, $transformer, User::class);
     }

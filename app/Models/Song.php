@@ -49,4 +49,19 @@ class Song extends EntityModel
     {
         return $this->hasMany(SongLike::class);
     }
+
+    public function parent_song()
+    {
+       return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    public function parent_songs()
+    {
+       return $this->belongsToMany(static::class, 'parent_id'); //not sure if this will work
+    }
+
+    public function child_songs()
+    {
+       return $this->hasMany(static::class, 'parent_id');
+    }
 }
