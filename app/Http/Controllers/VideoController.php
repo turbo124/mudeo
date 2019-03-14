@@ -79,19 +79,19 @@ class VideoController extends BaseController
 
 
             // $ffmpeg = FFMpeg::create();
-
-            $tmp_file_name = sha1(time());
+/*
+            $tmp_file_name = sha1(time()) . '.jpg';
 
             $vid = $ffmpeg->open($request->file('video'));
 
-            $vid->frame(TimeCode::fromSeconds(1))
-                ->save($tmp_file_name . '.jpg');
+            $tmp_file = Storage::disk('local')->put(public_path($tmp_file_name , $vid->frame(TimeCode::fromSeconds(1))->save($hashids->encode('', false, true)));
 
-            $file_path = Storage::disk('gcs')->put('videos/' . $hashids->encode( auth()->user()->id ), public_path($tmp_file_name . '.jpg'));
+            $file_path = Storage::disk('gcs')->put('videos/' . $hashids->encode( auth()->user()->id ) . '/' , $tmp_file);
 
-            //Storage::delete($tmp_file_name . '.jpg');
+            Storage::disk('local')->delete($tmp_file_name);
 
             $video->thumbnail_url = config('mudeo.asset_url') . $file_path;
+  */
         }      
 
         return $this->itemResponse($video);
