@@ -86,6 +86,8 @@ class VideoController extends BaseController
                 $vid
                 ->frame(TimeCode::fromSeconds(1))
                 ->save('frame.jpg')
+
+                //this works but isn't saving as expected!!
             );
 
             $video->thumbnail_url = config('mudeo.asset_url') . $file_path;
