@@ -16,6 +16,7 @@ class SongTransformer extends EntityTransformer
     protected $availableIncludes = [
         'comments',
         'tags',
+        'user'
     ];
 
     public function transform(Song $song)
@@ -27,9 +28,12 @@ class SongTransformer extends EntityTransformer
             'url' => $song->url ?:'',
             'description' => $song->description ?:'',
             'duration' => (int) $song->duration,
-            'likes' => (int) $song->likes,
+            'count_like' => (int) $song->count_like,
+            'count_play' => (int) $song->count_play,
             'is_flagged' => (bool) $song->is_flagged,
             'is_public' => (bool) $song->is_public,
+            'genre_id' => (int) $song->genre_id,
+            'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
         ];
@@ -62,5 +66,12 @@ class SongTransformer extends EntityTransformer
         $transformer = new SongVideoTransformer($this->serializer);
 
         return $this->includeCollection($song->song_videos, $transformer, SongVideo::class);
+    }
+
+    public function includeUser(Song $song)
+    {
+        $transformer = new UserTransformer($this->serializer);
+
+        return $this->includeItem($song->user, $transformer, User::class);
     }
 }

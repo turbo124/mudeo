@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Song extends EntityModel
 {
+    use Filterable;
+
         protected $guarded = [
         'id',
         'updated_at',
@@ -49,5 +52,20 @@ class Song extends EntityModel
     public function song_likes()
     {
         return $this->hasMany(SongLike::class);
+    }
+
+    public function parent_song()
+    {
+       return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    public function parent_songs()
+    {
+       return $this->belongsToMany(static::class, 'parent_id'); //not sure if this will work
+    }
+
+    public function child_songs()
+    {
+       return $this->hasMany(static::class, 'parent_id');
     }
 }

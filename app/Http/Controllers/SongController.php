@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\SongFilters;
 use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
 use App\Models\Song;
@@ -21,12 +22,19 @@ class SongController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+    public function __construct(SongFilters $filter)
     {
+        parent::__construct();
 
-        $songs = Song::orderBy('updated_at', 'desc')
-                        ->with('song_videos', 'videos');
-        
+        $this->filter = $filter;
+    }
+
+    public function index(SongFilters $filters)
+    {
+        $songs = Song::filter($filters)
+            ->with('song_videos', 'videos');
+       
         return $this->listResponse($songs);
 
     }
@@ -51,7 +59,9 @@ class SongController extends BaseController
     {
         $song = Song::create($request->all());
         $song->save();
-        
+
+        $song->url = config('mudeo.app_url') . '/api/songs/' . $song->id;
+        $song->save();
         
         if($request->input('song_videos')) {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Video;
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
-use App\Models\Video;
+use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 
-class CreateVideoRequest extends Request
+class CreateImageRequest extends Request
 {
 
     public function rules()
@@ -14,15 +14,16 @@ class CreateVideoRequest extends Request
         $this->sanitize();
 
         return [
-            'video' => 'file'
+            'image' => 'file'
         ];
     }
 
     public function sanitize()
     {
         $input = $this->all();
-        
-        $input['user_id'] = auth()->user()->id;
+
+       
+
         $this->replace($input);     
     }
 

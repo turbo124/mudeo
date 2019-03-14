@@ -23,13 +23,37 @@ class RandomDataSeeder extends Seeder
 
         $tags = factory(\App\Models\Tag::class,20)->create();
 
-
         $songs = factory(\App\Models\Song::class,100)->create([
             'user_id' => $user->id,
         ])->each(function ($song) use ($user, $user2, $tags){
 
             $videos = factory(\App\Models\Video::class,3)->create([
                 'user_id' => $user->id,
+            ]);
+
+                $song->videos()->sync($videos);
+            
+                $song->tags()->sync($tags);
+
+
+            $song_comments = factory(\App\Models\SongComment::class,5)->create([
+                'user_id' => $user->id,
+                'song_id' => $song->id,
+            ]);
+
+            $song_comments = factory(\App\Models\SongComment::class,5)->create([
+                'user_id' => $user2->id,
+                'song_id' => $song->id,
+            ]);
+
+        });
+
+        $songs = factory(\App\Models\Song::class,100)->create([
+            'user_id' => $user2->id,
+        ])->each(function ($song) use ($user, $user2, $tags){
+
+            $videos = factory(\App\Models\Video::class,3)->create([
+                'user_id' => $user2->id,
             ]);
 
                 $song->videos()->sync($videos);

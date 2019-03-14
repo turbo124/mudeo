@@ -22,13 +22,21 @@ class UserTransformer extends EntityTransformer
     {
         return [
             'id' => (int) ($user->id),
-            'first_name' => $user->first_name ?:'',
-            'last_name' => $user->last_name ?:'',
+            'name' => $user->name ?:'',
             'email' => $user->email ?:'',
+            'profile_image_url' => $user->profile_image_url ?: '',
+            'header_image_url' => $user->header_image_url ?: '',
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
             'handle' => $user->handle ?:'',
             'is_flagged' => (bool) $user->is_flagged,
+            'facebook_social_url' => $user->facebook_social_url ?: '',
+            'youtube_social_url' => $user->youtube_social_url ?: '',
+            'instagram_social_url' => $user->instagram_social_url ?: '',
+            'soundcloud_social_url' => $user->soundcloud_social_url ?: '',
+            'twitch_social_url' => $user->twitch_social_url ?: '',
+            'twitter_social_url' => $user->twitter_social_url ?: '',
+            'website_social_url' => $user->website_social_url ?: '',
         ];
     }
 

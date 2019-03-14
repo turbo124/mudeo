@@ -21,7 +21,8 @@ $factory->define(Song::class, function (Faker $faker) {
         'description' => $faker->text(100),
         'url' => $faker->url,
         'duration' => $faker->numberBetween(1,200),
-        'like_count' => $faker->randomDigit,
+        'count_like' => $faker->randomDigit,
+        'count_play' => $faker->randomDigit,
         'is_flagged' => $faker->boolean,
         'is_public' => $faker->boolean
     ];
