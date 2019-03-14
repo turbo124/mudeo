@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use Closure;
+use Illuminate\Support\Facades\Log;
 
-class TokenAuth
+class ApiSecretCheck
 {
     /**
      * Handle an incoming request.
@@ -17,19 +18,17 @@ class TokenAuth
     public function handle($request, Closure $next)
     {
 
-        if($request->header('X-API-TOKEN') 
-            && ($user = User::whereToken($request->header('X-API-TOKEN'))->first())) {
-
-            auth()->login($user);
-        
+        if( $request->header('X-API-SECRET') && ($request->header('X-API-SECRET') == config('mudeo.api_secret')) )
+        {
+            return $next($request);
         }
         else {
 
-            $error['error'] = ['message' => 'Invalid token'];
+            $error['error'] = ['message' => 'Invalid secret'];
 
             return response()->json(json_encode($error, JSON_PRETTY_PRINT) ,403);
         }
 
-        return $next($request);
+        
     }
 }
