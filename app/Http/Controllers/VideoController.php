@@ -71,7 +71,7 @@ class VideoController extends BaseController
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
 
-
+/*
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
                 'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
@@ -79,7 +79,7 @@ class VideoController extends BaseController
 
 
             // $ffmpeg = FFMpeg::create();
-/*
+
             $tmp_file_name = sha1(time()) . '.jpg';
 
             $vid = $ffmpeg->open($request->file('video'));
