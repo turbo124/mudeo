@@ -34,7 +34,7 @@ class CreateSongRequest extends Request
         $input['user_id'] = auth()->user()->id;
         $input['url'] = config('mudeo.app_url');
         $input['description'] = isset($input['description']) ?: 'No description';
-        $input['title'] = isset($input['title']) ?: 'No title';
+        $input['title'] = isset($input['title']) ? $input['title'] : 'No title';
         
         $this->replace($input);     
     }
