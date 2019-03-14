@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Song extends EntityModel
 {
+    use Filterable;
+
         protected $guarded = [
         'id',
         'updated_at',

@@ -6,6 +6,7 @@ use App\Transformers\ArraySerializer;
 use App\Transformers\EntityTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -30,6 +31,7 @@ class BaseController extends Controller
         } else {
             $this->manager->setSerializer(new ArraySerializer());
         }
+
     }
 
     protected function errorResponse($response, $httpErrorCode = 400)
@@ -57,6 +59,7 @@ class BaseController extends Controller
 
     protected function createCollection($query, $transformer, $entityType)
     {
+        
         if ($this->serializer && $this->serializer != EntityTransformer::API_SERIALIZER_JSON) {
             $entityType = null;
         }

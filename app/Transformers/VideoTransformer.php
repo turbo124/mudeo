@@ -27,7 +27,6 @@ class VideoTransformer extends EntityTransformer
             'thumbnail_url' => $video->thumbnail_url ?:'',
             'description' => $video->description ?: '',
             'duration' => (int) $video->duration,
-            'likes' => (int) $video->likes,
             'is_flagged' => (bool) $video->is_flagged,
             'is_public' => (bool) $video->is_public,
             'updated_at' => $video->updated_at,
