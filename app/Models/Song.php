@@ -18,9 +18,9 @@ class Song extends EntityModel
         'api_secret',
         'videos',
         'song_videos',
-	'isChanged',
-	'user',
-	'include',
+    	'isChanged',
+    	'user',
+    	'include',
     ];
 
     use SoftDeletes;

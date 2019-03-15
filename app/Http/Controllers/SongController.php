@@ -33,7 +33,7 @@ class SongController extends BaseController
     public function index(SongFilters $filters)
     {
         $songs = Song::filter($filters)
-            ->with('song_videos', 'videos');
+            ->with('song_videos', 'song_videos.video', 'videos', 'user');
        
         return $this->listResponse($songs);
 
@@ -98,6 +98,10 @@ class SongController extends BaseController
         return $this->itemResponse($song);
     }
 
+    public function play()
+    {
+
+    }
     /**
      * Show the form for editing the specified resource.
      *
