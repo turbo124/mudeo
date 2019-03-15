@@ -98,9 +98,14 @@ class SongController extends BaseController
         return $this->itemResponse($song);
     }
 
-    public function play()
+    public function play($hashedId)
     {
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
 
+        $song = Song::find($hashed_id[0])
+
+        return view('song', $song);
     }
     /**
      * Show the form for editing the specified resource.
