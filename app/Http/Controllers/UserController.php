@@ -14,6 +14,14 @@ class UserController extends BaseController
     protected $entityType = User::class;
 	protected $entityTransformer = UserTransformer::class;
 
+    public function update(User $user)
+    {
+        $user->fill(request()->all());
+        $user->save();
+
+        return $this->itemResponse($user);
+    }
+
     public function storeProfileImage(CreateImageRequest $request)
     {
     	$user = auth()->user();

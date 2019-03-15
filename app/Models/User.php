@@ -24,6 +24,11 @@ class User extends Authenticatable implements CanResetPassword
         'deleted_at',
         'q',
         'api_secret',
+        'oauth_user_id',
+        'oauth_provider_id',
+        'server_name',
+        'token',
+        'remember_token'
     ];
 
     /**
