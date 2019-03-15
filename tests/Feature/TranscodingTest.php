@@ -33,13 +33,12 @@ class TransCodingTest extends TestCase
 
             $video = $ffmpeg->open($mp4_file);
             
-           // $video->addFilter(new SimpleFilter(['-i', '/Users/davidbomba/Desktop/2.mp4']))
-            		$video->filters()
-            		->custom('-i /Users/davidbomba/Desktop/2.mp4 \ -filter_complex [0:v]pad=iw*2:ih[int];[int][1:v]overlay=W/2:0[vid]')
-            		->synchronize();
+            $video->addFilter(new SimpleFilter(['-i', '/Users/davidbomba/Desktop/2.mp4']))
+                  ->addFilter(new SimpleFilter(['-filter_complex', 'hstack']))
+                ->filters();
 
-    		$format = new X264();
-			$format->setAudioCodec("libmp3lame");
+    		      $format = new X264();
+			       $format->setAudioCodec("libmp3lame");
 
             $video->save($format, 'doozy.mp4');
 
