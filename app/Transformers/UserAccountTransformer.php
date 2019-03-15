@@ -35,8 +35,6 @@ class UserAccountTransformer extends EntityTransformer
             'handle' => $user->handle ?:'',
             'token' => $user->token,
             'confirmed' => (bool) $user->confirmed,
-            'oauth_user_id' => $user->oauth_user_id,
-            'oauth_provider_id' => $user->oauth_provider_id,
             'is_flagged' => (bool) $user->is_flagged,
         ];
     }
