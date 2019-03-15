@@ -9,6 +9,7 @@ use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
 use App\Transformers\SongTransformer;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -60,7 +61,10 @@ class SongController extends BaseController
         $song = Song::create($request->all());
         $song->save();
 
-        $song->url = config('mudeo.app_url') . '/api/songs/' . $song->id;
+        $hashids = new Hashids();
+
+        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
+        
         $song->save();
         
         if($request->input('song_videos')) {
