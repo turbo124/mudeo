@@ -22,9 +22,14 @@ class UserController extends BaseController
         return $this->itemResponse($user);
     }
 
-    public function show(User $user)
+    public function show()
     {
-        return $this->itemResponse($user);
+        return $this->itemResponse(auth()->user());
+    }
+
+    public function current_user()
+    {
+        return $this->itemResponse(auth()->user());
     }
 
     public function storeProfileImage(CreateImageRequest $request)

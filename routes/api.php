@@ -27,6 +27,7 @@ Route::group(['middleware' => ['api_secret_check','token_auth']], function () {
 	Route::resource('videos', 'VideoController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
 	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
+	Route::get('user', 'UserController@current_user');
 
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');
