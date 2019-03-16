@@ -61,7 +61,7 @@ class SongController extends BaseController
         $song = Song::create($request->all());
         $song->save();
 
-        $hashids = new Hashids();
+        $hashids = new Hashids('', 10);
 
         $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
         
