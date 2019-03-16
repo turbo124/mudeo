@@ -107,9 +107,12 @@ class SongController extends BaseController
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
 
-        $song = Song::find($hashed_id[0]);
+        if($hashed_id) {
+            $song = Song::firstOrFail($hashed_id[0]);
+            return view('song', $song);
 
-        return view('song', $song);
+        }
+
     }
     /**
      * Show the form for editing the specified resource.
