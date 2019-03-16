@@ -27,10 +27,7 @@ class UserController extends BaseController
         return $this->itemResponse(auth()->user());
     }
 
-    public function current_user()
-    {
-        return $this->itemResponse(auth()->user());
-    }
+    
 
     public function storeProfileImage(CreateImageRequest $request)
     {

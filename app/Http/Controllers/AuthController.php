@@ -79,5 +79,15 @@ class AuthController extends BaseController
         return response()->json($data, 200);
 
     }
+
+    public function user()
+    {
+        $user = auth()->user();
+
+        $data = $this->createItem($user, new UserAccountTransformer(), User::class);
+
+        return response()->json($data, 200);    
+
+    }
     
 }
