@@ -80,7 +80,7 @@ class AuthController extends BaseController
 
     }
 
-    public function user()
+    public function current_user()
     {
         $user = auth()->user();
 
