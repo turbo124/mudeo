@@ -23,6 +23,11 @@ class SongVideo extends Pivot
         return $this->hasMany(Song::class);
     }
 
+    public function song()
+    {
+        return $this->belongsTo(Song::class);
+    }
+    
     public function video()
     {
     	return $this->hasOne(Video::class, 'id', 'video_id');

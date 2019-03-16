@@ -19,8 +19,12 @@ class TransCodingTest extends TestCase
     
     }
 
-    
-    public function testTranscode()
+    public function testMe()
+    {
+      $this->assertTrue(true);
+    }
+
+    public function Transcode()
     {
 
 
@@ -96,7 +100,7 @@ class TransCodingTest extends TestCase
             //$vid_object = $vid->frame(TimeCode::fromSeconds(1))->save('', false, true);
     }
 
-    private function inAndOut($parentVideo, $childVideo, $userHash) ?: string
+    public function inAndOut($parentVideo, $childVideo, $userHash)
     {
         $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
