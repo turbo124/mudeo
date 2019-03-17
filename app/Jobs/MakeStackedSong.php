@@ -79,19 +79,19 @@ class MakeStackedSong implements ShouldQueue
 
                 }
 
-                $fileSongVideoPath = $this->buildStackedVideo($song_videos);
-
-
-                    $disk = Storage::disk('gcs');
-
-                    $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . 'mp4';
-
-                    $disk->put($remote_storage_file_name, Storage::disk('local')->get($fileSongVideoPath));
-
         }
+
+        $fileSongVideoPath = $this->buildStackedVideo($song_videos);
+
+        $disk = Storage::disk('gcs');
+
+        $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . 'mp4';
+
+        $disk->put($remote_storage_file_name, Storage::disk('local')->get($fileSongVideoPath));
+        
       }
 
-      public function buildStackedVideo(SongVideo $song_videos)
+      public function buildStackedVideo($song_videos)
       {
         $x = count($song_videos);
 
