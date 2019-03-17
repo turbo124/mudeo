@@ -115,7 +115,7 @@ class SongController extends BaseController
             Log::error('hashed id = '.$hashed_id[0]);
 
 
-            $song = Song::find($hashed_id[0])->firstOrFail();
+            $song = Song::findOrFail($hashed_id[0]);
 
             $data = [
                 'song' => $song,
