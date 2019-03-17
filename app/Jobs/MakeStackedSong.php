@@ -33,7 +33,7 @@ class MakeStackedSong implements ShouldQueue
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
                 'ffprobe.binaries' => '/usr/bin/ffprobe' 
             ]);
-        $this->working_dir = storage_path(sha1(time() . '/'));
+        $this->working_dir = sha1(time() . '/';
     }
 
     /**
