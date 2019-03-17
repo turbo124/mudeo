@@ -114,7 +114,7 @@ class SongController extends BaseController
 
             $data = [
                 'song' => $song,
-                'video_url' => $this->songUrl($song);
+                'video_url' => $this->songUrl($song),
             ];
 
             return view('song', $data);
