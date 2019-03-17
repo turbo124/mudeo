@@ -10,7 +10,7 @@
 
 		    <div class="d-flex justify-content-center">
 
-				  <video id='my-video' class='vjs-fill' controls preload='auto' 
+				  <video id='my-video' class='video-js' controls preload='auto' 
 				  poster='' data-setup='{}'>
 				    <source src='{{ $video_url }}' type='video/mp4'>
 				    <p class='vjs-no-js'>
@@ -27,4 +27,11 @@
 
 		</div>
 
+<script>
+	var player = videojs('my-video');
+
+	player.fill(true);
+</script>
+
 	@endsection
+
