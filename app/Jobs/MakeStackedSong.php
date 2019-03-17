@@ -95,10 +95,10 @@ class MakeStackedSong implements ShouldQueue
         $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
 
         Log::error($remote_storage_file_name);
-        $exists1 = Storage::disk('local')->exists(storage_path($this->working_dir) . $fileSongVideoPath));
+        $exists1 = Storage::disk('local')->exists(storage_path($this->working_dir) . $fileSongVideoPath);
         Log::error('now '.$exists1);
 
-        $exists2 = Storage::disk('local')->exists($this->working_dir . $fileSongVideoPath));
+        $exists2 = Storage::disk('local')->exists($this->working_dir . $fileSongVideoPath);
         Log::error('future '.$exists2);
 
 
