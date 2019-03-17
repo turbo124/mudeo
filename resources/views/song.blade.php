@@ -28,9 +28,11 @@
 		</div>
 
 <script>
+
+
 	var player = videojs('my-video');
 
-	player.fill(true);
+player.fluid(true);
 </script>
 
 	@endsection
