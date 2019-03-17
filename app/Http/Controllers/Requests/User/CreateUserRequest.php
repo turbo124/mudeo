@@ -24,9 +24,9 @@ class CreateUserRequest extends Request
 {
     $input = $this->all();
 
-   
     $input['name'] = isset($input['name']) ? $input['name'] : ' ';
     $input['password'] = Hash::make($input['password']);
+    $input['ip'] = request()->ip();
 
     $this->replace($input);     
 }

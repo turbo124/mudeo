@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('oauth_user_id')->nullable()->unique();
             $table->unsignedInteger('oauth_provider_id')->nullable()->unique();
             $table->string('server_name')->default('');
+            $table->string('ip')->default('');
             $table->string('facebook_social_url')->default('');
             $table->string('youtube_social_url')->default('');
             $table->string('instagram_social_url')->default('');
