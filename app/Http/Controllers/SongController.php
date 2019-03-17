@@ -111,10 +111,28 @@ class SongController extends BaseController
 
         if($hashed_id) {
             $song = Song::firstOrFail($hashed_id[0]);
-            return view('song', $song);
+
+            $data = [
+                'song' => $song,
+                'video_url' => $this->songUrl($song);
+            ];
+
+            return view('song', $data);
         }
 
     }
+
+    private function songUrl($song)
+    {
+        $hashids = new Hashids('', 10);
+
+        $user_hash = $hashids->encode($song->user->id);
+        $song_hash = $hashids->encode($song->id) . '.mp4';
+
+        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $song_hash;
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      *
