@@ -109,7 +109,12 @@ class SongController extends BaseController
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
 
+
         if($hashed_id) {
+
+            Log::error('hashed id = '.$hashed_id[0]);
+
+
             $song = Song::find($hashed_id[0])->firstOrFail();
 
             $data = [
