@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Models\Song;
 use FFMpeg\FFMpeg;
+use FFMpeg\Filters\Audio\SimpleFilter;
+use FFMpeg\Format\Video\X264;
 use GuzzleHttp\Client;
 use Hashids\Hashids;
 use Illuminate\Bus\Queueable;
@@ -26,7 +28,10 @@ class MakeStackedSong implements ShouldQueue
     public function __construct(Song $song)
     {
         $this->song = $song;
-        $this->ffmpeg = FFMpeg::create();
+        $this->ffmpeg = FFMpeg::create([
+                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/bin/ffprobe' 
+            ]);
         $this->working_dir = sha1(time() . '/');
     }
 
