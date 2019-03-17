@@ -119,7 +119,7 @@ class SongController extends BaseController
 
             $data = [
                 'song' => $song,
-                'video_url' => $this->songUrl($song),
+                'video_url' => $this->songUrl($song, $hashedId),
             ];
 
             return view('song', $data);
@@ -127,14 +127,13 @@ class SongController extends BaseController
 
     }
 
-    private function songUrl($song)
+    private function songUrl($song, $hashedId)
     {
         $hashids = new Hashids('', 10);
 
         $user_hash = $hashids->encode($song->user->id);
-        $song_hash = $hashids->encode($song->id) . '.mp4';
 
-        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $song_hash;
+        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4;
     }
 
 
