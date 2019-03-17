@@ -85,9 +85,9 @@ class MakeStackedSong implements ShouldQueue
 
         $fileSongVideoPath = $this->buildStackedVideo($song_videos);
         Log::error($fileSongVideoPath);
-        Log::error('=============')
+        Log::error('=============');
         Log::error( storage_path($this->working_dir) . $fileSongVideoPath);
-        Log::error('=============')
+        Log::error('=============');
         $hashids = new Hashids('', 10);
 
         $disk = Storage::disk('gcs');
