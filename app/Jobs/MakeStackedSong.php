@@ -14,6 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class MakeStackedSong implements ShouldQueue
@@ -96,7 +97,7 @@ class MakeStackedSong implements ShouldQueue
         $x = count($song_videos);
 
         $mp4_file = $song_videos->toArray();
-
+        Log::error($mp4_file);
           if($x >= 2)
           {
 
