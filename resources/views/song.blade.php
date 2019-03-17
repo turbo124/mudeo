@@ -10,7 +10,7 @@
 
 		    <div class="d-flex justify-content-center">
 
-				  <video id='my-video' class='video-js' controls preload='auto' width='640' height='264'
+				  <video id='my-video' class='video-js' controls preload='auto' 
 				  poster='' data-setup='{}'>
 				    <source src='{{ $video_url }}' type='video/mp4'>
 				    <p class='vjs-no-js'>
