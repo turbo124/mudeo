@@ -26,10 +26,7 @@ class MakeStackedSong implements ShouldQueue
     public function __construct(Song $song)
     {
         $this->song = $song;
-        $this->ffmpeg = FFMpeg::create([
-                'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
-            ]);
+        $this->ffmpeg = FFMpeg::create();
         $this->working_dir = sha1(time() . '/');
     }
 
