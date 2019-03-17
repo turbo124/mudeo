@@ -30,7 +30,18 @@ class MakeStackedSong implements ShouldQueue
      */
     public function handle()
     {
-        $videos = $song->videos;
+        $video_count = count($song->videos);
         $song_videos = $song->song_videos;
+
+        $working_dir = sha1(time());
+
+        foreach($song_videos as $song_video)
+        {
+            $song = $song_video->song;
+            $video = $song_video->video;
+
+            $client->request('GET', $video->url, ['sink' => '/path/to/file']);
+
+        }
     }
 }

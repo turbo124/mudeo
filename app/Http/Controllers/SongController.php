@@ -110,7 +110,6 @@ class SongController extends BaseController
         if($hashed_id) {
             $song = Song::firstOrFail($hashed_id[0]);
             return view('song', $song);
-
         }
 
     }

@@ -18,7 +18,7 @@ class TokenAuth
     {
 
         if($request->header('X-API-TOKEN') 
-            && ($user = User::whereToken($request->header('X-API-TOKEN'))->first())) {
+            && ($user = User::whereRaw("BINARY `token`= ?",[$request->header('X-API-TOKEN')])->first())) {
 
             auth()->login($user);
         
