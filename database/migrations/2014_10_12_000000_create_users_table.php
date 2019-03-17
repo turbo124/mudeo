@@ -64,12 +64,9 @@ class CreateUsersTable extends Migration
 
         Schema::create('videos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->default('');
-            $table->string('description')->default('');
             $table->string('url')->default('');
             $table->string('thumbnail_url')->default('');
             $table->unsignedBigInteger('timestamp')->default(0);
-            $table->unsignedInteger('duration')->default(0);
             $table->boolean('is_flagged')->default(false);
             $table->boolean('is_public')->default(false);
             $table->unsignedBigInteger('user_id');
