@@ -96,8 +96,8 @@ class MakeStackedSong implements ShouldQueue
 
         Log::error($remote_storage_file_name);
 
-        $file = File::get(storage_path($this->working_dir) . $fileSongVideoPath));
-        Log::error(file);
+        $file = File::get(storage_path($this->working_dir) . $fileSongVideoPath);
+        Log::error($file);
 
         $disk->put($remote_storage_file_name, $file);
 
