@@ -18,4 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/song/{hashed_id}', 'SongController@play');
+Route::get('/terms', 'HomeController@terms')->name('terms');
+Route::get('/privacy', 'HomeController@privacy')->name('privacy');
+Route::get('/song/{hashed_id}', 'SongController@play')->name('play');
