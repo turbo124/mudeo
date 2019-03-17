@@ -88,7 +88,7 @@ class MakeStackedSong implements ShouldQueue
         $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . 'mp4';
 
         $disk->put($remote_storage_file_name, Storage::disk('local')->get($fileSongVideoPath));
-        
+
       }
 
       public function buildStackedVideo($song_videos)
@@ -100,14 +100,14 @@ class MakeStackedSong implements ShouldQueue
           if($x >= 2)
           {
 
-            $filepath = $this->inAndOut($mp4_file[0], $mp4_file[1], 1);
+            $filepath = $this->inAndOut(storage_path($this->working_dir) . basename($mp4_file[0]->url), storage_path($this->working_dir) . basename($mp4_file[1]->url), 1);
 
             unset($mp4_file[0]);
             unset($mp4_file[1]);
 
               if(array_key_exists(2, $mp4_file)) {
 
-              $filepath = $this->inAndOut($filepath, $mp4_file[2], 1);
+              $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[2]->url), 1);
 
               unset($mp4_file[2]);
 
@@ -115,7 +115,7 @@ class MakeStackedSong implements ShouldQueue
 
               if(array_key_exists(3, $mp4_file)) {
 
-              $filepath = $this->inAndOut($filepath, $mp4_file[3], 1);
+              $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[3]->url), 1);
 
               unset($mp4_file[3]);
 
@@ -123,7 +123,7 @@ class MakeStackedSong implements ShouldQueue
 
               if(array_key_exists(4, $mp4_file)) {
 
-              $filepath = $this->inAndOut($filepath, $mp4_file[4], 1);
+              $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[4]->url), 1);
 
               unset($mp4_file[4]);
 
