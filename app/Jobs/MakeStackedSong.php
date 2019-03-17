@@ -33,7 +33,7 @@ class MakeStackedSong implements ShouldQueue
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
                 'ffprobe.binaries' => '/usr/bin/ffprobe' 
             ]);
-        $this->working_dir = sha1(time() . '/');
+        $this->working_dir = storage_path(sha1(time() . '/'));
     }
 
     /**
@@ -83,9 +83,10 @@ class MakeStackedSong implements ShouldQueue
         }
 
         $fileSongVideoPath = $this->buildStackedVideo($song_videos);
+        $hashids = new Hashids('', 10);
 
         $disk = Storage::disk('gcs');
-
+        
         $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . 'mp4';
 
         $disk->put($remote_storage_file_name, Storage::disk('local')->get($fileSongVideoPath));
@@ -98,7 +99,7 @@ class MakeStackedSong implements ShouldQueue
         $x = count($song_videos);
 
         $mp4_file = $song_videos->toArray();
-        
+
         Log::error(basename($mp4_file[0]['video']['url']));
 
           if($x >= 2)
