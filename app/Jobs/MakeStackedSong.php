@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Models\Song;
+use FFMpeg\FFMpeg;
 use GuzzleHttp\Client;
+use Hashids\Hashids;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,7 +25,12 @@ class MakeStackedSong implements ShouldQueue
      */
     public function __construct(Song $song)
     {
-        $this->song = $song
+        $this->song = $song;
+        $this->ffmpeg = FFMpeg::create([
+                'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
+            ]);
+        $this->working_dir = sha1(time() . '/');
     }
 
     /**
@@ -33,12 +40,10 @@ class MakeStackedSong implements ShouldQueue
      */
     public function handle()
     {
-        $video_count = count($song->videos);
-        $song_videos = $song->song_videos;
+        $video_count = count($this->song->videos);
+        $song_videos = $this->song->song_videos;
 
-        $working_dir = sha1(time()) . '/';
-
-        File::makeDirectory($working_dir);
+        File::makeDirectory($this->working_dir);
 
         $client = new Client();
 
@@ -47,12 +52,110 @@ class MakeStackedSong implements ShouldQueue
             $song = $song_video->song;
             $video = $song_video->video;
 
-            $client->request('GET', $video->url, ['sink' => storage_path($working_dir) . basename($video->url)]);
+            $client->request('GET', $video->url, ['sink' => storage_path($this->working_dir) . basename($video->url)]);
 
         }
 
+        foreach($song_videos as $song_video)
+        {
+            $song = $song_video->song;
+            $video = $song_video->video;
 
-        //Storage::deleteDirectory(storage_path($working_dir));
+                if($song_video->volume != 100)
+                {
 
-    }
+                    $volume = $song_video->volume / 100;
+
+                    $video = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
+                    $video->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
+                    ->filters();
+
+                    $format = new X264();
+                    $format->setAudioCodec("aac");
+
+                    $video->save($format, storage_path($this->working_dir) . basename($video->url)); 
+
+                }
+
+                $fileSongVideoPath = $this->buildStackedVideo($song_videos);
+
+
+                    $disk = Storage::disk('gcs');
+
+                    $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . 'mp4';
+
+                    $disk->put($remote_storage_file_name, Storage::disk('local')->get($fileSongVideoPath));
+
+        }
+      }
+
+      public function buildStackedVideo(SongVideo $song_videos)
+      {
+        $x = count($song_videos);
+
+        $mp4_file = $song_videos->toArray();
+
+          if($x >= 2)
+          {
+
+            $filepath = $this->inAndOut($mp4_file[0], $mp4_file[1], 1);
+
+            unset($mp4_file[0]);
+            unset($mp4_file[1]);
+
+              if(array_key_exists(2, $mp4_file)) {
+
+              $filepath = $this->inAndOut($filepath, $mp4_file[2], 1);
+
+              unset($mp4_file[2]);
+
+              }
+
+              if(array_key_exists(3, $mp4_file)) {
+
+              $filepath = $this->inAndOut($filepath, $mp4_file[3], 1);
+
+              unset($mp4_file[3]);
+
+              }    
+
+              if(array_key_exists(4, $mp4_file)) {
+
+              $filepath = $this->inAndOut($filepath, $mp4_file[4], 1);
+
+              unset($mp4_file[4]);
+
+              }            
+
+            return $filepath;
+
+          }
+          else
+          {
+              return $song_videos->first()->video->url;
+          }
+
+      }
+
+      public function inAndOut($parentVideo, $childVideo, $userHash)
+      {
+
+          $video = $this->ffmpeg->open($parentVideo);
+
+          $video->addFilter(new SimpleFilter(['-i', $childVideo]))
+                ->addFilter(new SimpleFilter(['-filter_complex', 'hstack']))
+                ->filters();
+
+          $format = new X264();
+          $format->setAudioCodec("aac");
+
+          $filepath = sha1(time()) . '.mp4';
+
+          $video->save($format, storage_path($this->working_dir) . $filepath);
+
+          return $filepath;
+              
+      }
+
+
 }

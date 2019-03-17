@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\SongFilters;
 use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
+use App\Jobs\MakeStackedSong;
 use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
@@ -86,7 +87,8 @@ class SongController extends BaseController
             }
             
         }
-        
+
+        MakeStackedSong::dispatchNow($song);
 
         return $this->itemResponse($song);
     }
