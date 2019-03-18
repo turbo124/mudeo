@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Song;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SongLike extends EntityModel
@@ -16,6 +17,11 @@ class SongLike extends EntityModel
     public function user()
     {
     	return $this->hasOne(User::class);
+    }
+
+    public function song()
+    {
+    	return $this->hasOne(Song::class);
     }
     
 }

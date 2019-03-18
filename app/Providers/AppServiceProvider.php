@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\SongLike;
 use App\Models\User;
+use App\Observers\SongLikeObserver;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
@@ -27,16 +29,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-        Relation::morphMap([
-            'songs' => '\App\Models\Song',
-            'tracks' => '\App\Models\Track',
-            'comments' => '\App\Models\Comment',
-            'tags' => '\App\Models\Tag',
-        ]);
-        */
-            User::observe(UserObserver::class);
-            Schema::defaultStringLength(191);
+    
+        User::observe(UserObserver::class);
+        SongLike::observe(SongLikeObserver::class);
+
+        Schema::defaultStringLength(191);
 
     }
 }
