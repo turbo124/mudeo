@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return redirect('https://play.google.com/store/apps/details?id=app.mudeo.mudeo');
     }
 
     public function terms()
