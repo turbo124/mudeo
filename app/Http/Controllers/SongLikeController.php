@@ -6,7 +6,7 @@ use App\Models\SongLike;
 use App\Transformers\SongLikeTransformer;
 use Illuminate\Http\Request;
 
-class SongLikeController extends Controller
+class SongLikeController extends BaseController
 {
 
 
@@ -42,10 +42,9 @@ class SongLikeController extends Controller
     public function store(Request $request)
     {
 
-          $song_like = SongLike::::firstOrCreate(
-                    ['song_id' => $song->id], 
+          $song_like = SongLike::firstOrCreate(
+                    ['song_id' => $request->song_id], 
                     ['user_id' => auth()->user()->id]);
-
 
             return $this->itemResponse($song_like);
 
@@ -95,9 +94,10 @@ class SongLikeController extends Controller
     {
         $song_like = SongLike::where(
                     ['song_id' => $id], 
-                    ['user_id' => auth()->user()->id])->firstOrFail();
-
-        $song_like->delete();
+                    ['user_id' => auth()->user()->id])->first();
+        
+        if($song_like)
+            $song_like->delete();
 
             return response()->json([], 200);
     }

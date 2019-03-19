@@ -2,8 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Models\Song;
-use App\Models\SongComment;
 use App\Models\SongLike;
 use App\Transformers\SongTransformer;
 
@@ -15,8 +13,7 @@ class SongLikeTransformer extends EntityTransformer
     /**
      * @var array
      */
-    protected $availableIncludes = [
-    ];
+    protected $availableIncludes = [];
 
     public function transform(SongLike $like)
     {

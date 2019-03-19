@@ -86,9 +86,9 @@ class SongController extends BaseController
 
             }
             
-        }
+            MakeStackedSong::dispatch($song);
 
-        MakeStackedSong::dispatch($song);
+        }
 
         return $this->itemResponse($song);
     }

@@ -123,7 +123,7 @@ class CreateUsersTable extends Migration
         });
 
         Schema::create('song_likes', function (Blueprint $table){
-            $table->unsignedBigInteger('tag_id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('song_id');
             $table->timestamps();

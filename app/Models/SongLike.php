@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SongLike extends EntityModel
 {
 
-    
+    protected $fillable = [
+        'song_id',
+        'user_id',
+    ];
+
     public function video()
     {
         return $this->hasOne(Video::class);
