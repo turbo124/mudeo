@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\SongFilters;
 use App\Http\Requests\Song\CreateSongRequest;
 use App\Http\Requests\Song\DestroySongRequest;
+use App\Http\Requests\Song\UpdateSongRequest;
 use App\Jobs\MakeStackedSong;
 use App\Models\Song;
 use App\Models\SongVideo;
@@ -155,7 +156,7 @@ class SongController extends BaseController
      * @param  \App\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Song $song)
+    public function update(UpdateSongRequest $request, Song $song)
     {
         $song->fill($request->all());
         $song->save();
