@@ -13,6 +13,15 @@ We license use of the App to you on the basis of these Terms and subject to the 
 If you have any comments or questions relating to the App, please email mudeo.app@gmail.com
 <p/>
 
+<h4>Age Restrictions</h4>
+<ol>
+<li>You must be at least 13 years old to this app, by using the app you represent that you are 13 or older.
+</li>
+<li>
+Users between 13 and 18 need permission from a parent or guardian. Users between 13 and 18 years of age may utilize a mudeo account established by their parent or legal guardian, with such parent or guardian’s approval.
+</li>
+</ol>
+
 <h4>Music Creation</h4>
 <ol>
 <li>The app allows you to create and record music & video. You are solely responsible for all your content from the point of creation and, to the extent permitted by law, we exclude all liability (including liability for copyright infringement) with respect to your content and the activities of any other users of these. 
