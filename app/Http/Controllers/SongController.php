@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Filters\SongFilters;
-use App\Http\Requests\Song\CreateSongRequest;
-use App\Http\Requests\Song\DestroySongRequest;
-use App\Http\Requests\Song\UpdateSongRequest;
+use App\Http\Controllers\Requests\Song\CreateSongRequest;
+use App\Http\Controllers\Requests\Song\DestroySongRequest;
+use App\Http\Controllers\Requests\Song\UpdateSongRequest;
 use App\Jobs\MakeStackedSong;
 use App\Models\Song;
 use App\Models\SongVideo;

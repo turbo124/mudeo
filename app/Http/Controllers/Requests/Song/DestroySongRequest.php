@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Song;
+namespace App\Http\Controllers\Requests\Song;
 
 use App\Http\Requests\Request;
 use App\Models\Song;
