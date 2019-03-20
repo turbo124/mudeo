@@ -26,4 +26,15 @@ class UserAccountController extends BaseController
 
     }
 
+    public function check_handle(Request $request)
+    {
+    	$user = User::whereHandle($request->input('handle'))->exists();
+
+    	if($user)
+    		return response()->json([],400);
+    	else
+    		return response()->json([],200);
+    }
+
+
 }
