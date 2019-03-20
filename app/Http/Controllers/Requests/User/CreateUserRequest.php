@@ -16,7 +16,7 @@ class CreateUserRequest extends Request
         return [
             'email' => 'required|unique:users|string|email|max:100',
             'handle' => 'required|unique:users|max:100',
-            'password' => 'required|string|min:6',
+            'password' => 'sometimes|required|string|min:6',
         ];
     }
 
@@ -25,7 +25,13 @@ class CreateUserRequest extends Request
     $input = $this->all();
 
     $input['name'] = isset($input['name']) ? $input['name'] : ' ';
+
+    if(isset($input['oauth_user_id']))
+        $input['password'] = sha1( time() );
+    
+
     $input['password'] = Hash::make($input['password']);
+    
     $input['ip'] = request()->ip();
 
     $this->replace($input);     
