@@ -15,26 +15,27 @@ class CreateUserRequest extends Request
 
         return [
             'email' => 'required|unique:users|string|email|max:100',
-            'handle' => 'required|unique:users|max:100',
+            'handle' => 'required|without_spaces|unique:users|max:100',
             'password' => 'sometimes|required|string|min:6',
         ];
     }
 
     public function sanitize()
-{
-    $input = $this->all();
+    {
+        $input = $this->all();
 
-    $input['name'] = isset($input['name']) ? $input['name'] : ' ';
+        $input['name'] = isset($input['name']) ? $input['name'] : ' ';
 
-    if(isset($input['oauth_user_id']))
-        $input['password'] = sha1( time() );
-    
+        if(isset($input['oauth_user_id']))
+            $input['password'] = sha1( time() );
+        
 
-    $input['password'] = Hash::make($input['password']);
-    
-    $input['ip'] = request()->ip();
+        if(isset($input['password']))
+            $input['password'] = Hash::make($input['password']);
+        
+        $input['ip'] = request()->ip();
 
-    $this->replace($input);     
-}
+        $this->replace($input);     
+    }
 
 }

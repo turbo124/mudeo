@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateImageRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Hashids\Hashids;
@@ -14,7 +15,7 @@ class UserController extends BaseController
     protected $entityType = User::class;
 	protected $entityTransformer = UserTransformer::class;
 
-    public function update(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user->fill(request()->all());
         $user->save();
