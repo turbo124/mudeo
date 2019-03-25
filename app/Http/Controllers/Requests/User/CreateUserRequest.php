@@ -29,11 +29,18 @@ class CreateUserRequest extends Request
         if(isset($input['oauth_user_id']))
             $input['password'] = sha1( time() );
         
-
         if(isset($input['password']))
             $input['password'] = Hash::make($input['password']);
         
         $input['ip'] = request()->ip();
+
+        $input['facebook_social_url'] = isset($input['facebook_social_url'] ? $input['facebook_social_url'] : '';
+        $input['youtube_social_url'] = isset($input['youtube_social_url'] ? $input['youtube_social_url'] : '';
+        $input['instagram_social_url'] = isset($input['instagram_social_url'] ? $input['instagram_social_url'] : '';
+        $input['soundcloud_social_url'] = isset($input['soundcloud_social_url'] ? $input['soundcloud_social_url'] : '';
+        $input['twitch_social_url'] = isset($input['twitch_social_url'] ? $input['twitch_social_url'] : '';
+        $input['twitter_social_url'] = isset($input['twitter_social_url'] ? $input['twitter_social_url'] : '';
+        $input['website_social_url'] = isset($input['website_social_url'] ? $input['website_social_url'] : '';
 
         $this->replace($input);     
     }
