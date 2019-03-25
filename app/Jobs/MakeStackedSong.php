@@ -49,6 +49,7 @@ class MakeStackedSong implements ShouldQueue
      */
     public function handle()
     {
+      Log::error($this->ffmpeg);
       Log::error($this->song);
         $video_count = count($this->song->videos);
         $song_videos = $this->song->song_videos;
@@ -174,7 +175,7 @@ class MakeStackedSong implements ShouldQueue
       public function inAndOut($parentVideo, $childVideo, $userHash)
       {
         Log::error('inAndOut this video -> '.$parentVideo);
-        
+
           $video = $this->ffmpeg->open($parentVideo);
 
           $video->addFilter(new SimpleFilter(['-i', $childVideo]))
