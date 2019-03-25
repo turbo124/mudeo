@@ -103,7 +103,7 @@ class MakeStackedSong implements ShouldQueue
 
         $disk = Storage::disk('gcs');
         
-        $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
 
         Log::error($remote_storage_file_name);
 
@@ -179,7 +179,7 @@ class MakeStackedSong implements ShouldQueue
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
                 'ffprobe.binaries' => '/usr/bin/ffprobe' 
             ]);
-        
+
           $video = $this->ffmpeg->open($parentVideo);
 
           if(!$video)
