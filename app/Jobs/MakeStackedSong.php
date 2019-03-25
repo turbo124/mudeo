@@ -35,10 +35,12 @@ class MakeStackedSong implements ShouldQueue
     public function __construct(Song $song)
     {
         $this->song = $song;
-        $this->ffmpeg = FFMpeg::create([
-                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/bin/ffprobe' 
-            ]);
+                    $this->ffmpeg = FFMpeg::create([
+                            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                            'ffprobe.binaries' => '/usr/bin/ffprobe',
+                            'timeout'          => 0, // The timeout for the underlying process
+                            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+                        ]);
         $this->working_dir = sha1(time()) . '/';
     }
 
@@ -80,7 +82,9 @@ class MakeStackedSong implements ShouldQueue
 
                     $this->ffmpeg = FFMpeg::create([
                             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                            'ffprobe.binaries' => '/usr/bin/ffprobe' 
+                            'ffprobe.binaries' => '/usr/bin/ffprobe',
+                            'timeout'          => 0, // The timeout for the underlying process
+                            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
                         ]);
 
                     $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
@@ -88,6 +92,7 @@ class MakeStackedSong implements ShouldQueue
                     ->filters();
 
                     $format = new X264();
+                    $format->setKiloBitrate(1000);
                     $format->setAudioCodec("aac");
 
                     $vid->save($format, storage_path($this->working_dir) . basename($video->url)); 
@@ -179,17 +184,18 @@ class MakeStackedSong implements ShouldQueue
 
       public function inAndOut($parentVideo, $childVideo, $userHash)
       {
+
         Log::error('inAndOut this video -> '.$parentVideo);
 
-        $this->ffmpeg = FFMpeg::create([
-                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/bin/ffprobe' 
-            ]);
+                    $this->ffmpeg = FFMpeg::create([
+                            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                            'ffprobe.binaries' => '/usr/bin/ffprobe',
+                            'timeout'          => 0, // The timeout for the underlying process
+                            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+                        ]);
 
           $video = $this->ffmpeg->open($parentVideo);
 
-          if(!$video)
-            Log::error('there was a problem getting the video');
 
           Log::error('the childvideo = '.$childVideo);
 
@@ -200,6 +206,7 @@ class MakeStackedSong implements ShouldQueue
             Log::error('after filters');
 
           $format = new X264();
+          $format->setKiloBitrate(1000);
           $format->setAudioCodec("aac");
 
           Log::error('after settings aac');
