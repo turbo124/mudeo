@@ -95,7 +95,10 @@ class MakeStackedSong implements ShouldQueue
                     $format->setKiloBitrate(1000);
                     $format->setAudioCodec("aac");
 
-                    $vid->save($format, storage_path($this->working_dir) . basename($video->url)); 
+                    $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url)); 
+
+                    File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
+                    
                     Log::error(storage_path($this->working_dir) . basename($video->url));
 
                 }
