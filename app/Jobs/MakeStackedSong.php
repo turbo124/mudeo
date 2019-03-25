@@ -66,6 +66,8 @@ class MakeStackedSong implements ShouldQueue
             Log::error(storage_path($this->working_dir) . basename($video->url));
         }
 
+        Log::error('started adjusting volume');
+
         foreach($song_videos as $song_video)
         {
             $song = $song_video->song;
@@ -89,6 +91,8 @@ class MakeStackedSong implements ShouldQueue
                 }
 
         }
+
+        Log::error('finished adjusting volume');
 
         $fileSongVideoPath = $this->buildStackedVideo($song_videos);
         Log::error($fileSongVideoPath);
