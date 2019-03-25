@@ -180,6 +180,8 @@ class MakeStackedSong implements ShouldQueue
           if(!$video)
             Log::error('there was a problem getting the video');
 
+          Log::error('the childvideo = '.$childvideo);
+          
           $video->addFilter(new SimpleFilter(['-i', $childVideo]))
                 ->addFilter(new SimpleFilter(['-filter_complex', 'hstack']))
                 ->filters();
