@@ -21,6 +21,7 @@ class UserAccountTransformer extends EntityTransformer
             'id' => (int) ($user->id),
             'name' => $user->name ?:'',
             'email' => $user->email ?:'',
+            'description' => $user->description ?: '',
             'profile_image_url' => $user->profile_image_url ?: '',
             'header_image_url' => $user->header_image_url ?: '',
             'facebook_social_url' => $user->facebook_social_url ?: '',

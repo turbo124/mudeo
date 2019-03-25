@@ -23,6 +23,7 @@ class UserTransformer extends EntityTransformer
         return [
             'id' => (int) ($user->id),
             'name' => $user->name ?:'',
+            'description' => $user->description ?: '',
             'profile_image_url' => $user->profile_image_url ?: '',
             'header_image_url' => $user->header_image_url ?: '',
             'updated_at' => $user->updated_at,
