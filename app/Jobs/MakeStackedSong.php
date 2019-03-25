@@ -22,6 +22,10 @@ class MakeStackedSong implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $song;
+
+    protected $ffmpeg;
+
+    protected $working_dir;
     /**
      * Create a new job instance.
      *
