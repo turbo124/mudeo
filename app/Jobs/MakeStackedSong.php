@@ -82,15 +82,15 @@ class MakeStackedSong implements ShouldQueue
                             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
                             'ffprobe.binaries' => '/usr/bin/ffprobe' 
                         ]);
-                    
-                    $video = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
-                    $video->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
+
+                    $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
+                    $vid->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
                     ->filters();
 
                     $format = new X264();
                     $format->setAudioCodec("aac");
 
-                    $video->save($format, storage_path($this->working_dir) . basename($video->url)); 
+                    $vid->save($format, storage_path($this->working_dir) . basename($video->url)); 
                     Log::error(storage_path($this->working_dir) . basename($video->url));
 
                 }
