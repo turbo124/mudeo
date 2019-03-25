@@ -43,6 +43,7 @@ class MakeStackedSong implements ShouldQueue
      */
     public function handle()
     {
+      Log::error($this->song);
         $video_count = count($this->song->videos);
         $song_videos = $this->song->song_videos;
 
