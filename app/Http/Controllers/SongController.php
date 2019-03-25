@@ -87,7 +87,7 @@ class SongController extends BaseController
 
             }
             
-            if($song)
+Log::error($song);
                 MakeStackedSong::dispatch($song);
 
         }

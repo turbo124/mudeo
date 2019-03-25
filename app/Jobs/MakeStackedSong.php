@@ -21,11 +21,13 @@ class MakeStackedSong implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $song;
     /**
      * Create a new job instance.
      *
      * @return void
      */
+
     public function __construct(Song $song)
     {
         $this->song = $song;
