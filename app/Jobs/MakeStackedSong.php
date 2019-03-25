@@ -78,6 +78,11 @@ class MakeStackedSong implements ShouldQueue
 
                     $volume = $song_video->volume / 100;
 
+                    $this->ffmpeg = FFMpeg::create([
+                            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                            'ffprobe.binaries' => '/usr/bin/ffprobe' 
+                        ]);
+                    
                     $video = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
                     $video->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
                     ->filters();
