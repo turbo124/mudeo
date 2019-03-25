@@ -184,12 +184,18 @@ class MakeStackedSong implements ShouldQueue
                 ->addFilter(new SimpleFilter(['-filter_complex', 'hstack']))
                 ->filters();
 
+            Log::error('after filters');
+
           $format = new X264();
           $format->setAudioCodec("aac");
+
+          Log::error('after settings aac');
 
           $filepath = sha1(time()) . '.mp4';
 
           $video->save($format, storage_path($this->working_dir) . $filepath);
+          
+          Log::error('aftering saving to '. $filepath);
 
           return storage_path($this->working_dir) . $filepath;
               
