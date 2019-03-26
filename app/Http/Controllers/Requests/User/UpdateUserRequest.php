@@ -38,7 +38,8 @@ class UpdateUserRequest extends Request
         $input['twitter_social_url'] = isset($input['twitter_social_url']) ? $input['twitter_social_url'] : '';
         $input['website_social_url'] = isset($input['website_social_url']) ? $input['website_social_url'] : '';
         $input['description'] = isset($input['description']) ? $input['description'] : '';
-
+        $input['profile_image_url'] = isset($input['profile_image_url']) ? $input['profile_image_url'] : '';
+        
         $this->replace($input);     
     }
 
