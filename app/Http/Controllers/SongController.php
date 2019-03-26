@@ -65,10 +65,11 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
 
-        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
+        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);        
+        $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
         
         $song->save();
-        
+
         if($request->input('song_videos')) {
 
 
