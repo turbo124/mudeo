@@ -92,7 +92,7 @@ class SongController extends BaseController
 
         }
 
-        return $this->itemResponse($song);
+        return $this->itemResponse($song->fresh());
     }
 
     /**
@@ -162,7 +162,7 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->save();
 
-        return $this->itemResponse($song);
+        return $this->itemResponse($song->fresh());
     }
 
     /**
