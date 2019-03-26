@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UpdateSongRequest extends Request
 {
-/*
+
     public function authorize()
     {
-        return $this->user()->id === $this->song->user_id;
+        return auth()->user()->id === $this->song->user_id;
     }
-  */  
+   
     public function rules()
     {
         $this->sanitize();

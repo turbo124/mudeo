@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 class UpdateUserRequest extends Request
 {
 
+    public function authorize()
+    {
+        return auth()->user()->id === $this->user->id;
+    }
+
     public function rules()
     {
         $this->sanitize();
