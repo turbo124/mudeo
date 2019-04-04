@@ -82,6 +82,7 @@ class SongController extends BaseController
                 ]);
 
                 $sv->volume = $song_video['volume'];
+
                 $sv->order_id = $song_video['order_id'];
 
                 $sv->save();
@@ -103,19 +104,21 @@ class SongController extends BaseController
      */
     public function show(Song $song)
     {
+
         return $this->itemResponse($song);
+
     }
 
     public function play($hashedId)
     {
+
         $hashids = new Hashids('', 10);
+
         $hashed_id = $hashids->decode($hashedId);
 
 
-        if($hashed_id) {
-
-            Log::error('hashed id = '.$hashed_id[0]);
-
+        if($hashed_id) 
+        {
 
             $song = Song::findOrFail($hashed_id[0]);
 
@@ -131,11 +134,13 @@ class SongController extends BaseController
 
     private function songUrl($song, $hashedId)
     {
+
         $hashids = new Hashids('', 10);
 
         $user_hash = $hashids->encode($song->user->id);
 
         return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4';
+
     }
 
 
@@ -159,10 +164,13 @@ class SongController extends BaseController
      */
     public function update(UpdateSongRequest $request, Song $song)
     {
+
         $song->fill($request->all());
+
         $song->save();
 
         return $this->itemResponse($song->fresh());
+
     }
 
     /**
@@ -173,9 +181,11 @@ class SongController extends BaseController
      */
     public function destroy(DestroySongRequest $request, Song $song)
     {
+
         $song->delete();
 
         return $this->itemResponse($song);
+        
     }
 
     

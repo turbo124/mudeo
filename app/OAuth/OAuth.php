@@ -38,6 +38,7 @@ class OAuth {
         $user = null;
 
         $payload = $this->providerInstance->getTokenResponse($token);
+        
         $oauthUserId = $this->providerInstance->harvestSubField($payload);
 
         if($this->providerInstance)

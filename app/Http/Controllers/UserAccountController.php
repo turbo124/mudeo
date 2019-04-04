@@ -18,6 +18,7 @@ class UserAccountController extends BaseController
     	$user = User::create($request->all());
 
     	$user->save();
+        
     	$user->refresh();
 
         $data = $this->createItem($user, new UserAccountTransformer(), User::class);
