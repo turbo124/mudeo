@@ -178,5 +178,18 @@ class SongController extends BaseController
         return $this->itemResponse($song);
     }
 
+    public function buildVideo($song_hash)
+    {
+
+        $hashids = new Hashids('', 10);
+        $song_id = $hashids->decode($song_hash);
+
+        $song = Song::findOrFail($song_id[0]);
+
+        MakeStackedSong::dispatch($song);
+
+        return response()->json(['building'],200);
+
+    }
     
 }
