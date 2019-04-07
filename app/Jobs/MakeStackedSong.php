@@ -186,8 +186,7 @@ class MakeStackedSong implements ShouldQueue
           $video = $this->ffmpeg->open($parentVideo);
 
           $video->addFilter(new SimpleFilter(['-i', $childVideo]))
-                ->addFilter(new SimpleFilter(['-filter_complex', 'hstack']))
-                ->addFilter(new SimpleFilter(['-filter_complex', 'amerge']))
+                ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
                 ->filters();
 
           $format = new X264();
