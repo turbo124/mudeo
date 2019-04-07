@@ -25,7 +25,6 @@ Route::group(['middleware' => ['api_secret_check']], function () {
 Route::group(['middleware' => ['api_secret_check','token_auth']], function () {
 
 	Route::resource('songs', 'SongController'); // name = (songs. index / create / show / update / destroy / edit
-	Route::get('songs/build/{song_hash}', 'SongController@buildVideo');
 	Route::resource('song_likes', 'SongLikeController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('videos', 'VideoController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
@@ -35,3 +34,5 @@ Route::group(['middleware' => ['api_secret_check','token_auth']], function () {
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');
 });
+
+	Route::get('songs/build/{song_hash}', 'SongController@buildVideo');
