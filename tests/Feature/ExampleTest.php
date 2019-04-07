@@ -40,29 +40,7 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
 
     }
-/*
-    public function testLoginUser()
-    {
-        $response = $this->withHeaders([
-            'X-API-SECRET' => 'password',
-        ])->json('POST', 'api/auth', [
-            'email' => $this->user->email,
-            'password' => $this->password,
-        ]);
 
-        $response->assertStatus(200);
-    }
-
-    public function testSongsApiCall()
-    {
-        $response = $this->withHeaders([
-            'X-API-SECRET' => 'password',
-            'X-API-TOKEN' => $this->user->token
-        ])->json('GET', 'api/songs');
-
-        $response->assertStatus(200);
-    }
-*/
     public function testSaveSong()
     {
 
@@ -87,40 +65,9 @@ class ExampleTest extends TestCase
             ]
         ];
 
-        /*
-        $song = factory(\App\Models\Song::class)->create([
-            'user_id' => $this->user->id,
-        ]);
-        
-       
-        $response = $this->withHeaders([
-            'X-API-SECRET' => 'password',
-            'X-API-TOKEN' => $this->user->token
-        ])->json('POST', 'api/songs', $song);
-
-        $response->assertStatus(200);
-    */
         $this->assertTrue(true);
 
 
     }
-/*
-    public function testCreateVideo()
-    {
 
-        Storage::fake('avatars');
-
-        $file = UploadedFile::fake()->image('avatar.jpg');
-
-        $response = $this->withHeaders([
-            'X-API-SECRET' => 'password',
-            'X-API-TOKEN' => $this->user->token
-        ])->json('POST', 'api/videos', [
-            'video' => $file,
-        ]);
-
-        // Assert the file was stored...
-        Storage::disk('avatars')->assertExists($file->hashName());
-    }
-    */
 }

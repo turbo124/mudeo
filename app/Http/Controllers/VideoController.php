@@ -17,6 +17,7 @@ class VideoController extends BaseController
 {
 
     protected $entityType = Video::class;
+
     protected $entityTransformer = VideoTransformer::class;
     /**
      * Display a listing of the resource.
@@ -25,9 +26,11 @@ class VideoController extends BaseController
      */
     public function index()
     {
+
         $videos = Video::orderBy('updated_at', 'desc');
         
         return $this->listResponse($videos);
+
     }
 
     /**
@@ -48,7 +51,6 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-        Log::error($request->all());
         
         $video = Video::create($request->all());
         
@@ -77,21 +79,13 @@ class VideoController extends BaseController
                 'ffprobe.binaries' => '/usr/bin/ffprobe' 
             ]);
 
-/*
-            $ffmpeg = FFMpeg::create([
-                'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/local/bin/ffprobe' 
-            ]);
-*/
             $tmp_file_name = sha1(time()) . '.jpg';
 
             $vid = $ffmpeg->open($request->file('video'));
+
             $vid_object = $vid->frame(TimeCode::fromSeconds(1))->save('', false, true);
 
-            //$tmp_file = Storage::disk('local')->put($tmp_file_name , base64_decode($vid_object));
             $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
-
-            Log::error($tmp_file);
 
             $disk = Storage::disk('gcs');
 
@@ -141,6 +135,7 @@ class VideoController extends BaseController
     public function update(Request $request, Video $video)
     {
         $video->file($request->all());
+        
         $video->save();
 
         return $this->itemResponse($video);

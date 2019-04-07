@@ -62,7 +62,9 @@ class AuthController extends BaseController
         $user = $oAuth->getProvider($provider)->getTokenResponse($token);
 
         if ($user) {
+
             auth()->login($user);
+            
             return $this->processLogin($request);
         }
         else

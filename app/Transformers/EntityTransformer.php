@@ -13,13 +13,18 @@ class EntityTransformer extends TransformerAbstract
 
     public function __construct($serializer = null)
     {
+
         $this->serializer = $serializer;
+
     }
 
     protected function includeCollection($data, $transformer, $entityType)
     {
-        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) {
+        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) 
+        {
+
             $entityType = null;
+
         }
 
         return $this->collection($data, $transformer, $entityType);
@@ -27,8 +32,11 @@ class EntityTransformer extends TransformerAbstract
 
     protected function includeItem($data, $transformer, $entityType)
     {
-        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) {
+        if ($this->serializer && $this->serializer != self::API_SERIALIZER_JSON) 
+        {
+
             $entityType = null;
+
         }
 
         return $this->item($data, $transformer, $entityType);
@@ -36,7 +44,9 @@ class EntityTransformer extends TransformerAbstract
 
     public function getDefaultIncludes()
     {
+
         return $this->defaultIncludes;
+        
     }
 
     protected function getDefaults($entity)

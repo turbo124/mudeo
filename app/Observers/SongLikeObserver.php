@@ -15,6 +15,7 @@ class SongLikeObserver
     public function created(SongLike $song_like)
     {
     	$song = $song_like->song;
+
         $song->increment('count_like')->save();
 
     }
@@ -39,6 +40,7 @@ class SongLikeObserver
     public function deleted(SongLike $song_like)
     {
         $song = $song_like->song;
+        
         $song->decrement('count_like')->save();
     }
 
