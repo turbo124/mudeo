@@ -30,6 +30,7 @@ Route::group(['middleware' => ['api_secret_check','token_auth']], function () {
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
 	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
 	Route::get('user', 'AuthController@current_user');
+	Route::resource('user_follow', 'UserFollowerController');
 
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');

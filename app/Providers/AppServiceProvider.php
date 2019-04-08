@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\SongLike;
 use App\Models\User;
+use App\Models\UserFollower;
 use App\Observers\SongLikeObserver;
+use App\Observers\UserFollowerObserver;
 use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     
         User::observe(UserObserver::class);
         SongLike::observe(SongLikeObserver::class);
+        UserFollower::observe(UserFollowerObserver::class);
 
         Schema::defaultStringLength(191);
 
