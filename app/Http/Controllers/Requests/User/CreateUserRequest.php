@@ -43,6 +43,7 @@ class CreateUserRequest extends Request
         $input['website_social_url'] = isset($input['website_social_url']) ? $input['website_social_url'] : '';
         $input['description'] = isset($input['description']) ? $input['description'] : '';
         $input['profile_image_url'] = isset($input['profile_image_url']) ? $input['profile_image_url'] : '';
+        $input['follower_count'] = 0;
 
         $this->replace($input);     
     }

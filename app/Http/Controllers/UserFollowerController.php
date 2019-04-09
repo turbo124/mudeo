@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserFollower;
+use App\Transformers\UserFollowerTransformer;
 use Illuminate\Http\Request;
 
-class UserFollowerController extends Controller
+class UserFollowerController extends BaseController
 {
+    protected $entityType = UserFollower::class;
+    protected $entityTransformer = UserFollowerTransformer::class;
 
     public function store(Request $request)
     {

@@ -5,12 +5,12 @@ namespace App\Observers;
 use App\Models\UserFollower;
 
 class UserFollowerObserver
-{adsfadsfadsfasdf
+{
     public function created(UserFollower $follower)
     {
     	$user = $follower->user_following;
 
-        $user->increment('follower_count')->save();
+        $user->increment('follower_count');
 
     }
 
@@ -35,6 +35,6 @@ class UserFollowerObserver
     {
     	$user = $follower->user_following;
         
-        $user->decrement('follower_count')->save();
+        $user->decrement('follower_count');
     }
 }

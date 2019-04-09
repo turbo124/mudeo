@@ -25,7 +25,7 @@ class SongLike extends EntityModel
 
     public function song()
     {
-    	return $this->hasOne(Song::class);
+    	return $this->hasOne(Song::class, 'id', 'song_id');
     }
     
 }

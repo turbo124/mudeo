@@ -16,7 +16,7 @@ class SongLikeObserver
     {
     	$song = $song_like->song;
 
-        $song->increment('count_like')->save();
+        $song->increment('count_like');
 
     }
 
@@ -41,7 +41,7 @@ class SongLikeObserver
     {
         $song = $song_like->song;
         
-        $song->decrement('count_like')->save();
+        $song->decrement('count_like');
     }
 
     /**

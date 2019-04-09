@@ -32,7 +32,7 @@ class UserFollowerTransformer extends EntityTransformer
         $transformer = new UserTransformer($this->serializer);
 
         return $this->includeItem($user_follower->user, $transformer, User::class);
-    }
+    
     }
 
 }
