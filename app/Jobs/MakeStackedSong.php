@@ -6,7 +6,6 @@ use App\Models\Song;
 use FFMpeg\FFMpeg;
 use FFMpeg\Filters\Audio\SimpleFilter;
 use FFMpeg\Format\Video\X264;
-use FFMpeg\Format\Video\DefaultVideo;
 use GuzzleHttp\Client;
 use Hashids\Hashids;
 use Illuminate\Bus\Queueable;
@@ -94,7 +93,7 @@ class MakeStackedSong implements ShouldQueue
                     $vid->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
                     ->filters();
 
-                    $format = new DefaultVideo();
+                    $format = new X264();
 
                     $format->setKiloBitrate(1000);
 
@@ -188,9 +187,12 @@ class MakeStackedSong implements ShouldQueue
 
           $video->addFilter(new SimpleFilter(['-i', $childVideo]))
                 ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
+                ->addFilter(new SimpleFilter(['-vprofile', 'baseline']));
+                ->addFilter(new SimpleFilter(['-level', 3.0]));
+                ->addFilter(new SimpleFilter(['-movflags', '+faststart']));
                 ->filters();
 
-          $format = new DefaultVideo();
+          $format = new X264();
           $format->setKiloBitrate(1000);
           $format->setAudioCodec("aac");
 
