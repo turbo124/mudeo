@@ -3,9 +3,10 @@
 namespace App\Transformers;
 
 use App\Models\Song;
+use App\Models\SongLike;
+use App\Models\UserFollower;
 use App\Models\SongComment;
-use App\Models\Track;
-use App\Models\TrackComment;
+use App\Models\Video;
 use App\Models\User;
 
 class UserAccountTransformer extends EntityTransformer
@@ -47,4 +48,56 @@ class UserAccountTransformer extends EntityTransformer
         ];
     }
 
+    public function includeFollowing(User $user)
+    {
+
+        $transformer = new UserFollowerTransformer($this->serializer);
+
+        return $this->includeCollection($user->following, $transformer, UserFollower::class);
+
+    }
+
+    public function includeFollowers(User $user)
+    {
+        $transformer = new UserFollowerTransformer($this->serializer);
+
+        return $this->includeCollection($user->followers, $transformer, UserFollower::class);
+    }
+
+    public function includeSongLikes(User $user)
+    {
+        $transformer = new SongLikeTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_likes, $transformer, SongLike::class);
+
+    }
+
+    public function includeSongs(User $user)
+    {
+        $transformer = new SongTransformer($this->serializer);
+
+        return $this->includeCollection($user->songs, $transformer, Song::class);
+    }
+
+    public function includeVideos(User $user)
+    {
+        $transformer = new VideoTransformer($this->serializer);
+
+        return $this->includeCollection($user->videos, $transformer, Video::class);
+    }
+
+    public function includeSongComments(User $user)
+    {
+        $transformer = new SongCommentsTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_comments, $transformer, SongComment::class);
+    }
+
+    public function includeTrackComments(User $user)
+    {
+        $transformer = new SongCommentsTransformer($this->serializer);
+
+        return $this->includeCollection($user->track_comments, $transformer, TrackComment::class);
+    }
+    
 }
