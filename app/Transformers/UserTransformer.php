@@ -42,7 +42,7 @@ class UserTransformer extends EntityTransformer
             'twitch_social_url' => $user->twitch_social_url ?: '',
             'twitter_social_url' => $user->twitter_social_url ?: '',
             'website_social_url' => $user->website_social_url ?: '',
-            'follower_count', => $user->follower_count ?: 0,
+            'follower_count' => $user->follower_count ?: 0,
         ];
     }
 
