@@ -3,11 +3,12 @@
 namespace App\Transformers;
 
 use App\Models\Song;
-use App\Models\SongLike;
-use App\Models\UserFollower;
 use App\Models\SongComment;
-use App\Models\Video;
+use App\Models\SongFlag;
+use App\Models\SongLike;
 use App\Models\User;
+use App\Models\UserFollower;
+use App\Models\Video;
 
 class UserTransformer extends EntityTransformer
 {
@@ -21,6 +22,7 @@ class UserTransformer extends EntityTransformer
         'song_likes',
         'followers',
         'following',
+        'song_flags',
     ];
 
     public function transform(User $user)
@@ -67,6 +69,14 @@ class UserTransformer extends EntityTransformer
         $transformer = new SongLikeTransformer($this->serializer);
 
         return $this->includeCollection($user->song_likes, $transformer, SongLike::class);
+
+    }
+
+    public function includeSongFlags(User $user)
+    {
+        $transformer = new SongFlagTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_flags, $transformer, SongFlag::class);
 
     }
 
