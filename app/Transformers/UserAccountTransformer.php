@@ -13,7 +13,14 @@ class UserAccountTransformer extends EntityTransformer
 
     protected $defaultIncludes = [];
 
-    protected $availableIncludes = [];
+    protected $availableIncludes = [
+        'songs',
+        'videos',
+        'song_comments',
+        'song_likes',
+        'followers',
+        'following',
+    ];
 
     public function transform(User $user)
     {
