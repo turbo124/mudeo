@@ -227,10 +227,11 @@ class MakeStackedSong implements ShouldQueue
           $video = $this->ffmpeg->open($filePath);
 
           $video->addFilter(new SimpleFilter(['-vf', 'scale=1920:-2']))
-          ->filters();
+                ->addFilter(new SimpleFilter(['-vprofile', 'baseline']))
+                ->addFilter(new SimpleFilter(['-level', 3.1]))
+                ->filters();
 
           $format = new X264();
-          //$format->setKiloBitrate(1000);
           $format->setAudioCodec("aac");
 
           $filepath = sha1(time()) . '.mp4';
