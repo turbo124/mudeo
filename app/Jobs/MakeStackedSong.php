@@ -110,6 +110,16 @@ class MakeStackedSong implements ShouldQueue
 
         $fileSongVideoPath = $this->buildStackedVideo($song_videos);
         
+        /*
+        Scale song to 1080p
+         */
+        
+
+        $fileSongVideoPath = $this->scaleDownVideo($fileSongVideoPath);
+
+        /*
+        End Scale
+         */
         $hashids = new Hashids('', 10);
 
         $disk = Storage::disk('gcs');
@@ -190,7 +200,6 @@ class MakeStackedSong implements ShouldQueue
                 ->addFilter(new SimpleFilter(['-vprofile', 'baseline']))
                 ->addFilter(new SimpleFilter(['-level', 3.1]))
                 ->addFilter(new SimpleFilter(['-movflags', '+faststart']))
-                ->addFilter(new SimpleFilter(['-s', 'hd1080']))
                 ->filters();
 
           $format = new X264();
@@ -205,5 +214,41 @@ class MakeStackedSong implements ShouldQueue
               
       }
 
+      public function scaleDownVideo($filePath)
+      {
+
+          $this->ffmpeg = FFMpeg::create([
+                  'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                  'ffprobe.binaries' => '/usr/bin/ffprobe',
+                  'timeout'          => 0, // The timeout for the underlying process
+                  'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+              ]);
+
+          $video = $this->ffmpeg->open($filePath);
+
+          $video->addFilter(new SimpleFilter(['-vf', 'scale=1920:-1']))
+          ->filters();
+
+          $format = new X264();
+          $format->setKiloBitrate(1000);
+          $format->setAudioCodec("aac");
+
+          $filepath = sha1(time()) . '.mp4';
+
+          $video->save($format, storage_path($this->working_dir) . $filepath);
+
+          return storage_path($this->working_dir) . $filepath;
+
+
+      }
+
 
 }
+
+
+/*
+-vf scale=320:-1
+
+->addFilter(new SimpleFilter(['-s', 'hd1080']))
+
+ */
