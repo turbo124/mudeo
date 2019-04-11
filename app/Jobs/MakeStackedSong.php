@@ -229,6 +229,7 @@ class MakeStackedSong implements ShouldQueue
           $video->addFilter(new SimpleFilter(['-vf', 'scale=1280:-2']))
                 ->addFilter(new SimpleFilter(['-profile:v', 'baseline']))
                 ->addFilter(new SimpleFilter(['-level', 3.1]))
+                ->addFilter(new SimpleFilter(['-refs', 11]))
                 ->addFilter(new SimpleFilter(['-movflags', '+faststart']))
                 ->filters();
 
