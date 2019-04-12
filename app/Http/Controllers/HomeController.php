@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect('https://play.google.com/store/apps/details?id=app.mudeo.mudeo');
+        return redirect('https://itsallwidgets.com/flutter-app/mudeo');
     }
 
     public function terms()
