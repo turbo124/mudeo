@@ -36,17 +36,11 @@ class SongTransformer extends EntityTransformer
             'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
+            'video_url' => $song->video_url,
+            'count_like' => (int) $song->count_like,
         ];
     }
 
-/*
-    public function includeTracks(Song $song)
-    {
-        $transformer = new TrackTransformer($this->serializer);
-
-        return $this->includeCollection($song->tracks, $transformer, 'tracks');
-    }
-*/
     public function includeComments(Song $song)
     {
         $transformer = new SongCommentTransformer($this->serializer);

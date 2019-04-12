@@ -35,6 +35,7 @@ class CreateSongRequest extends Request
         $input['url'] = config('mudeo.app_url');
         $input['description'] = isset($input['description']) ? $input['description'] : ' ';
         $input['title'] = isset($input['title']) ? $input['title'] : ' ';
+        $input['video_url'] = isset($input['video_url']) ? $input['video_url'] : ' ';
         
         $this->replace($input);     
     }

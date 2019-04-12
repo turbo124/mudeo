@@ -19,7 +19,6 @@ class SongVideo extends Pivot
 
     public function songs()
     {
-        //return $this->hasOne(User::class)->withPivot('permissions', 'settings', 'is_admin', 'is_owner', 'is_locked');
         return $this->hasMany(Song::class);
     }
 

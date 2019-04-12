@@ -65,10 +65,11 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
 
-        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
+        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);        
+        $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
         
         $song->save();
-        
+
         if($request->input('song_videos')) {
 
 
@@ -81,17 +82,18 @@ class SongController extends BaseController
                 ]);
 
                 $sv->volume = $song_video['volume'];
+
                 $sv->order_id = $song_video['order_id'];
 
                 $sv->save();
 
             }
             
-            MakeStackedSong::dispatch($song);
+                MakeStackedSong::dispatch($song);
 
         }
 
-        return $this->itemResponse($song);
+        return $this->itemResponse($song->fresh());
     }
 
     /**
@@ -102,19 +104,21 @@ class SongController extends BaseController
      */
     public function show(Song $song)
     {
+
         return $this->itemResponse($song);
+
     }
 
     public function play($hashedId)
     {
+
         $hashids = new Hashids('', 10);
+
         $hashed_id = $hashids->decode($hashedId);
 
 
-        if($hashed_id) {
-
-            Log::error('hashed id = '.$hashed_id[0]);
-
+        if($hashed_id) 
+        {
 
             $song = Song::findOrFail($hashed_id[0]);
 
@@ -130,11 +134,13 @@ class SongController extends BaseController
 
     private function songUrl($song, $hashedId)
     {
+
         $hashids = new Hashids('', 10);
 
         $user_hash = $hashids->encode($song->user->id);
 
         return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4';
+
     }
 
 
@@ -158,10 +164,13 @@ class SongController extends BaseController
      */
     public function update(UpdateSongRequest $request, Song $song)
     {
+
         $song->fill($request->all());
+
         $song->save();
 
-        return $this->itemResponse($song);
+        return $this->itemResponse($song->fresh());
+
     }
 
     /**
@@ -172,10 +181,25 @@ class SongController extends BaseController
      */
     public function destroy(DestroySongRequest $request, Song $song)
     {
+
         $song->delete();
 
         return $this->itemResponse($song);
+        
     }
 
+    public function buildVideo($song_hash)
+    {
+
+        $hashids = new Hashids('', 10);
+        $song_id = $hashids->decode($song_hash);
+
+        $song = Song::findOrFail($song_id[0]);
+
+        MakeStackedSong::dispatch($song);
+
+        return response()->json(['building'],200);
+
+    }
     
 }

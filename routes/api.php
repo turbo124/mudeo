@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['api_secret_check']], function () {
 
 	Route::post('auth', 'AuthController@passwordAuth');
+	Route::post('oauth', 'AuthController@oauthLogin');
 	Route::post('reset_password', 'AuthController@resetPassword');
 	Route::post('user/create', 'UserAccountController@create');
 	Route::post('user/check_handle', 'UserAccountController@check_handle');
@@ -29,7 +30,12 @@ Route::group(['middleware' => ['api_secret_check','token_auth']], function () {
 	Route::resource('song_comments', 'SongCommentController'); // name = (track_comments. index / create / show / update / destroy / edit
 	Route::resource('users', 'UserController'); // name = (users. index / create / show / update / destroy / edit
 	Route::get('user', 'AuthController@current_user');
+	Route::resource('user_follow', 'UserFollowerController');
+	Route::resource('user_flag', 'UserFlagController');
+	Route::resource('song_flag', 'SongFlagController');
 
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');
 });
+
+	Route::get('songs/build/{song_hash}', 'SongController@buildVideo');

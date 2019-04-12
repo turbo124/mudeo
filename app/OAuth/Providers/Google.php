@@ -9,16 +9,22 @@ class Google implements ProviderInterface
     {
 
         $client = new \Google_Client();
+
         return $client->verifyIdToken($token);
+
     }
 
     public function harvestEmail($payload)
     {
+
         return $payload['email'];
+
     }
 
     public function harvestSubField($payload)
     {
+
         return $payload['sub']; // user ID
+        
     }
 }

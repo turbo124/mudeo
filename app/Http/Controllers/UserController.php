@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateImageRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Hashids\Hashids;
@@ -12,19 +13,25 @@ class UserController extends BaseController
 {
     
     protected $entityType = User::class;
+
 	protected $entityTransformer = UserTransformer::class;
 
-    public function update(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
+
         $user->fill(request()->all());
+
         $user->save();
 
         return $this->itemResponse($user);
+
     }
 
     public function show(User $user)
     {
+
         return $this->itemResponse($user);
+
     }
 
     public function storeProfileImage(CreateImageRequest $request)
@@ -34,9 +41,11 @@ class UserController extends BaseController
     	$file_path = $this->storeImage($request);
 
 		$user->profile_image_url = config('mudeo.asset_url') . $file_path;
+
         $user->save();
 
         return $this->itemResponse($user);
+
     }
 
     public function storeBackgroundImage(CreateImageRequest $request)
@@ -47,6 +56,7 @@ class UserController extends BaseController
     	$file_path = $this->storeImage($request);
 
 		$user->header_image_url = config('mudeo.asset_url') . $file_path;
+        
         $user->save();
 
         return $this->itemResponse($user);

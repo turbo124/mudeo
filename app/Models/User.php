@@ -27,7 +27,8 @@ class User extends Authenticatable implements CanResetPassword
         'oauth_provider_id',
         'server_name',
         'token',
-        'remember_token'
+        'remember_token',
+        'header_image_url'
     ];
 
     /**
@@ -68,9 +69,24 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(SongLike::class);
     }
 
+    public function followers()
+    {
+        return $this->hasMany(UserFollower::class, 'user_following_id', 'id');
+    }
+
+    public function following()
+    {
+        return $this->hasMany(UserFollower::class);
+    }
+
     public function video_likes()
     {
         return $this->hasMany(VideoLike::class);
+    }
+
+    public function song_flags()
+    {
+        return $this->hasMany(SongFlag::class);
     }
 
 }

@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Models\Song;
+use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SongLike extends EntityModel
+class SongFlag extends EntityModel
 {
 
     protected $fillable = [
@@ -13,10 +14,6 @@ class SongLike extends EntityModel
         'user_id',
     ];
 
-    public function video()
-    {
-        return $this->hasOne(Video::class);
-    }
 
     public function user()
     {

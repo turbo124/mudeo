@@ -4,8 +4,11 @@ namespace App\Transformers;
 
 use App\Models\Song;
 use App\Models\SongComment;
-use App\Models\Video;
+use App\Models\SongFlag;
+use App\Models\SongLike;
 use App\Models\User;
+use App\Models\UserFollower;
+use App\Models\Video;
 
 class UserTransformer extends EntityTransformer
 {
@@ -16,6 +19,10 @@ class UserTransformer extends EntityTransformer
         'songs',
         'videos',
         'song_comments',
+        'song_likes',
+        'followers',
+        'following',
+        'song_flags',
     ];
 
     public function transform(User $user)
@@ -23,6 +30,7 @@ class UserTransformer extends EntityTransformer
         return [
             'id' => (int) ($user->id),
             'name' => $user->name ?:'',
+            'description' => $user->description ?: '',
             'profile_image_url' => $user->profile_image_url ?: '',
             'header_image_url' => $user->header_image_url ?: '',
             'updated_at' => $user->updated_at,
@@ -36,7 +44,40 @@ class UserTransformer extends EntityTransformer
             'twitch_social_url' => $user->twitch_social_url ?: '',
             'twitter_social_url' => $user->twitter_social_url ?: '',
             'website_social_url' => $user->website_social_url ?: '',
+            'follower_count' => $user->follower_count ?: 0,
         ];
+    }
+
+    public function includeFollowing(User $user)
+    {
+
+        $transformer = new UserFollowerTransformer($this->serializer);
+
+        return $this->includeCollection($user->following, $transformer, UserFollower::class);
+
+    }
+
+    public function includeFollowers(User $user)
+    {
+        $transformer = new UserFollowerTransformer($this->serializer);
+
+        return $this->includeCollection($user->followers, $transformer, UserFollower::class);
+    }
+
+    public function includeSongLikes(User $user)
+    {
+        $transformer = new SongLikeTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_likes, $transformer, SongLike::class);
+
+    }
+
+    public function includeSongFlags(User $user)
+    {
+        $transformer = new SongFlagTransformer($this->serializer);
+
+        return $this->includeCollection($user->song_flags, $transformer, SongFlag::class);
+
     }
 
     public function includeSongs(User $user)

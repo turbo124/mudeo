@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 class UpdateUserRequest extends Request
 {
 
+    public function authorize()
+    {
+        return auth()->user()->id === $this->user->id;
+    }
+
     public function rules()
     {
         $this->sanitize();
@@ -25,7 +30,17 @@ class UpdateUserRequest extends Request
         if(isset($input['password']))   
             unset($input['password']);
 
-
+        $input['facebook_social_url'] = isset($input['facebook_social_url']) ? $input['facebook_social_url'] : '';
+        $input['youtube_social_url'] = isset($input['youtube_social_url']) ? $input['youtube_social_url'] : '';
+        $input['instagram_social_url'] = isset($input['instagram_social_url']) ? $input['instagram_social_url'] : '';
+        $input['soundcloud_social_url'] = isset($input['soundcloud_social_url']) ? $input['soundcloud_social_url'] : '';
+        $input['twitch_social_url'] = isset($input['twitch_social_url']) ? $input['twitch_social_url'] : '';
+        $input['twitter_social_url'] = isset($input['twitter_social_url']) ? $input['twitter_social_url'] : '';
+        $input['website_social_url'] = isset($input['website_social_url']) ? $input['website_social_url'] : '';
+        $input['description'] = isset($input['description']) ? $input['description'] : '';
+        $input['profile_image_url'] = isset($input['profile_image_url']) ? $input['profile_image_url'] : '';
+        $input['name'] = isset($input['name']) ? $input['name'] : '';
+        
         $this->replace($input);     
     }
 

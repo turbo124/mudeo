@@ -15,6 +15,7 @@ class UserObserver
     public function created(User $user)
     {
         $user->token = str_random(64);
+        
         $user->save();
     }
 
