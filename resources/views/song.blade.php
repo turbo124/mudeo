@@ -27,6 +27,9 @@
 
 
 	<script>
+
+		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
+
 		var player = videojs('my-video');
 		player.fluid(true);
 	</script>
