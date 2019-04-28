@@ -1,5 +1,19 @@
 @extends('layouts.mudeo')
 
+@section('head')
+    <meta property="og:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
+    <meta property="og:description" content="{{ $song->description }}">
+    <meta property="og:image" content="{{ $song->song_videos[0]->video->thumbnail_url }}">
+    <meta property="og:url" content="{{ $song->url }}">
+    <meta property="og:site_name" content="mudeo">
+
+    <meta name="twitter:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
+    <meta name="twitter:description" content="{{ $song->description }}">
+    <meta name="twitter:image" content="{{ $song->song_videos[0]->video->thumbnail_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="{{ $song->title }}">
+@endsection
+
 @section('body')
 	<style>
 		body {background-color:black}
