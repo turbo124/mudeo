@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Song;
+use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFMpeg;
 use FFMpeg\Filters\Audio\SimpleFilter;
 use FFMpeg\Format\Video\X264;
@@ -74,7 +75,12 @@ class MakeStackedSong implements ShouldQueue
 
         foreach($song_videos as $song_video)
         {
-          /*
+          $height_collection = collect();
+
+          $song = $song_video->song;
+
+          $video = $song_video->video;
+
           $ffprobe = FFMpeg\FFProbe::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe',
@@ -83,17 +89,51 @@ class MakeStackedSong implements ShouldQueue
           ]);
 
           $dimension = $ffprobe
-              ->streams('/path/to/video/mp4') // extracts streams informations
+              ->streams(storage_path($this->working_dir) . basename($video->url)) // extracts streams informations
               ->videos()                      // filters video streams
               ->first()                       // returns the first video stream
               ->getDimensions();    
 
-             $dimension->getWidth();
-             $dimension->getHeight();
+             $width = $dimension->getWidth();
+             $height = $dimension->getHeight();
 
-        */  
-       
+            $height_collection->push($height);
+
         }
+
+        /* Compare all video heights, if there is a discrepency, resize all videos to ->min() */
+
+        /* There is no obvious way to resize*/
+        if($height_collection->min() != $height_collection->max())
+        {
+
+          foreach($song_videos as $song_video)
+          {
+            $song = $song_video->song;
+
+            $video = $song_video->video;
+
+            $this->ffmpeg = FFMpeg::create([
+                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/bin/ffprobe',
+                'timeout'          => 0, // The timeout for the underlying process
+                'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+            ]);
+
+            $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
+
+            $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
+                ->filters();
+
+            $vid->save(new X264(), storage_path($this->working_dir) . 'temp_' .basename($video->url)); 
+
+            File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
+
+          } 
+          
+
+        }
+
 
         foreach($song_videos as $song_video)
         {
