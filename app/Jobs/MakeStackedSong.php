@@ -74,9 +74,10 @@ class MakeStackedSong implements ShouldQueue
 
         /* Loop and make sure all videos are equal height*/
 
+         $height_collection = collect();
+
         foreach($song_videos as $song_video)
         {
-          $height_collection = collect();
 
           $song = $song_video->song;
 
@@ -95,12 +96,14 @@ class MakeStackedSong implements ShouldQueue
               ->first()                       // returns the first video stream
               ->getDimensions();    
 
-             $width = $dimension->getWidth();
-             $height = $dimension->getHeight();
+             $height = $dimension->getWidth();
+//             $height = $dimension->getHeight();
 
             $height_collection->push($height);
-
-        }
+  Log::error('storing the height of = '.$height);
+//     Log::error('storing the width of = '.$width);
+  }
+  Log::error('number of heights collected = '.$height_collection->count());
 
         /* Compare all video heights, if there is a discrepency, resize all videos to ->min() */
 
@@ -126,8 +129,18 @@ class MakeStackedSong implements ShouldQueue
             $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
                 ->filters();
 
-            $vid->save(new X264(), storage_path($this->working_dir) . 'temp_' .basename($video->url)); 
 
+            $format = new X264();
+                    $format->setPasses(1)
+                      ->setAudioCodec('aac')
+                      ->setKiloBitrate(1200)
+                      ->setAudioChannels(2)
+          ->setAudioKiloBitrate(126);
+
+            $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url)); 
+      
+      Log::error('scaling video '. $video->url);
+            
             File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
 
           } 
