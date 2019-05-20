@@ -82,7 +82,7 @@ class MakeStackedSong implements ShouldQueue
 
           $video = $song_video->video;
 
-          $ffprobe = FFMpeg\FFProbe::create([
+          $ffprobe = FFProbe::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe',
             'timeout'          => 0, // The timeout for the underlying process
@@ -131,7 +131,7 @@ class MakeStackedSong implements ShouldQueue
             File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
 
           } 
-          
+
 
         }
 
