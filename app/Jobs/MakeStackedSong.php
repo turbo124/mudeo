@@ -70,6 +70,31 @@ class MakeStackedSong implements ShouldQueue
 
         }
 
+        /* Loop and make sure all videos are equal height*/
+
+        foreach($song_videos as $song_video)
+        {
+          /*
+          $ffprobe = FFMpeg\FFProbe::create([
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe',
+            'timeout'          => 0, // The timeout for the underlying process
+            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+          ]);
+
+          $dimension = $ffprobe
+              ->streams('/path/to/video/mp4') // extracts streams informations
+              ->videos()                      // filters video streams
+              ->first()                       // returns the first video stream
+              ->getDimensions();    
+
+             $dimension->getWidth();
+             $dimension->getHeight();
+
+        */  
+       
+        }
+
         foreach($song_videos as $song_video)
         {
             $song = $song_video->song;
@@ -90,14 +115,13 @@ class MakeStackedSong implements ShouldQueue
 
                     $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
 
-                    $vid->addFilter(new SimpleFilter(['-filter:a', 'volume='.$volume]))
-                    ->filters();
-
                     $format = new X264();
-
-                    $format->setKiloBitrate(1000);
-
-                    $format->setAudioCodec("aac");
+                    $format->setPasses(1)
+                      ->setAudioCodec('aac')
+                      ->setKiloBitrate(1200)
+                      ->setAudioChannels(2)
+                      ->setAudioKiloBitrate(126)
+                      ->setAdditionalParameters(['-filter:a', 'volume='.$volume]);
 
                     $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url)); 
 
