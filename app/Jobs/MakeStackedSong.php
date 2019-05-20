@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Song;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 use FFMpeg\Filters\Audio\SimpleFilter;
 use FFMpeg\Format\Video\X264;
 use GuzzleHttp\Client;
