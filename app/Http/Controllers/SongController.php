@@ -80,8 +80,11 @@ class SongController extends BaseController
                 ]);
 
                 $sv->volume = $song_video['volume'];
-                $sv->delay = $song_video['delay'];
                 $sv->order_id = $song_video['order_id'];
+
+                if (isset($song_video['delay'])) {
+                    $sv->delay = $song_video['delay'];
+                }
 
                 $sv->save();
             }
@@ -174,8 +177,11 @@ class SongController extends BaseController
                 ]);
 
                 $sv->volume = $song_video['volume'];
-                $sv->delay = $song_video['delay'];
                 $sv->order_id = $song_video['order_id'];
+
+                if (isset($song_video['delay'])) {
+                    $sv->delay = $song_video['delay'];
+                }
 
                 $sv->save();
             }
