@@ -83,10 +83,10 @@ class MakeStackedSong implements ShouldQueue
             ]);
 
             $dimension = $ffprobe
-            ->streams(storage_path($this->working_dir) . basename($video->url)) // extracts streams informations
-            ->videos()                      // filters video streams
-            ->first()                       // returns the first video stream
-            ->getDimensions();
+                ->streams(storage_path($this->working_dir) . basename($video->url)) // extracts streams informations
+                ->videos()                      // filters video streams
+                ->first()                       // returns the first video stream
+                ->getDimensions();
 
             $height = $dimension->getWidth();
             //             $height = $dimension->getHeight();
@@ -116,14 +116,14 @@ class MakeStackedSong implements ShouldQueue
 
                 $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
                 $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
-                ->filters();
+                    ->filters();
 
                 $format = new X264();
                 $format->setPasses(1)
-                ->setAudioCodec('aac')
-                ->setKiloBitrate(1200)
-                ->setAudioChannels(2)
-                ->setAudioKiloBitrate(126);
+                    ->setAudioCodec('aac')
+                    ->setKiloBitrate(1200)
+                    ->setAudioChannels(2)
+                    ->setAudioKiloBitrate(126);
 
                 $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url));
 
@@ -153,11 +153,11 @@ class MakeStackedSong implements ShouldQueue
 
                 $format = new X264();
                 $format->setPasses(1)
-                ->setAudioCodec('aac')
-                ->setKiloBitrate(1200)
-                ->setAudioChannels(2)
-                ->setAudioKiloBitrate(126)
-                ->setAdditionalParameters(['-filter:a', 'volume='.$volume]);
+                    ->setAudioCodec('aac')
+                    ->setKiloBitrate(1200)
+                    ->setAudioChannels(2)
+                    ->setAudioKiloBitrate(126)
+                    ->setAdditionalParameters(['-filter:a', 'volume='.$volume]);
 
                 $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url));
 
@@ -225,17 +225,17 @@ class MakeStackedSong implements ShouldQueue
         $video = $this->ffmpeg->open($parentVideo);
 
         $video->addFilter(new SimpleFilter(['-i', $childVideo]))
-        ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
-        ->filters();
+            ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
+            ->filters();
 
         $format = new X264();
 
         $format->setPasses(1)
-        ->setAudioCodec('aac')
-        ->setKiloBitrate(1200)
-        ->setAudioChannels(2)
-        ->setAudioKiloBitrate(126)
-        ->setAdditionalParameters(['-vprofile', 'baseline', '-level', 3.0, '-movflags', '+faststart']);
+            ->setAudioCodec('aac')
+            ->setKiloBitrate(1200)
+            ->setAudioChannels(2)
+            ->setAudioKiloBitrate(126)
+            ->setAdditionalParameters(['-vprofile', 'baseline', '-level', 3.0, '-movflags', '+faststart']);
 
         $filepath = sha1(time()) . '.mp4';
 
