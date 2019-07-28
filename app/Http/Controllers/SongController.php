@@ -25,7 +25,7 @@ class SongController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function __construct(SongFilters $filter)
     {
         parent::__construct();
@@ -37,7 +37,7 @@ class SongController extends BaseController
     {
         $songs = Song::filter($filters)
             ->with('song_videos', 'song_videos.video', 'videos', 'user');
-       
+
         return $this->listResponse($songs);
 
     }
@@ -65,32 +65,28 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
 
-        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);        
+        $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
         $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
-        
+
         $song->save();
 
-        if($request->input('song_videos')) {
-
+        if ($request->input('song_videos')) {
 
             foreach($request->input('song_videos') as $song_video)
             {
-
                 $sv = SongVideo::firstOrNew([
                     'song_id' => $song->id,
                     'video_id' => $song_video['video']['id']
                 ]);
 
                 $sv->volume = $song_video['volume'];
-
+                $sv->delay = $song_video['delay'];
                 $sv->order_id = $song_video['order_id'];
 
                 $sv->save();
-
             }
-            
-                MakeStackedSong::dispatch($song);
 
+            MakeStackedSong::dispatch($song);
         }
 
         return $this->itemResponse($song->fresh());
@@ -117,7 +113,7 @@ class SongController extends BaseController
         $hashed_id = $hashids->decode($hashedId);
 
 
-        if($hashed_id) 
+        if($hashed_id)
         {
 
             $song = Song::findOrFail($hashed_id[0]);
@@ -164,10 +160,28 @@ class SongController extends BaseController
      */
     public function update(UpdateSongRequest $request, Song $song)
     {
-
         $song->fill($request->all());
 
         $song->save();
+
+        if ($request->input('song_videos')) {
+
+            foreach($request->input('song_videos') as $song_video)
+            {
+                $sv = SongVideo::firstOrNew([
+                    'song_id' => $song->id,
+                    'video_id' => $song_video['video']['id']
+                ]);
+
+                $sv->volume = $song_video['volume'];
+                $sv->delay = $song_video['delay'];
+                $sv->order_id = $song_video['order_id'];
+
+                $sv->save();
+            }
+
+            MakeStackedSong::dispatch($song);
+        }
 
         return $this->itemResponse($song->fresh());
 
@@ -185,7 +199,7 @@ class SongController extends BaseController
         $song->delete();
 
         return $this->itemResponse($song);
-        
+
     }
 
     public function buildVideo($song_hash)
@@ -201,5 +215,5 @@ class SongController extends BaseController
         return response()->json(['building'],200);
 
     }
-    
+
 }
