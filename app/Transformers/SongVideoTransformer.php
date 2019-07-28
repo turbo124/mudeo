@@ -22,6 +22,7 @@ class SongVideoTransformer extends EntityTransformer
             'video_id' => (int) $song_video->video_id,
             'order_id' => (int) $song_video->order_id,
             'volume' => (int) $song_video->volume,
+            'delay' => (int) $song_video->delay,
             'updated_at' => $song_video->updated_at,
             'deleted_at' => $song_video->deleted_at,
         ];
