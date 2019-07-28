@@ -12,6 +12,7 @@ class SongVideo extends Pivot
 
     protected $fillable = [
         'volume',
+        'delay',
         'order_id',
         'song_id',
         'video_id'
@@ -26,7 +27,7 @@ class SongVideo extends Pivot
     {
         return $this->belongsTo(Song::class);
     }
-    
+
     public function video()
     {
     	return $this->hasOne(Video::class, 'id', 'video_id');
