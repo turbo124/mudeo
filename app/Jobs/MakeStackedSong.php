@@ -92,10 +92,7 @@ class MakeStackedSong implements ShouldQueue
             //             $height = $dimension->getHeight();
 
             $height_collection->push($height);
-            Log::error('storing the height of = '.$height);
-            //     Log::error('storing the width of = '.$width);
         }
-        Log::error('number of heights collected = '.$height_collection->count());
 
         /* Compare all video heights, if there is a discrepency, resize all videos to ->min() */
 
@@ -116,7 +113,7 @@ class MakeStackedSong implements ShouldQueue
 
                 $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
                 $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
-                    ->filters()->synchronize();
+                    ->filters();
 
                 $format = new X264();
                 $format->setPasses(1)
@@ -126,8 +123,6 @@ class MakeStackedSong implements ShouldQueue
                     ->setAudioKiloBitrate(126);
 
                 $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url));
-
-                Log::error('scaling video '. $video->url);
 
                 File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
             }
@@ -224,15 +219,24 @@ class MakeStackedSong implements ShouldQueue
 
         $video = $this->ffmpeg->open($parentVideo);
 
-        if ($delay > 0) {
-            $video->addFilter(new SimpleFilter(['-itsoffset', $delay / 1000]));
-        } elseif ($delay < 0) {
-            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+        if ($delay < 0) {
+            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000]));
         }
 
-        $video->addFilter(new SimpleFilter(['-i', $childVideo]))
-            ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
-            ->filters()->synchronize();
+        $video->addFilter(new SimpleFilter(['-i', $childVideo]));
+
+        if ($delay > 0) {
+            $video->addFilter(new SimpleFilter(['-filter_complex', '[1:v]trim=duration=' . ($delay / 1000)
+                . ',geq=0:128:128[v1];[v1][1:v]concat[v2];[1:a]adelay=' . $delay . '|' . $delay
+                . '[a1];[0:v][v2]hstack=inputs=2[v];[0:a][a1]amix=inputs=2[a]']));
+        } else {
+            $video->addFilter(new SimpleFilter(['-filter_complex', '[0:v][1:v]hstack=inputs=2[v];[0:a][1:a]amix=inputs=2[a]']));
+        }
+
+        $video->addFilter(new SimpleFilter(['-map', '[v]']))
+            ->addFilter(new SimpleFilter(['-map', '[a]']))
+            ->addFilter(new SimpleFilter(['-ac', '2']))
+            ->filters();
 
         $format = new X264();
 
