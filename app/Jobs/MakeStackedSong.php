@@ -116,7 +116,7 @@ class MakeStackedSong implements ShouldQueue
 
                 $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
                 $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
-                    ->filters();
+                    ->filters()->synchronize();
 
                 $format = new X264();
                 $format->setPasses(1)
@@ -184,23 +184,23 @@ class MakeStackedSong implements ShouldQueue
 
         if($x >= 2)
         {
-            $filepath = $this->inAndOut(storage_path($this->working_dir) . basename($mp4_file[0]['video']['url']), storage_path($this->working_dir) . basename($mp4_file[1]['video']['url']), 1);
+            $filepath = $this->inAndOut(storage_path($this->working_dir) . basename($mp4_file[0]['video']['url']), storage_path($this->working_dir) . basename($mp4_file[1]['video']['url']), $mp4_file[1]['delay']);
 
             unset($mp4_file[0]);
             unset($mp4_file[1]);
 
             if(array_key_exists(2, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[2]['video']['url']), 1);
+                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[2]['video']['url']), $mp4_file[2]['delay']);
                 unset($mp4_file[2]);
             }
 
             if(array_key_exists(3, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[3]['video']['url']), 1);
+                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[3]['video']['url']), $mp4_file[3]['delay']);
                 unset($mp4_file[3]);
             }
 
             if(array_key_exists(4, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[4]['video']['url']), 1);
+                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[4]['video']['url']), $mp4_file[4]['delay']);
                 unset($mp4_file[4]);
             }
 
@@ -213,7 +213,7 @@ class MakeStackedSong implements ShouldQueue
 
     }
 
-    public function inAndOut($parentVideo, $childVideo, $userHash)
+    public function inAndOut($parentVideo, $childVideo, $delay)
     {
         $this->ffmpeg = FFMpeg::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
@@ -224,9 +224,15 @@ class MakeStackedSong implements ShouldQueue
 
         $video = $this->ffmpeg->open($parentVideo);
 
+        if ($delay > 0) {
+            $video->addFilter(new SimpleFilter(['-itsoffset', $delay / 1000]));
+        } elseif ($delay < 0) {
+            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+        }
+
         $video->addFilter(new SimpleFilter(['-i', $childVideo]))
             ->addFilter(new SimpleFilter(['-filter_complex', 'hstack=inputs=2; amerge=inputs=2']))
-            ->filters();
+            ->filters()->synchronize();
 
         $format = new X264();
 
