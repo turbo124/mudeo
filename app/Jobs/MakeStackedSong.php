@@ -220,7 +220,7 @@ class MakeStackedSong implements ShouldQueue
         $video = $this->ffmpeg->open($parentVideo);
 
         if ($delay < 0) {
-            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000]));
+            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
         }
 
         $video->addFilter(new SimpleFilter(['-i', $childVideo]));
