@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Models\SongComment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Requests\Comment\CreateCommentRequest;
+use App\Http\Controllers\Requests\Comment\DestroyCommentRequest;
+use App\Transformers\SongCommentTransformer;
+use Hashids\Hashids;
+use Illuminate\Support\Facades\Log;
 
 class SongCommentController extends BaseController
 {
+
+    protected $entityType = SongComment::class;
+    protected $entityTransformer = SongCommentTransformer::class;
+
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +34,7 @@ class SongCommentController extends BaseController
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -33,10 +43,15 @@ class SongCommentController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+     public function store(CreateCommentRequest $request)
+     {
+         $comment = new SongComment;
+         $comment->fill($request->all());
+         $comment->user_id = auth()->user()->id;
+         $comment->save();
+
+         return $this->itemResponse($comment->fresh());
+     }
 
     /**
      * Display the specified resource.
@@ -78,8 +93,10 @@ class SongCommentController extends BaseController
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(DestroyCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->delete();
+
+        return $this->itemResponse($comment);
     }
 }

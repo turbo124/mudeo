@@ -9,7 +9,7 @@ class Song extends EntityModel
 {
     use Filterable;
 
-        protected $guarded = [
+    protected $guarded = [
         'id',
         'updated_at',
         'created_at',
@@ -29,7 +29,7 @@ class Song extends EntityModel
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function videos()
     {
         return $this->belongsToMany(Video::class)->withTimestamps();

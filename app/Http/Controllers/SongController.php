@@ -201,11 +201,9 @@ class SongController extends BaseController
      */
     public function destroy(DestroySongRequest $request, Song $song)
     {
-
         $song->delete();
 
         return $this->itemResponse($song);
-
     }
 
     public function buildVideo($song_hash)
