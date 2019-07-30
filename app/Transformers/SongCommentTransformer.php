@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Song;
 use App\Models\SongComment;
 use App\Transformers\SongTransformer;
+use App\Transformers\UserTransformer;
 
 class SongCommentTransformer extends EntityTransformer
 {
@@ -16,6 +17,7 @@ class SongCommentTransformer extends EntityTransformer
      */
     protected $availableIncludes = [
         'song',
+        'user',
     ];
 
     public function transform(SongComment $comment)
@@ -34,7 +36,12 @@ class SongCommentTransformer extends EntityTransformer
     public function includeSong(SongComment $comment)
     {
         $transformer = new SongTransformer($this->serializer);
-
         return $this->includeItem($comment->song, $transformer, class_basename(Song::class));
+    }
+
+    public function includeUser(SongComment $comment)
+    {
+        $transformer = new UserTransformer($this->serializer);
+        return $this->includeItem($comment->user, $transformer, class_basename(User::class));
     }
 }

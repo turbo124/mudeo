@@ -16,9 +16,14 @@ class SongComment extends EntityModel
         'deleted_at',
     ];
 
-    public function song()
+	public function song()
     {
         return $this->belongsTo(Song::class);
+    }
+
+	public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

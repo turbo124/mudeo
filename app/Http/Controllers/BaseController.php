@@ -59,7 +59,7 @@ class BaseController extends Controller
 
     protected function createCollection($query, $transformer, $entityType)
     {
-        
+
         if ($this->serializer && $this->serializer != EntityTransformer::API_SERIALIZER_JSON) {
             $entityType = null;
         }
@@ -146,12 +146,14 @@ class BaseController extends Controller
 
         foreach ($included as $include) {
             if ($include == 'songs') {
-                $data[] = 'songs.tracks';
-                $data[] = 'songs.comments';
-                $data[] = 'songs.tags';
+                $data[] = 'songs';
+                //$data[] = 'songs.comments';
+                //$data[] = 'songs.tags';
             } elseif ($include == 'tracks') {
-                $data[] = 'tracks.comments';
-                $data[] = 'tracks.tags';
+                //$data[] = 'tracks.comments';
+                //$data[] = 'tracks.tags';
+			} elseif ($include == 'comments') {
+				$data[] = 'comments.user';
             } elseif ($include) {
                 $data[] = $include;
             }
