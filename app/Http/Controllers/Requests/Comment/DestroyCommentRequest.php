@@ -10,7 +10,9 @@ class DestroyCommentRequest extends Request
 
     public function authorize()
     {
-        return $this->user()->id === SongComment::find($this->song_comment)->user_id;
+        $comment = SongComment::find($this->song_comment);
+
+        return $this->user()->id === $comment->user_id || $this->user()->id === $comment->song->user_id;
     }
 
     public function rules()
