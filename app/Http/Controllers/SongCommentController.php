@@ -59,7 +59,7 @@ class SongCommentController extends BaseController
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(SongComment $comment)
     {
         //
     }
@@ -70,7 +70,7 @@ class SongCommentController extends BaseController
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit(SongComment $comment)
     {
         //
     }
@@ -82,7 +82,7 @@ class SongCommentController extends BaseController
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, SongComment $comment)
     {
         //
     }
@@ -93,8 +93,9 @@ class SongCommentController extends BaseController
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DestroyCommentRequest $request, Comment $comment)
+    public function destroy(DestroyCommentRequest $request, SongComment $comment)
     {
+        $comment = SongComment::findOrFail($request->song_comment);
         $comment->delete();
 
         return $this->itemResponse($comment);
