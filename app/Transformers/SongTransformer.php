@@ -10,10 +10,10 @@ class SongTransformer extends EntityTransformer
 {
 
     protected $defaultIncludes = [
-        'song_videos',
     ];
 
     protected $availableIncludes = [
+        'song_videos',
         'comments',
         'tags',
         'user'

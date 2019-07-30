@@ -103,6 +103,7 @@ class SongController extends BaseController
      */
     public function show(Song $song)
     {
+        $song->load('comments.user');
 
         return $this->itemResponse($song);
 
