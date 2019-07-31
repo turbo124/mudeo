@@ -28,7 +28,7 @@ class VideoController extends BaseController
     {
 
         $videos = Video::orderBy('updated_at', 'desc');
-        
+
         return $this->listResponse($videos);
 
     }
@@ -51,9 +51,9 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-        
+
         $video = Video::create($request->all());
-        
+
         $video->save();
 
         if($request->input('song_id')) {
@@ -76,7 +76,7 @@ class VideoController extends BaseController
 
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/bin/ffprobe' 
+                'ffprobe.binaries' => '/usr/bin/ffprobe'
             ]);
 
             $tmp_file_name = sha1(time()) . '.jpg';
@@ -87,7 +87,7 @@ class VideoController extends BaseController
 
             $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
-            $disk = Storage::disk('gcs');
+            $disk = Storage::disk(config('filesystems.default'));
 
             $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( auth()->user()->id ) . '_' .$tmp_file_name;
 
@@ -97,8 +97,8 @@ class VideoController extends BaseController
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
-  
-        }      
+
+        }
 
         return $this->itemResponse($video);
     }
@@ -135,7 +135,7 @@ class VideoController extends BaseController
     public function update(Request $request, Video $video)
     {
         $video->file($request->all());
-        
+
         $video->save();
 
         return $this->itemResponse($video);

@@ -21,6 +21,7 @@ class Song extends EntityModel
     	'isChanged',
     	'user',
     	'include',
+        'comments',
     ];
 
     use SoftDeletes;
