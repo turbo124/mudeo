@@ -50,7 +50,7 @@ class SongCommentController extends BaseController
          $comment->user_id = auth()->user()->id;
          $comment->save();
 
-         return $this->itemResponse($comment->fresh());
+         return $this->itemResponse($comment->fresh()->load('user'));
      }
 
     /**
