@@ -36,7 +36,7 @@ class SongController extends BaseController
     public function index(SongFilters $filters)
     {
         $songs = Song::filter($filters)
-            ->with('song_videos', 'song_videos.video', 'videos', 'user');
+            ->with('song_videos.video', 'user', 'comments.user');
 
         return $this->listResponse($songs);
 

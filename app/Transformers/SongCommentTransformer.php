@@ -10,14 +10,15 @@ use App\Transformers\UserTransformer;
 class SongCommentTransformer extends EntityTransformer
 {
 
-    protected $defaultIncludes = [];
+    protected $defaultIncludes = [
+        'user',
+    ];
 
     /**
      * @var array
      */
     protected $availableIncludes = [
         'song',
-        'user',
     ];
 
     public function transform(SongComment $comment)
