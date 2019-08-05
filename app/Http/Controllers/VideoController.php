@@ -53,6 +53,15 @@ class VideoController extends BaseController
     public function store(CreateVideoRequest $request)
     {
         $video = Video::create($request->all());
+
+        // TODO remove this/change db schema
+        if (! $video->url) {
+            $video->url = '';
+        }
+        if (! $video->thumbnail_url) {
+            $video->thumbnail_url = '';
+        }
+
         $video->save();
 
         if ($request->input('song_id')) {
@@ -101,19 +110,14 @@ class VideoController extends BaseController
             ]);
 
             $tmp_file_name = sha1(time()) . '.jpg';
-
             $vid = $ffmpeg->open($video_file);
-
             $vid_object = $vid->frame(TimeCode::fromSeconds(1))->save('', false, true);
-
             $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
             $disk = Storage::disk(config('filesystems.default'));
-
             $remote_storage_file_name = 'videos/' . $hashids->encode( auth()->user()->id ) . '/' . $hashids->encode( auth()->user()->id ) . '_' .$tmp_file_name;
 
             $disk->put($remote_storage_file_name, Storage::disk('local')->get($tmp_file_name));
-
             Storage::disk('local')->delete($tmp_file_name);
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
