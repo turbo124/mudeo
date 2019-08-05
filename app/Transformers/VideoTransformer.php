@@ -31,6 +31,7 @@ class VideoTransformer extends EntityTransformer
             'is_public' => (bool) $video->is_public,
             'updated_at' => $video->updated_at,
             'deleted_at' => $video->deleted_at,
+            'remote_video_id' => $video->remote_video_id,
         ];
     }
 
