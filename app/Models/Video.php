@@ -17,6 +17,8 @@ class Video extends EntityModel
         'api_secret',
         'song_id',
         'video',
+        'description',
+        'duration',
     ];
 
     public function songs()
