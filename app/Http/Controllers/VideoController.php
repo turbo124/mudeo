@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\UploadedFile;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Models\Song;
 use App\Models\Video;
@@ -51,28 +52,48 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-
         $video = Video::create($request->all());
-
         $video->save();
 
-        if($request->input('song_id')) {
-
+        if ($request->input('song_id')) {
             $song = Song::find($request->input('song_id'))->first();
-
             $song->videos()->sync($video);
-
         }
 
-        if($request->file('video')) {
+        $video_file = false;
+
+        if ($request->remote_video_id) {
+            parse_str(file_get_contents('https://youtube.com/get_video_info?video_id=' . $request->remote_video_id), $info);
+            if( !empty($info) && $info['status'] == 'ok') {
+                $streams = $info['url_encoded_fmt_stream_map']; //the video's location info
+                $streams = explode(',', $streams);
+                foreach($streams as $stream) {
+                    parse_str($stream, $data);
+                    $url = $data['url'];
+                    $info = pathinfo($url);
+                    $contents = file_get_contents($url);
+                    $fileName = sha1(time());
+                    $file = '/tmp/' . $fileName;
+                    file_put_contents($file, $contents);
+                    $video_file = new UploadedFile($file, $fileName);
+                    break;
+                }
+            } else {
+                $video->delete();
+                return 'ERROR';
+            }
+        } elseif ($request->file('video')) {
+            $video_file = $request->file('video');
+        }
+
+        if ($video_file) {
 
             $hashids = new Hashids('', 10);
 
-            $file_path = $request->file('video')->store( 'videos/' . $hashids->encode( auth()->user()->id ) );
+            $file_path = $video_file->store( 'videos/' . $hashids->encode( auth()->user()->id ) );
 
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
-
 
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
@@ -81,7 +102,7 @@ class VideoController extends BaseController
 
             $tmp_file_name = sha1(time()) . '.jpg';
 
-            $vid = $ffmpeg->open($request->file('video'));
+            $vid = $ffmpeg->open($video_file);
 
             $vid_object = $vid->frame(TimeCode::fromSeconds(1))->save('', false, true);
 
@@ -97,7 +118,6 @@ class VideoController extends BaseController
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
-
         }
 
         return $this->itemResponse($video);
