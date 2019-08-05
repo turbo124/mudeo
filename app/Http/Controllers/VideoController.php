@@ -52,7 +52,8 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-        $video = Video::create($request->all());
+        $video = new Video();
+        $video->fill($request->all());
 
         // TODO remove this/change db schema
         if (! $video->url) {
