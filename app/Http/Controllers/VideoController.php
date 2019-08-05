@@ -74,6 +74,10 @@ class VideoController extends BaseController
 
         if ($request->remote_video_id) {
             parse_str(file_get_contents('https://youtube.com/get_video_info?video_id=' . $request->remote_video_id), $info);
+
+            $player = json_decode($info['player_response']);
+            $videoDetails = $player->videoDetails;
+
             if( !empty($info) && $info['status'] == 'ok') {
                 $streams = $info['url_encoded_fmt_stream_map']; //the video's location info
                 $streams = explode(',', $streams);
@@ -123,6 +127,11 @@ class VideoController extends BaseController
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
+        }
+
+        if ($request->remote_video_id) {
+            $video->duration = (intval($videoDetails->lengthSeconds) + 1) * 1000;
+            $video->description = $videoDetails->title;
         }
 
         return $this->itemResponse($video);
