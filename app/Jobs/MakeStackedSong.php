@@ -116,6 +116,7 @@ class MakeStackedSong implements ShouldQueue
         $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video->save($format, $filepath);
 
+        return $filepath;
     }
 
     private function getUrl($video)
