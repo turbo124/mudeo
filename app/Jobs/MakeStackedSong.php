@@ -71,33 +71,28 @@ class MakeStackedSong implements ShouldQueue
             'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
         ]);
 
-        $video = false;
+        $video = $ffmpeg->open($this->getUrl($tracks[0]->video));
         $count = 0;
         $minHeight = $this->getMinHeight($tracks);
-        $filterVideo = '[0:v]';
-        $filterAudio = '[0:a]';
+        $filterVideo = '';
+        $filterAudio = '';
 
         foreach ($tracks as $track) {
-            if ($video) {
+            $delay = $track->delay;
 
-                $delay = $track->delay;
-
+            if ($count > 0) {
                 if ($delay < 0) {
                     $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
                 }
-
                 $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
-
-                $filterVideo = "[{$count}:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
-                    . "[{$count}-blank:v][{$count}:v]concat[{$count}-delay:v];"
-                    . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                    . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "{$filterVideo}[{$count}-delay:v]";
-                $filterAudio .= "[{$count}-volume:a]";
-            } else {
-                $video = $ffmpeg->open($this->getUrl($track->video));
-                $filterAudio .= "volume=" . ($track->volume / 100) . "[0-volume:a];[0-volume:a]";
             }
+
+            $filterVideo = "[{$count}:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
+                . "[{$count}-blank:v][{$count}:v]concat[{$count}-delay:v];"
+                . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
+                . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                . "{$filterVideo}[{$count}-delay:v]";
+            $filterAudio .= "[{$count}-volume:a]";
 
             $count++;
         }
@@ -137,7 +132,7 @@ class MakeStackedSong implements ShouldQueue
     {
         $height_collection = collect();
 
-        foreach($song_videos as $song_video)
+        foreach($tracks as $song_video)
         {
             $song = $song_video->song;
             $video = $song_video->video;
