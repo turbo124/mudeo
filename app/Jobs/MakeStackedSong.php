@@ -84,10 +84,11 @@ class MakeStackedSong implements ShouldQueue
 
                 $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
 
-                if ($track->delay > 0 && false) {
-                    $filterVideo = "[{$count}:v]trim=duration={$track->delay},geq=0:128:128[{$count}-blank:v];'
-                        . '[{$count}-blank:v][{$count}:v]concat[{$count}-delayed:v];'
-                        . '[{$count}:a]adelay={$track->delay}|{$track->delay}[{$count}-delayed:a];{$filterVideo}[{$count}-delayed:v]";
+                // To delay the track we're adding a blank video before it
+                if ($track->delay > 0) {
+                    $filterVideo = "[{$count}:v]trim=duration={$track->delay},geq=0:128:128[{$count}-blank:v];"
+                        . "[{$count}-blank:v][{$count}:v]concat[{$count}-delayed:v];"
+                        . "[{$count}:a]adelay={$track->delay}|{$track->delay}[{$count}-delayed:a];{$filterVideo}[{$count}-delayed:v]";
                     $filterAudio .= "[{$count}-delayed:a]";
                 } else {
                     $filterVideo .= "[{$count}:v]";
@@ -102,6 +103,7 @@ class MakeStackedSong implements ShouldQueue
         }
 
         $filter = "{$filterVideo}hstack=inputs={$count}[v];{$filterAudio}amix=inputs={$count}[a]";
+        \Log::error('Filter: ' . $filter);
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
             ->addFilter(new SimpleFilter(['-map', '[v]']))
