@@ -24,25 +24,11 @@ class MakeStackedSong implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $song;
-
-    protected $ffmpeg;
-
     protected $working_dir;
-    /**
-    * Create a new job instance.
-    *
-    * @return void
-    */
 
     public function __construct(Song $song)
     {
         $this->song = $song;
-        $this->ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-            'ffprobe.binaries' => '/usr/bin/ffprobe',
-            'timeout'          => 0, // The timeout for the underlying process
-            'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
-        ]);
         $this->working_dir = sha1(time()) . '/';
     }
 
@@ -54,162 +40,15 @@ class MakeStackedSong implements ShouldQueue
     public function handle()
     {
         // Don't include YouTube videos in the stacked video
-        $song_videos = $this->song->local_song_videos;
+        $tracks = $this->song->local_song_videos;
 
         File::makeDirectory(storage_path($this->working_dir), 0755, true, true);
 
         $client = new Client();
-
-        foreach($song_videos as $song_video)
-        {
-            $song = $song_video->song;
-            $video = $song_video->video;
-            $client->request('GET', $video->url, ['sink' => storage_path($this->working_dir) . basename($video->url)]);
+        foreach ($tracks as $track) {
+            $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
-        /* Loop and make sure all videos are equal height*/
-        $height_collection = collect();
-
-        foreach($song_videos as $song_video)
-        {
-            $song = $song_video->song;
-            $video = $song_video->video;
-
-            $ffprobe = FFProbe::create([
-                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                'ffprobe.binaries' => '/usr/bin/ffprobe',
-                'timeout'          => 0, // The timeout for the underlying process
-                'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
-            ]);
-
-            $dimension = $ffprobe
-                ->streams(storage_path($this->working_dir) . basename($video->url)) // extracts streams informations
-                ->videos()                      // filters video streams
-                ->first()                       // returns the first video stream
-                ->getDimensions();
-
-            $height = $dimension->getWidth();
-            //             $height = $dimension->getHeight();
-
-            $height_collection->push($height);
-        }
-
-        /* Compare all video heights, if there is a discrepency, resize all videos to ->min() */
-
-        /* There is no obvious way to resize*/
-        if($height_collection->min() != $height_collection->max())
-        {
-            foreach($song_videos as $song_video)
-            {
-                $song = $song_video->song;
-                $video = $song_video->video;
-
-                $this->ffmpeg = FFMpeg::create([
-                    'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                    'ffprobe.binaries' => '/usr/bin/ffprobe',
-                    'timeout'          => 0, // The timeout for the underlying process
-                    'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
-                ]);
-
-                $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
-                $vid->addFilter(new SimpleFilter(['-vf', 'scale=-1:'.$height_collection->min()]))
-                    ->filters();
-
-                $format = new X264();
-                $format->setPasses(1)
-                    ->setAudioCodec('aac')
-                    ->setKiloBitrate(1200)
-                    ->setAudioChannels(2)
-                    ->setAudioKiloBitrate(126);
-
-                $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url));
-
-                File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
-            }
-        }
-
-
-        foreach($song_videos as $song_video)
-        {
-            $song = $song_video->song;
-            $video = $song_video->video;
-
-            if($song_video->volume != 100)
-            {
-                $volume = $song_video->volume / 100;
-                $this->ffmpeg = FFMpeg::create([
-                    'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-                    'ffprobe.binaries' => '/usr/bin/ffprobe',
-                    'timeout'          => 0, // The timeout for the underlying process
-                    'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
-                ]);
-
-                $vid = $this->ffmpeg->open(storage_path($this->working_dir) . basename($video->url));
-
-                $format = new X264();
-                $format->setPasses(1)
-                    ->setAudioCodec('aac')
-                    ->setKiloBitrate(1200)
-                    ->setAudioChannels(2)
-                    ->setAudioKiloBitrate(126)
-                    ->setAdditionalParameters(['-filter:a', 'volume='.$volume]);
-
-                $vid->save($format, storage_path($this->working_dir) . 'temp_' .basename($video->url));
-
-                File::move(storage_path($this->working_dir) . 'temp_' .basename($video->url), storage_path($this->working_dir) . basename($video->url));
-            }
-        }
-
-        $fileSongVideoPath = $this->buildStackedVideo($song_videos);
-        $hashids = new Hashids('', 10);
-        $disk = Storage::disk('gcs');
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
-        $file = file_get_contents($fileSongVideoPath);
-        $disk->put($remote_storage_file_name, $file);
-
-        File::deleteDirectory(storage_path($this->working_dir));
-    }
-
-
-    public function buildStackedVideo($song_videos)
-    {
-        $x = count($song_videos);
-
-        $mp4_file = $song_videos->toArray();
-
-        if($x >= 2)
-        {
-            $filepath = $this->inAndOut(storage_path($this->working_dir) . basename($mp4_file[0]['video']['url']), storage_path($this->working_dir) . basename($mp4_file[1]['video']['url']), $mp4_file[1]['delay']);
-
-            unset($mp4_file[0]);
-            unset($mp4_file[1]);
-
-            if(array_key_exists(2, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[2]['video']['url']), $mp4_file[2]['delay']);
-                unset($mp4_file[2]);
-            }
-
-            if(array_key_exists(3, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[3]['video']['url']), $mp4_file[3]['delay']);
-                unset($mp4_file[3]);
-            }
-
-            if(array_key_exists(4, $mp4_file)) {
-                $filepath = $this->inAndOut($filepath, storage_path($this->working_dir) . basename($mp4_file[4]['video']['url']), $mp4_file[4]['delay']);
-                unset($mp4_file[4]);
-            }
-
-            return $filepath;
-        }
-        else
-        {
-            return $song_videos->first()->video->url;
-        }
-
-    }
-
-    public function inAndOut($parentVideo, $childVideo, $delay)
-    {
         $this->ffmpeg = FFMpeg::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe',
@@ -217,23 +56,37 @@ class MakeStackedSong implements ShouldQueue
             'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
         ]);
 
-        $video = $this->ffmpeg->open($parentVideo);
+        $video = false;
+        $count = 0;
+        $filterVideo = '[0:v]';
+        $filterAudio = '[0:a]';
 
-        if ($delay < 0) {
-            $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+        foreach ($tracks as $track) {
+            if ($video) {
+                if ($track->delay < 0 && false) {
+                    $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+                }
+
+                $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
+
+                if ($track->delay > 0 && false) {
+
+                } else {
+                    $filterVideo .= "[{$count}:v]";
+                    $filterAudio .= "[{$count}:a]";
+                }
+
+            } else {
+                $video = $this->ffmpeg->open($this->getUrl($track->video));
+            }
+
+            $count++;
         }
 
-        $video->addFilter(new SimpleFilter(['-i', $childVideo]));
+        $filter = "{$filterVideo}hstack=inputs=2[v];{$filterAudio}amix=inputs=2[a]";
 
-        if ($delay > 0) {
-            $video->addFilter(new SimpleFilter(['-filter_complex', '[1:v]trim=duration=' . ($delay / 1000)
-                . ',geq=0:128:128[v1];[v1][1:v]concat[v2];[1:a]adelay=' . $delay . '|' . $delay
-                . '[a1];[0:v][v2]hstack=inputs=2[v];[0:a][a1]amix=inputs=2[a]']));
-        } else {
-            $video->addFilter(new SimpleFilter(['-filter_complex', '[0:v][1:v]hstack=inputs=2[v];[0:a][1:a]amix=inputs=2[a]']));
-        }
-
-        $video->addFilter(new SimpleFilter(['-map', '[v]']))
+        $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
+            ->addFilter(new SimpleFilter(['-map', '[v]']))
             ->addFilter(new SimpleFilter(['-map', '[a]']))
             ->addFilter(new SimpleFilter(['-ac', '2']))
             ->filters();
@@ -247,10 +100,21 @@ class MakeStackedSong implements ShouldQueue
             ->setAudioKiloBitrate(126)
             ->setAdditionalParameters(['-vprofile', 'baseline', '-level', 3.0, '-movflags', '+faststart']);
 
-        $filepath = sha1(time()) . '.mp4';
+        $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
+        $video->save($format, $filepath);
 
-        $video->save($format, storage_path($this->working_dir) . $filepath);
+        $hashids = new Hashids('', 10);
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $this->song->id ) . '.mp4';
+        $file = file_get_contents($filepath);
 
-        return storage_path($this->working_dir) . $filepath;
+        $disk = Storage::disk('gcs');
+        $disk->put($remote_storage_file_name, $file);
+
+        File::deleteDirectory(storage_path($this->working_dir));
+    }
+
+    private function getUrl($video)
+    {
+        return storage_path($this->working_dir) . basename($video->url);
     }
 }
