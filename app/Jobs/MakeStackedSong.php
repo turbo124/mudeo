@@ -78,7 +78,7 @@ class MakeStackedSong implements ShouldQueue
 
         foreach ($tracks as $track) {
             if ($video) {
-                $delay = $track->delay;                                
+                $delay = $track->delay;
                 if ($delay < 0) {
                     $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
                 }
@@ -87,10 +87,18 @@ class MakeStackedSong implements ShouldQueue
 
                 // To delay the track we're adding a blank video before it
                 if ($delay > 0) {
+                    /*
                     $filterVideo = "[{$count}:v]trim=duration={$delay},geq=0:128:128[{$count}-blank:v];"
                         . "[{$count}-blank:v][{$count}:v]concat[{$count}-delayed:v];"
                         . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delayed:a];{$filterVideo}[{$count}-delayed:v]";
                     $filterAudio .= "[{$count}-delayed:a]";
+                    */
+
+                    $filterVideo = "[{$count}:v]trim=duration={$delay},geq=0:128:128[v{$count}-blank];"
+                        . "[v{$count}-blank][{$count}:v]concat[v{$count}-delayed];"
+                        . "[{$count}:a]adelay={$delay}|{$delay}[a{$count}-delayed];{$filterVideo}[v{$count}-delayed]";
+                    $filterAudio .= "[a{$count}-delayed]";
+
                 } else {
                     $filterVideo .= "[{$count}:v]";
                     $filterAudio .= "[{$count}:a]";
