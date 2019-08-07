@@ -51,6 +51,11 @@ class Song extends EntityModel
         return $this->hasMany(SongVideo::class);
     }
 
+    public function local_song_videos()
+    {
+        return $this->hasMany(SongVideo::class)->local();
+    }
+
     public function song_likes()
     {
         return $this->hasMany(SongLike::class);

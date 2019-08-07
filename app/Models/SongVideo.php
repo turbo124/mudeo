@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class SongVideo extends Pivot
 {
@@ -32,4 +33,9 @@ class SongVideo extends Pivot
     {
     	return $this->hasOne(Video::class, 'id', 'video_id');
     }
-}
+
+    public function scopeLocal (Builder $query) {
+        return $query->whereHas('video', function ($q) {
+                $q->where('remote_video_id', '=', '');
+        });
+    }}
