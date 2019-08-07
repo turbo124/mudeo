@@ -94,8 +94,7 @@ class MakeStackedSong implements ShouldQueue
                     . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
                     . "{$filterVideo}[{$count}-delay:v]";
             } else {
-                $filterVideo =
-                    . "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
                     . "{$filterVideo}[{$count}:v]";
             }
 
