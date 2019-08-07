@@ -50,8 +50,10 @@ class MakeStackedSong implements ShouldQueue
         }
 
         $filepath = $this->createVideo($tracks);
+
         $hashids = new Hashids('', 10);
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $this->song->id ) . '.mp4';
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) .
+            '/' . $hashids->encode( $this->song->id ) . '.mp4';
         $file = file_get_contents($filepath);
 
         $disk = Storage::disk('gcs');
@@ -76,14 +78,17 @@ class MakeStackedSong implements ShouldQueue
 
         foreach ($tracks as $track) {
             if ($video) {
-                if ($track->delay < 0 && false) {
+                if ($track->delay < 0) {
                     $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
                 }
 
                 $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
 
                 if ($track->delay > 0 && false) {
-
+                    $filterVideo = "[{$count}:v]trim=duration={$track->delay},geq=0:128:128[{$count}-blank:v];'
+                        . '[{$count}-blank:v][{$count}:v]concat[{$count}-delayed:v];'
+                        . '[{$count}:a]adelay={$track->delay}|{$track->delay}[{$count}-delayed:a];{$filterVideo}[{$count}-delayed:v]";
+                    $filterAudio .= "[{$count}-delayed:a]";
                 } else {
                     $filterVideo .= "[{$count}:v]";
                     $filterAudio .= "[{$count}:a]";
