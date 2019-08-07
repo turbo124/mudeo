@@ -73,6 +73,7 @@ class MakeStackedSong implements ShouldQueue
 
         $video = false;
         $count = 0;
+        $minHeight = $this->getMinHeight($tracks);
         $filterVideo = '[0:v]';
         $filterAudio = '[0:a]';
 
@@ -101,7 +102,14 @@ class MakeStackedSong implements ShouldQueue
             $count++;
         }
 
-        $filter = "{$filterVideo}hstack=inputs={$count}[v];{$filterAudio}amix=inputs={$count}[a]";
+        if (true) {
+            $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
+        } else {
+            $filter = "{$filterVideo}hstack=inputs={$count}[v];";
+        }
+
+        $filter .= "{$filterAudio}amix=inputs={$count}[a]";
+
         \Log::error('Filter: ' . $filter);
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
@@ -123,6 +131,35 @@ class MakeStackedSong implements ShouldQueue
         $video->save($format, $filepath);
 
         return $filepath;
+    }
+
+    private function getMinHeight($tracks)
+    {
+        $height_collection = collect();
+
+        foreach($song_videos as $song_video)
+        {
+            $song = $song_video->song;
+            $video = $song_video->video;
+
+            $ffprobe = FFProbe::create([
+                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/bin/ffprobe',
+                'timeout'          => 0, // The timeout for the underlying process
+                'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
+            ]);
+
+            $dimension = $ffprobe
+                ->streams($this->getUrl($video)) // extracts streams informations
+                ->videos()                      // filters video streams
+                ->first()                       // returns the first video stream
+                ->getDimensions();
+
+            $height = $dimension->getWidth();
+            $height_collection->push($height);
+        }
+
+        return $height_collection->min();
     }
 
     private function getUrl($video)
