@@ -49,7 +49,20 @@ class MakeStackedSong implements ShouldQueue
             $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
-        $this->ffmpeg = FFMpeg::create([
+        $filepath = $this->createVideo($tracks);
+        $hashids = new Hashids('', 10);
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $this->song->id ) . '.mp4';
+        $file = file_get_contents($filepath);
+
+        $disk = Storage::disk('gcs');
+        $disk->put($remote_storage_file_name, $file);
+
+        File::deleteDirectory(storage_path($this->working_dir));
+    }
+
+    private function createVideo($tracks)
+    {
+        $ffmpeg = FFMpeg::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe',
             'timeout'          => 0, // The timeout for the underlying process
@@ -77,13 +90,13 @@ class MakeStackedSong implements ShouldQueue
                 }
 
             } else {
-                $video = $this->ffmpeg->open($this->getUrl($track->video));
+                $video = $ffmpeg->open($this->getUrl($track->video));
             }
 
             $count++;
         }
 
-        $filter = "{$filterVideo}hstack=inputs=2[v];{$filterAudio}amix=inputs=2[a]";
+        $filter = "{$filterVideo}hstack=inputs={$count}[v];{$filterAudio}amix=inputs={$count}[a]";
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
             ->addFilter(new SimpleFilter(['-map', '[v]']))
@@ -103,14 +116,6 @@ class MakeStackedSong implements ShouldQueue
         $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video->save($format, $filepath);
 
-        $hashids = new Hashids('', 10);
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) . '/' . $hashids->encode( $this->song->id ) . '.mp4';
-        $file = file_get_contents($filepath);
-
-        $disk = Storage::disk('gcs');
-        $disk->put($remote_storage_file_name, $file);
-
-        File::deleteDirectory(storage_path($this->working_dir));
     }
 
     private function getUrl($video)
