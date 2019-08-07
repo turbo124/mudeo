@@ -87,17 +87,24 @@ class MakeStackedSong implements ShouldQueue
                 $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
             }
 
-            $filterVideo = "[{$count}:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
-                . "[{$count}-blank:v][{$count}:v]concat[{$count}-delay:v];"
-                . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                . "{$filterVideo}[{$count}-delay:v]";
+            if ($delay > 0) {
+                $filterVideo = "[{$count}:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
+                    . "[{$count}-blank:v][{$count}:v]concat[{$count}-delay:v];"
+                    . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
+                    . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                    . "{$filterVideo}[{$count}-delay:v]";
+            } else {
+                $filterVideo =
+                    . "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                    . "{$filterVideo}[{$count}:v]";
+            }
+
             $filterAudio .= "[{$count}-volume:a]";
 
             $count++;
         }
 
-        if (true) {
+        if (false) {
             $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
         } else {
             $filter = "{$filterVideo}hstack=inputs={$count}[v];";
