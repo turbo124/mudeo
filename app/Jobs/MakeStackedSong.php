@@ -103,8 +103,10 @@ class MakeStackedSong implements ShouldQueue
             $count++;
         }
 
-        if (false) {
+        if ($this->song->layout == 'grid') {
             $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
+        } else if ($this->song->layout == 'column') {
+            $filter = "{$filterVideo}vstack=inputs={$count}[v];";
         } else {
             $filter = "{$filterVideo}hstack=inputs={$count}[v];";
         }

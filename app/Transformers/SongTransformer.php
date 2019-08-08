@@ -38,6 +38,7 @@ class SongTransformer extends EntityTransformer
             'deleted_at' => $song->deleted_at,
             'video_url' => $song->video_url,
             'count_like' => (int) $song->count_like,
+            'layout' => $song->layout,
         ];
     }
 
