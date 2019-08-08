@@ -72,8 +72,9 @@ class MakeStackedSong implements ShouldQueue
         ]);
 
         $video = $ffmpeg->open($this->getUrl($tracks[0]->video));
+        $layout = $this->song->layout;
         $count = 0;
-        $minHeight = $this->getMinHeight($tracks);
+        $sizes = $this->getSize($tracks);
         $filterVideo = '';
         $filterAudio = '';
 
@@ -87,15 +88,23 @@ class MakeStackedSong implements ShouldQueue
                 $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
             }
 
+            if ($layout == 'grid') {
+                $filterVideo = "[{$count}:v]scale=-1:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+            } else if ($layout == 'column') {
+                $filterVideo = "[{$count}:v]scale=-1:{$sizes->min_width}[{$count}-scale:v];$filterVideo";
+            } else {
+                $filterVideo = "[{$count}:v]scale={$sizes->min_width}:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+            }
+
             if ($delay > 0) {
-                $filterVideo = "[{$count}:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
+                $filterVideo = "[{$count}-scale:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
                     . "[{$count}-blank:v][{$count}:v]concat[{$count}-delay:v];"
                     . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
                     . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
                     . "{$filterVideo}[{$count}-delay:v]";
             } else {
                 $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "{$filterVideo}[{$count}:v]";
+                    . "{$filterVideo}[{$count}-scale:v]";
             }
 
             $filterAudio .= "[{$count}-volume:a]";
@@ -103,9 +112,9 @@ class MakeStackedSong implements ShouldQueue
             $count++;
         }
 
-        if ($this->song->layout == 'grid') {
+        if ($layout == 'grid') {
             $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
-        } else if ($this->song->layout == 'column') {
+        } else if ($layout == 'column') {
             $filter = "{$filterVideo}vstack=inputs={$count}[v];";
         } else {
             $filter = "{$filterVideo}hstack=inputs={$count}[v];";
@@ -136,9 +145,10 @@ class MakeStackedSong implements ShouldQueue
         return $filepath;
     }
 
-    private function getMinHeight($tracks)
+    private function getSizes($tracks)
     {
         $height_collection = collect();
+        $width_collection = collect();
 
         foreach($tracks as $song_video)
         {
@@ -158,11 +168,17 @@ class MakeStackedSong implements ShouldQueue
                 ->first()                       // returns the first video stream
                 ->getDimensions();
 
-            $height = $dimension->getWidth();
-            $height_collection->push($height);
+            $height_collection->push($dimension->getWidth());
+            $width_collection->push($dimension->getHeight());
         }
 
-        return $height_collection->min();
+        $data = new \stdClass;
+        $data->min_height = $height_collection->min();
+        $data->max_height = $height_collection->max();
+        $data->min_width = $width_collection->min();
+        $data->max_width = $width_collection->max();
+
+        return $daa;
     }
 
     private function getUrl($video)
