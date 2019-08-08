@@ -182,8 +182,8 @@ class MakeStackedSong implements ShouldQueue
                 ->first()                       // returns the first video stream
                 ->getDimensions();
 
-            $height_collection->push($dimension->getHeight());
-            $width_collection->push($dimension->getWidth());
+            $height_collection->push($dimension->getWidth());
+            $width_collection->push($dimension->getHeight());
 
             \Log::error("VIDEO SIZE: width: " . $dimension->getWidth(). ", height: " . $dimension->getHeight());
         }
