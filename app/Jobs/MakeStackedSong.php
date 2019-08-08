@@ -91,7 +91,8 @@ class MakeStackedSong implements ShouldQueue
 
             if ($layout == 'grid') {
                 $width = $sizes->min_width;
-                $height = $sizes->min_height;
+                //$height = $sizes->min_height;
+                $height = -1;
                 \Log::error("GRID: Width: $width, Height: $height");
                 $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
             } else if ($layout == 'column') {
