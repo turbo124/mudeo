@@ -36,7 +36,7 @@ class SongTransformer extends EntityTransformer
             'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
-            'video_url' => $song->video_url . '?updated_at=' . $this->updated_at,
+            'video_url' => $song->video_url . '?updated_at=' . $song->updated_at,
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
         ];
