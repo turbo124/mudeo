@@ -90,12 +90,17 @@ class MakeStackedSong implements ShouldQueue
             }
 
             if ($layout == 'grid') {
-                $filterVideo = "[{$count}:v]scale={$sizes->max_width}:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                $width = $sizes->max_width;
+                $height = $sizes->max_height;
             } else if ($layout == 'column') {
-                $filterVideo = "[{$count}:v]scale={$sizes->min_width}:{$sizes->max_height}[{$count}-scale:v];$filterVideo";
-            } else {
-                $filterVideo = "[{$count}:v]scale={$sizes->min_width}:{$sizes->min_height}:force_original_aspect_ratio=increase,crop={$sizes->min_width}:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                $width = $sizes->min_width;
+                $height = $sizes->max_height;
+            } else if ($layout == 'row') {
+                $width = $sizes->max_width;
+                $height = $sizes->min_height;
             }
+
+            $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
 
             if ($delay > 0) {
                 /*
