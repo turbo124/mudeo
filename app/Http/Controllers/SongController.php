@@ -170,8 +170,9 @@ class SongController extends BaseController
 
         if ($request->input('song_videos')) {
 
-            foreach($request->input('song_videos') as $song_video)
-            {
+            $videosIds = [];
+
+            foreach ($request->input('song_videos') as $song_video) {
                 $sv = SongVideo::firstOrNew([
                     'song_id' => $song->id,
                     'video_id' => $song_video['video']['id']
@@ -185,6 +186,13 @@ class SongController extends BaseController
                 }
 
                 $sv->save();
+                $videosIds[] = $sv->video_id;
+            }
+
+            foreach ($song->song_videos as $song_video) {
+                if (!in_array($song_video->video_id, $videosIds)) {
+                    $song_video->delete();
+                }
             }
 
             MakeStackedSong::dispatch($song);
