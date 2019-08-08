@@ -92,10 +92,13 @@ class MakeStackedSong implements ShouldQueue
             if ($layout == 'grid') {
                 $width = $sizes->min_width;
                 $height = $sizes->min_height;
+                \Log::error("GRID: Width: $width, Height: $height");
                 $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
             } else if ($layout == 'column') {
+                \Log::error("COL: Width: {$sizes->min_width}");
                 $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-1[{$count}-scale:v];$filterVideo";
             } else if ($layout == 'row') {
+                \Log::error("ROW: Width: {$sizes->min_height}");
                 $filterVideo = "[{$count}:v]scale=-1:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
             }
 
@@ -179,8 +182,10 @@ class MakeStackedSong implements ShouldQueue
                 ->first()                       // returns the first video stream
                 ->getDimensions();
 
-            $height_collection->push($dimension->getWidth());
-            $width_collection->push($dimension->getHeight());
+            $height_collection->push($dimension->getHeight());
+            $width_collection->push($dimension->getWidth());
+
+            \Log::error("VIDEO SIZE: width: ${$dimension->getWidth()}, height: ${$dimension->getHeight()}");
         }
 
         $data = new \stdClass;
@@ -188,6 +193,7 @@ class MakeStackedSong implements ShouldQueue
         $data->max_height = $height_collection->max();
         $data->min_width = $width_collection->min();
         $data->max_width = $width_collection->max();
+        \Log::error("VIDEO SIZES: min_height: {$data->min_height}, max_height: {$data->max_height}, min_width: {$data->min_width}, max_width: {$data->max_width}");
 
         return $data;
     }
