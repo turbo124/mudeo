@@ -74,7 +74,7 @@ class MakeStackedSong implements ShouldQueue
         $video = $ffmpeg->open($this->getUrl($tracks[0]->video));
         $layout = $this->song->layout;
         $count = 0;
-        $sizes = $this->getSize($tracks);
+        $sizes = $this->getSizes($tracks);
         $filterVideo = '';
         $filterAudio = '';
 
