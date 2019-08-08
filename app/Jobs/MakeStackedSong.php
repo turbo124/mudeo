@@ -65,7 +65,8 @@ class MakeStackedSong implements ShouldQueue
     private function createVideo($tracks)
     {
         $ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
+            //'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe',
             'timeout'          => 0, // The timeout for the underlying process
             'ffmpeg.threads'   => 12,   // The number of threads that FFMpeg should use
