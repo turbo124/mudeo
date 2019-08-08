@@ -168,8 +168,8 @@ class MakeStackedSong implements ShouldQueue
                 ->first()                       // returns the first video stream
                 ->getDimensions();
 
-            $height_collection->push($dimension->getWidth());
-            $width_collection->push($dimension->getHeight());
+            $height_collection->push($dimension->getHeight());
+            $width_collection->push($dimension->getWidth());
         }
 
         $data = new \stdClass;
