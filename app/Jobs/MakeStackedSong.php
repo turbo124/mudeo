@@ -178,7 +178,7 @@ class MakeStackedSong implements ShouldQueue
         $data->min_width = $width_collection->min();
         $data->max_width = $width_collection->max();
 
-        return $daa;
+        return $data;
     }
 
     private function getUrl($video)
