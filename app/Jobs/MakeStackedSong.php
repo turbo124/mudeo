@@ -8,6 +8,7 @@ use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\Filters\Audio\SimpleFilter;
 use FFMpeg\Format\Video\X264;
+use FFMpeg\Coordinate\TimeCode;
 use GuzzleHttp\Client;
 use Hashids\Hashids;
 use Illuminate\Bus\Queueable;
@@ -40,7 +41,8 @@ class MakeStackedSong implements ShouldQueue
     public function handle()
     {
         // Don't include YouTube videos in the stacked video
-        $tracks = $this->song->local_song_videos;
+        $song = $this->song;
+        $tracks = $song->local_song_videos;
 
         File::makeDirectory(storage_path($this->working_dir), 0755, true, true);
 
@@ -49,11 +51,14 @@ class MakeStackedSong implements ShouldQueue
             $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
-        $filepath = $this->createVideo($tracks);
+        $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
+        $video = $this->createVideo($tracks, $filepath);
+
+        $this->saveThumbnail($song, $video);
 
         $hashids = new Hashids('', 10);
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $this->song->user_id ) .
-            '/' . $hashids->encode( $this->song->id ) . '.mp4';
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) .
+            '/' . $hashids->encode( $song->id ) . '.mp4';
         $file = file_get_contents($filepath);
 
         $disk = Storage::disk('gcs');
@@ -62,7 +67,7 @@ class MakeStackedSong implements ShouldQueue
         File::deleteDirectory(storage_path($this->working_dir));
     }
 
-    private function createVideo($tracks)
+    private function createVideo($tracks, $filepath)
     {
         $ffmpeg = FFMpeg::create([
             //'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
@@ -153,10 +158,26 @@ class MakeStackedSong implements ShouldQueue
             ->setAudioKiloBitrate(126)
             ->setAdditionalParameters(['-vprofile', 'baseline', '-level', 3.0, '-movflags', '+faststart']);
 
-        $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video->save($format, $filepath);
 
-        return $filepath;
+        return $video;
+    }
+
+    private function saveThumbnail($song, $video)
+    {
+        $tmp_file_name = sha1(time()) . '.jpg';
+        $vid_object = $video->frame(TimeCode::fromSeconds(1))->save('', false, true);
+        $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
+
+        $disk = Storage::disk(config('filesystems.default'));
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $video->user_id ) . '/' . $hashids->encode( $video->user_id ) . '_' .$tmp_file_name;
+
+        $disk->put($remote_storage_file_name, Storage::disk('local')->get($tmp_file_name));
+        Storage::disk('local')->delete($tmp_file_name);
+
+        $song->thumbnail_url = $disk->url($remote_storage_file_name);
+        $song->is_rendered = true;
+        $song->save();
     }
 
     private function getSizes($tracks)

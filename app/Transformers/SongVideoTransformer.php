@@ -25,6 +25,7 @@ class SongVideoTransformer extends EntityTransformer
             'delay' => (int) $song_video->delay,
             'updated_at' => $song_video->updated_at,
             'deleted_at' => $song_video->deleted_at,
+            'is_included' => (bool) $song_video->is_included,
         ];
     }
 
