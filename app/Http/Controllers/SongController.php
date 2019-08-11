@@ -171,6 +171,26 @@ class SongController extends BaseController
             $trackIds = [];
 
             foreach ($request->input('song_videos') as $song_video) {
+                $id = $song_video['id'];
+                if ($id > 0) {
+                    $trackIds[] = $sv->id;
+                }
+            }
+
+            \Log::error('Clean up ');
+            foreach ($song->song_videos as $song_video) {
+                \Log::error('id: ' . $song_video->id);
+                \Log::error('in array: ' . in_array($song_video->id, $trackIds));
+
+                if (!in_array($song_video->id, $trackIds)) {
+                    \Log::error('deleting');
+                    $song_video->delete();
+                } else {
+                    \Log::error('not deleting');
+                }
+            }
+
+            foreach ($request->input('song_videos') as $song_video) {
                 \Log::error('Lookup track id ' . $song_video['id']);
                 $sv = SongVideo::whereId($song_video['id'])->first();
 
@@ -188,24 +208,8 @@ class SongController extends BaseController
                 $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
-                $sv->fresh();
-
-                $trackIds[] = $sv->id;
 
                 \Log::error('Adding track id: ' . $sv->id);
-            }
-
-            \Log::error('Clean up ');
-            foreach ($song->song_videos as $song_video) {
-                \Log::error('id: ' . $song_video->id);
-                \Log::error('in array: ' . in_array($song_video->id, $trackIds));
-
-                if (!in_array($song_video->id, $trackIds)) {
-                    \Log::error('deleting');
-                    $song_video->delete();
-                } else {
-                    \Log::error('not deleting');
-                }
             }
 
             MakeStackedSong::dispatch($song);
