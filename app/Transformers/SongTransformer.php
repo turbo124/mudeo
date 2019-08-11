@@ -39,7 +39,7 @@ class SongTransformer extends EntityTransformer
             'video_url' => $song->video_url ? ($song->video_url . '?updated_at=' . $song->updated_at) : '',
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
-            'thumbnail_url' => $song->thumbnail_url,
+            'thumbnail_url' => $song->thumbnail_url ?: '',
             'is_rendered' => (bool) $song->is_rendered,
         ];
     }
