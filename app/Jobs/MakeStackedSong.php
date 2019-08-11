@@ -54,8 +54,6 @@ class MakeStackedSong implements ShouldQueue
         $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video = $this->createVideo($tracks, $filepath);
 
-        $this->saveThumbnail($song, $video);
-
         $hashids = new Hashids('', 10);
         $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) .
             '/' . $hashids->encode( $song->id ) . '.mp4';
@@ -63,6 +61,8 @@ class MakeStackedSong implements ShouldQueue
 
         $disk = Storage::disk('gcs');
         $disk->put($remote_storage_file_name, $file);
+
+        $this->saveThumbnail($song, $video);
 
         File::deleteDirectory(storage_path($this->working_dir));
     }
@@ -78,73 +78,76 @@ class MakeStackedSong implements ShouldQueue
         ]);
 
         $video = $ffmpeg->open($this->getUrl($tracks[0]->video));
-        $layout = $this->song->layout;
-        $count = 0;
-        $sizes = $this->getSizes($tracks);
-        $filterVideo = '';
-        $filterAudio = '';
 
-        foreach ($tracks as $track) {
-            $delay = $track->delay;
+        if (count($tracks) > 1) {
+            $layout = $this->song->layout;
+            $count = 0;
+            $sizes = $this->getSizes($tracks);
+            $filterVideo = '';
+            $filterAudio = '';
 
-            if ($count > 0) {
-                if ($delay < 0) {
-                    $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+            foreach ($tracks as $track) {
+                $delay = $track->delay;
+
+                if ($count > 0) {
+                    if ($delay < 0) {
+                        $video->addFilter(new SimpleFilter(['-ss', $delay / 1000 * -1]));
+                    }
+                    $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
                 }
-                $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
+
+                if ($layout == 'grid') {
+                    $width = $sizes->min_width;
+                    $height = $sizes->min_height;
+                    $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
+                } else if ($layout == 'column') {
+                    $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
+                } else if ($layout == 'row') {
+                    $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                }
+
+                if ($delay > 0) {
+                    $filterVideo = "[{$count}-scale:v]tpad=start_duration=" . ($delay / 1000) . "[{$count}-delay:v];"
+                        . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
+                        . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                        . "{$filterVideo}[{$count}-delay:v]";
+
+                    /*
+                    $filterVideo = "{$filterVideo}[{$count}-scale:v]split[{$count}-scale-a:v][{$count}-scale-b:v];"
+                        . "[{$count}-scale-a:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
+                        . "[{$count}-blank:v][{$count}-scale-b:v]concat[{$count}-delay:v];"
+                        . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
+                        . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                        . "[{$count}-delay:v]";
+                        */
+                } else {
+                    $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                        . "{$filterVideo}[{$count}-scale:v]";
+                }
+
+                $filterAudio .= "[{$count}-volume:a]";
+
+                $count++;
             }
 
             if ($layout == 'grid') {
-                $width = $sizes->min_width;
-                $height = $sizes->min_height;
-                $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
+                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
             } else if ($layout == 'column') {
-                $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
-            } else if ($layout == 'row') {
-                $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
-            }
-
-            if ($delay > 0) {
-                $filterVideo = "[{$count}-scale:v]tpad=start_duration=" . ($delay / 1000) . "[{$count}-delay:v];"
-                    . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                    . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "{$filterVideo}[{$count}-delay:v]";
-
-                /*
-                $filterVideo = "{$filterVideo}[{$count}-scale:v]split[{$count}-scale-a:v][{$count}-scale-b:v];"
-                    . "[{$count}-scale-a:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
-                    . "[{$count}-blank:v][{$count}-scale-b:v]concat[{$count}-delay:v];"
-                    . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                    . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "[{$count}-delay:v]";
-                    */
+                $filter = "{$filterVideo}vstack=inputs={$count}[v];";
             } else {
-                $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "{$filterVideo}[{$count}-scale:v]";
+                $filter = "{$filterVideo}hstack=inputs={$count}[v];";
             }
 
-            $filterAudio .= "[{$count}-volume:a]";
+            $filter .= "{$filterAudio}amix=inputs={$count}[a]";
 
-            $count++;
+            $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
+                ->addFilter(new SimpleFilter(['-map', '[v]']))
+                ->addFilter(new SimpleFilter(['-map', '[a]']))
+                ->addFilter(new SimpleFilter(['-ac', '2']))
+                ->filters();
         }
-
-        if ($layout == 'grid') {
-            $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
-        } else if ($layout == 'column') {
-            $filter = "{$filterVideo}vstack=inputs={$count}[v];";
-        } else {
-            $filter = "{$filterVideo}hstack=inputs={$count}[v];";
-        }
-
-        $filter .= "{$filterAudio}amix=inputs={$count}[a]";
 
         \Log::error('Filter: ' . $filter);
-
-        $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
-            ->addFilter(new SimpleFilter(['-map', '[v]']))
-            ->addFilter(new SimpleFilter(['-map', '[a]']))
-            ->addFilter(new SimpleFilter(['-ac', '2']))
-            ->filters();
 
         $format = new X264();
 

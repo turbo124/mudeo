@@ -163,7 +163,7 @@ class SongController extends BaseController
     public function update(UpdateSongRequest $request, Song $song)
     {
         $song->fill($request->all());
-
+        $song->is_rendered = false;
         $song->save();
 
         if ($request->input('song_videos')) {
