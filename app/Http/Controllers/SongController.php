@@ -177,29 +177,19 @@ class SongController extends BaseController
                 }
             }
 
-            \Log::error('Clean up ');
             foreach ($song->song_videos as $song_video) {
-                \Log::error('id: ' . $song_video->id);
-                \Log::error('in array: ' . in_array($song_video->id, $trackIds));
-
                 if (!in_array($song_video->id, $trackIds)) {
-                    \Log::error('deleting');
                     $song_video->delete();
-                } else {
-                    \Log::error('not deleting');
                 }
             }
 
             foreach ($request->input('song_videos') as $song_video) {
-                \Log::error('Lookup track id ' . $song_video['id']);
                 $sv = SongVideo::whereId($song_video['id'])->first();
 
                 if (!$sv) {
                     $sv = new SongVideo();
                     $sv->song_id = $song->id;
                     $sv->video_id = $song_video['video']['id'];
-
-                    \Log::error('Not found, creating new track..');
                 }
 
                 $sv->volume = $song_video['volume'];
@@ -208,8 +198,6 @@ class SongController extends BaseController
                 $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
-
-                \Log::error('Adding track id: ' . $sv->id);
             }
 
             MakeStackedSong::dispatch($song);
