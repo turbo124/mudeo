@@ -97,21 +97,18 @@ class MakeStackedSong implements ShouldQueue
             if ($layout == 'grid') {
                 $width = $sizes->min_width;
                 $height = $sizes->min_height;
-                \Log::error("GRID: Width: $width, Height: $height");
                 $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
             } else if ($layout == 'column') {
-                \Log::error("COL: Width: {$sizes->min_width}");
                 $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
             } else if ($layout == 'row') {
-                \Log::error("ROW: Height: {$sizes->min_height}");
                 $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
             }
 
             if ($delay > 0) {
-                $filterVideo = "{$filterVideo}[{$count}-scale:v]tpad=start_duration=" . ($delay / 1000) . "[{$count}-delay:v];"
+                $filterVideo = "[{$count}-scale:v]tpad=start_duration=" . ($delay / 1000) . "[{$count}-delay:v];"
                     . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
                     . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                    . "[{$count}-delay:v]";
+                    . "{$filterVideo}[{$count}-delay:v]";
 
                 /*
                 $filterVideo = "{$filterVideo}[{$count}-scale:v]split[{$count}-scale-a:v][{$count}-scale-b:v];"
