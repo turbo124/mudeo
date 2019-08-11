@@ -171,7 +171,7 @@ class MakeStackedSong implements ShouldQueue
         $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
         $disk = Storage::disk(config('filesystems.default'));
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $video->user_id ) . '/' . $hashids->encode( $video->user_id ) . '_' .$tmp_file_name;
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->user_id ) . '_' .$tmp_file_name;
 
         $disk->put($remote_storage_file_name, Storage::disk('local')->get($tmp_file_name));
         Storage::disk('local')->delete($tmp_file_name);
