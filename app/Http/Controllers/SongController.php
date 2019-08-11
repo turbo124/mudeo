@@ -188,7 +188,7 @@ class SongController extends BaseController
                 $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
-                $sv = $sv->refresh();
+                $sv = $sv->fresh();
                 $trackIds[] = $sv->id;
                 \Log::error('Adding track id: ' . $sv->id);
             }
