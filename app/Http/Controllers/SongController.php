@@ -171,7 +171,7 @@ class SongController extends BaseController
             $trackIds = [];
 
             foreach ($request->input('song_videos') as $song_video) {
-                $sv = SongVideo::find($song_video->id)->first();
+                $sv = SongVideo::find($song_video['id'])->first();
 
                 if (!$sv) {
                     $sv = new SongVideo();
