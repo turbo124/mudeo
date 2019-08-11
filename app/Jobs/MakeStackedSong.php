@@ -211,8 +211,6 @@ class MakeStackedSong implements ShouldQueue
 
             $height_collection->push($dimension->getWidth());
             $width_collection->push($dimension->getHeight());
-
-            \Log::error("VIDEO SIZE: width: " . $dimension->getWidth(). ", height: " . $dimension->getHeight());
         }
 
         $data = new \stdClass;
@@ -220,7 +218,6 @@ class MakeStackedSong implements ShouldQueue
         $data->max_height = $height_collection->max();
         $data->min_width = $width_collection->min();
         $data->max_width = $width_collection->max();
-        \Log::error("VIDEO SIZES: min_height: {$data->min_height}, max_height: {$data->max_height}, min_width: {$data->min_width}, max_width: {$data->max_width}");
 
         return $data;
     }

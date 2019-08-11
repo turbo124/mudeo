@@ -81,10 +81,8 @@ class SongController extends BaseController
 
                 $sv->volume = $song_video['volume'];
                 $sv->order_id = $song_video['order_id'];
-
-                if (isset($song_video['delay'])) {
-                    $sv->delay = $song_video['delay'];
-                }
+                $sv->delay = isset($song_video['delay']) ? $song_video['delay'] : 0;
+                $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
             }
