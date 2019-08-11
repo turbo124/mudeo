@@ -188,7 +188,7 @@ class SongController extends BaseController
             }
 
             foreach ($song->song_videos as $song_video) {
-                if (!in_array($song_video->id, $trackIds)) {
+                if (!$song_video->wasRecentlyCreated() && !in_array($song_video->id, $trackIds)) {
                     $song_video->delete();
                 }
             }
