@@ -62,7 +62,7 @@ class MakeStackedSong implements ShouldQueue
         $disk = Storage::disk('gcs');
         $disk->put($remote_storage_file_name, $file);
 
-        $this->saveThumbnail($song, $video);
+        $this->saveThumbnail($song, $filepath);
 
         File::deleteDirectory(storage_path($this->working_dir));
     }
@@ -161,8 +161,15 @@ class MakeStackedSong implements ShouldQueue
         return $video;
     }
 
-    private function saveThumbnail($song, $video)
+    private function saveThumbnail($song, $filepath)
     {
+        $ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe'
+        ]);
+
+        $video = $ffmpeg->open($filepath);
+
         $hashids = new Hashids('', 10);
         $tmp_file_name = sha1(time()) . '.jpg';
         $vid_object = $video->frame(TimeCode::fromSeconds(1))->save('', false, true);
