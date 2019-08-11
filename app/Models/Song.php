@@ -22,6 +22,9 @@ class Song extends EntityModel
     	'user',
     	'include',
         'comments',
+        'url',
+        'video_url',
+        'thumbnail_url',
     ];
 
     use SoftDeletes;

@@ -134,12 +134,10 @@ class SongController extends BaseController
 
     private function songUrl($song, $hashedId)
     {
-
         $hashids = new Hashids('', 10);
-
         $user_hash = $hashids->encode($song->user->id);
 
-        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4';
+        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4?updated_at=' . $song->updated_at;
 
     }
 

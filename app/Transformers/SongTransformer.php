@@ -25,7 +25,7 @@ class SongTransformer extends EntityTransformer
             'id' => (int) $song->id,
             'user_id' => (int) $song->user_id,
             'title' => $song->title ?:'',
-            'url' => $song->url ? ($song->url . '?updated_at=' . $song->updated_at) : '',
+            'url' => $song->url ? $song->url : '',
             'description' => $song->description ?:'',
             'duration' => (int) $song->duration,
             'count_like' => (int) $song->count_like,
@@ -37,9 +37,9 @@ class SongTransformer extends EntityTransformer
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
             'video_url' => $song->video_url ? ($song->video_url . '?updated_at=' . $song->updated_at) : '',
+            'thumbnail_url' => $song->thumbnail_url ?: ($song->thumbnail_url . '?updated_at=' . $song->updated_at) : '',
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
-            'thumbnail_url' => $song->thumbnail_url ?: '',
             'is_rendered' => (bool) $song->is_rendered,
         ];
     }
