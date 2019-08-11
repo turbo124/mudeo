@@ -171,17 +171,18 @@ class SongController extends BaseController
             $trackIds = [];
 
             foreach ($request->input('song_videos') as $song_video) {
-                $sv = SongVideo::firstOrNew([
-                    'song_id' => $song->id,
-                    'video_id' => $song_video['video']['id']
-                ]);
+                $sv = SongVideo::find($song_video->id)->first();
+
+                if (!$sv) {
+                    $sv = new SongVideo();
+                    $sv->song_id = $song->id;
+                    $sv->video_id = $song_video['video']['id'];
+                }
 
                 $sv->volume = $song_video['volume'];
                 $sv->order_id = $song_video['order_id'];
-
-                if (isset($song_video['delay'])) {
-                    $sv->delay = $song_video['delay'];
-                }
+                $sv->delay = isset($song_video['delay']) ? $song_video['delay'] : 0;
+                $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
                 $trackIds[] = $sv->id;
