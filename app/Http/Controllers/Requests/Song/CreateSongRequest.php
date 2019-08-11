@@ -13,7 +13,7 @@ class CreateSongRequest extends Request
     {
         return $this->user()->id === $this->song->user_id;
     }
-  */  
+  */
     public function rules()
     {
         $this->sanitize();
@@ -30,14 +30,15 @@ class CreateSongRequest extends Request
     public function sanitize()
     {
         $input = $this->all();
-        
+
         $input['user_id'] = auth()->user()->id;
         $input['url'] = config('mudeo.app_url');
         $input['description'] = isset($input['description']) ? $input['description'] : ' ';
         $input['title'] = isset($input['title']) ? $input['title'] : ' ';
         $input['video_url'] = isset($input['video_url']) ? $input['video_url'] : ' ';
-        
-        $this->replace($input);     
+        $input['thumbnail_url'] = isset($input['thumbnail_url']) ? $input['thumbnail_url'] : ' ';
+
+        $this->replace($input);
     }
 
 }
