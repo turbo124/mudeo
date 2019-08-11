@@ -173,7 +173,7 @@ class SongController extends BaseController
             foreach ($request->input('song_videos') as $song_video) {
                 $id = $song_video['id'];
                 if ($id > 0) {
-                    $trackIds[] = $sv->id;
+                    $trackIds[] = $id;
                 }
             }
 
