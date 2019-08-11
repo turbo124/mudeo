@@ -165,6 +165,7 @@ class MakeStackedSong implements ShouldQueue
 
     private function saveThumbnail($song, $video)
     {
+        $hashids = new Hashids('', 10);
         $tmp_file_name = sha1(time()) . '.jpg';
         $vid_object = $video->frame(TimeCode::fromSeconds(1))->save('', false, true);
         $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
