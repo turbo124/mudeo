@@ -188,6 +188,7 @@ class SongController extends BaseController
                 $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
                 $sv->save();
+                $sv = $sv->refresh();
                 $trackIds[] = $sv->id;
                 \Log::error('Adding track id: ' . $sv->id);
             }
@@ -195,10 +196,9 @@ class SongController extends BaseController
             \Log::error('Clean up ');
             foreach ($song->song_videos as $song_video) {
                 \Log::error('id: ' . $song_video->id);
-                \Log::error('wasRecentlyCreated: ' . $song_video->wasRecentlyCreated);
                 \Log::error('in array: ' . in_array($song_video->id, $trackIds));
 
-                if (!$song_video->wasRecentlyCreated && !in_array($song_video->id, $trackIds)) {
+                if (!in_array($song_video->id, $trackIds)) {
                     \Log::error('deleting');
                     $song_video->delete();
                 } else {
