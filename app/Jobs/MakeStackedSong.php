@@ -147,8 +147,6 @@ class MakeStackedSong implements ShouldQueue
                 ->filters();
         }
 
-        \Log::error('Filter: ' . $filter);
-
         $format = new X264();
 
         $format->setPasses(1)
