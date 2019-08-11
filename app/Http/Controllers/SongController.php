@@ -170,7 +170,7 @@ class SongController extends BaseController
 
         if ($request->input('song_videos')) {
 
-            $videosIds = [];
+            $trackIds = [];
 
             foreach ($request->input('song_videos') as $song_video) {
                 $sv = SongVideo::firstOrNew([
@@ -186,11 +186,11 @@ class SongController extends BaseController
                 }
 
                 $sv->save();
-                $videosIds[] = $sv->video_id;
+                $trackIds[] = $sv->id;
             }
 
             foreach ($song->song_videos as $song_video) {
-                if (!in_array($song_video->video_id, $videosIds)) {
+                if (!in_array($song_video->id, $trackIds)) {
                     $song_video->delete();
                 }
             }

@@ -36,6 +36,7 @@ class SongVideo extends Pivot
 
     public function scopeLocal (Builder $query) {
         return $query->whereHas('video', function ($q) {
-                $q->where('remote_video_id', '=', '');
+                $q->where('remote_video_id', '=', '')
+                  ->where('is_included', '=', true);
         });
     }}
