@@ -187,9 +187,11 @@ class SongController extends BaseController
                 $sv->delay = isset($song_video['delay']) ? $song_video['delay'] : 0;
                 $sv->is_included = isset($song_video['is_included']) ? filter_var($song_video['is_included'], FILTER_VALIDATE_BOOLEAN) : true;
 
-                $sv->save()->fresh();
+                $sv->save();
+                $sv->fresh();
+
                 $trackIds[] = $sv->id;
-                
+
                 \Log::error('Adding track id: ' . $sv->id);
             }
 
