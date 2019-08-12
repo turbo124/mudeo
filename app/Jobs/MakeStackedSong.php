@@ -44,6 +44,10 @@ class MakeStackedSong implements ShouldQueue
         $song = $this->song;
         $tracks = $song->local_song_videos;
 
+        if (count($tracks) == 0) {
+            return;
+        }
+
         File::makeDirectory(storage_path($this->working_dir), 0755, true, true);
 
         $client = new Client();
