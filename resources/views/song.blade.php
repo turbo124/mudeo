@@ -17,19 +17,29 @@
 @section('body')
 	<style>
 		body {background-color:black}
+
+        vjs-custom {
+            height: 100%;
+            height: -moz-available;          /* WebKit-based browsers will ignore this. */
+            height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+            height: fill-available;
+        }
 	</style>
 
 	<p></p>
 
-
 	<center>
-		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a><p/>
+		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a>
+        |
+        <a href="https://twitter.com/mudeo_app" target="_blank" style="font-weight:100">FOLLOW US ON TWITTER</a>
 	</center>
+
+    <p></p>
 
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
-			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered'
-                autoplay controls preload='auto' poster='' data-setup='{}' height='100%'>
+			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
+                autoplay controls preload='auto' poster='' data-setup='{}'>
 				<source src='{{ $video_url }}' type='video/mp4'>
 					<p class='vjs-no-js'>
 						To view this video please enable JavaScript, and consider upgrading to a web browser that
