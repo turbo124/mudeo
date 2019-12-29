@@ -115,15 +115,6 @@ class MakeStackedSong implements ShouldQueue
                         . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
                         . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
                         . "{$filterVideo}[{$count}-delay:v]";
-
-                    /*
-                    $filterVideo = "{$filterVideo}[{$count}-scale:v]split[{$count}-scale-a:v][{$count}-scale-b:v];"
-                        . "[{$count}-scale-a:v]trim=duration=" . ($delay / 1000) . ",geq=0:128:128[{$count}-blank:v];"
-                        . "[{$count}-blank:v][{$count}-scale-b:v]concat[{$count}-delay:v];"
-                        . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                        . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
-                        . "[{$count}-delay:v]";
-                        */
                 } else {
                     $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
                         . "{$filterVideo}[{$count}-scale:v]";
@@ -164,8 +155,9 @@ class MakeStackedSong implements ShouldQueue
                 '-level', 3.0,
                 '-movflags', 'faststart',
                 '-pix_fmt', 'yuv420p',
-                '-s', '1920x1080',
-                '-aspect', '16:9',
+                '-filter_complex', 'scale=iw*min(1\,min(1920/iw\,1080/ih)):-1',
+                //'-s', '1920x1080',
+                //'-aspect', '16:9',
                 //'-preset', 'slow',
                 //'-strict', 'experimental',
                 //'-c:a', 'libfdk_aac',
