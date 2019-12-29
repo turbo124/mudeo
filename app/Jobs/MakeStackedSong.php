@@ -126,11 +126,11 @@ class MakeStackedSong implements ShouldQueue
             }
 
             if ($layout == 'grid') {
-                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0:scale=-2:1080[v];";
+                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:1080[v];";
             } else if ($layout == 'column') {
-                $filter = "{$filterVideo}vstack=inputs={$count}:scale=-2:1080[v];";
+                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:1080[v];";
             } else {
-                $filter = "{$filterVideo}hstack=inputs={$count}:scale=1920:-2[v];";
+                $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale=1920:-2[v];";
             }
 
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
