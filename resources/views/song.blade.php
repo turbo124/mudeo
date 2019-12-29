@@ -18,10 +18,6 @@
 	<style>
 		body {background-color:black}
 
-        .vjs-custom {
-            object-fit: cover;
-        }
-
 	</style>
 
 	<p></p>
@@ -33,7 +29,7 @@
 
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
-			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom' autoplay controls preload='auto' poster='' data-setup='{}'>
+			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-fill' autoplay controls preload='auto' poster='' data-setup='{}'>
 				<source src='{{ $video_url }}' type='video/mp4'>
 					<p class='vjs-no-js'>
 						To view this video please enable JavaScript, and consider upgrading to a web browser that
