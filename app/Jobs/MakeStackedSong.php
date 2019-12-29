@@ -126,11 +126,11 @@ class MakeStackedSong implements ShouldQueue
             }
 
             if ($layout == 'grid') {
-                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v];";
+                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0:scale=-2:1080[v];";
             } else if ($layout == 'column') {
-                $filter = "{$filterVideo}vstack=inputs={$count}[v];";
+                $filter = "{$filterVideo}vstack=inputs={$count}:scale=-2:1080[v];";
             } else {
-                $filter = "{$filterVideo}hstack=inputs={$count}[v];";
+                $filter = "{$filterVideo}hstack=inputs={$count}:scale=1920:-2[v];";
             }
 
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
@@ -165,8 +165,7 @@ class MakeStackedSong implements ShouldQueue
                 //'-c:a', 'aac',
             ]);
 
-        $video->addFilter(new SimpleFilter(['-filter_complex', '[v]scale=iw*min(1\,min(640/iw\,360/ih)):-1[v]']))
-              ->save($format, $filepath);
+        $video->save($format, $filepath);
 
         return $video;
     }
