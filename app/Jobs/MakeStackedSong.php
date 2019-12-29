@@ -163,6 +163,7 @@ class MakeStackedSong implements ShouldQueue
                 '-level', 3.0,
                 '-movflags', '+faststart',
                 '-pix_fmt', 'yuv420p',
+                '-vcodec', 'h264',
             ]);
 
         $video->save($format, $filepath);
