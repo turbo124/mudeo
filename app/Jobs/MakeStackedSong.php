@@ -164,7 +164,7 @@ class MakeStackedSong implements ShouldQueue
                 //'-c:a', 'aac',
             ]);
 
-        $video->addFilter(new SimpleFilter(['-filter_complex', '[v]"if(gt(a,1080/1920),1080,-1)":"if(gt(a,1080/1920),-1,1920)"[v]']))
+        $video->addFilter(new SimpleFilter(['-filter_complex', '[v]scale=iw*min(1,min(1920/iw,1080/ih)):-1[v]']))
                 ->save($format, $filepath);
 
         return $video;
