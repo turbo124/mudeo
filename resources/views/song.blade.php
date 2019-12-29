@@ -17,6 +17,16 @@
 @section('body')
 	<style>
 		body {background-color:black}
+
+        video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translateX(calc((100% - 100vw) / 2));
+        }
+
 	</style>
 
 	<p></p>

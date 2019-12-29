@@ -155,14 +155,6 @@ class MakeStackedSong implements ShouldQueue
                 '-level', 3.0,
                 '-movflags', 'faststart',
                 '-pix_fmt', 'yuv420p',
-                //'-vf', "[in]scale=min(1280,iw):min(720,ih):force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2[out]",
-                //'-filter_complex', 'scale=iw*min(1\,min(1920/iw\,1080/ih)):-1',
-                //'-s', '1920x1080',
-                //'-aspect', '16:9',
-                //'-preset', 'slow',
-                //'-strict', 'experimental',
-                //'-c:a', 'libfdk_aac',
-                //'-c:a', 'aac',
             ]);
 
         $video->save($format, $filepath);
