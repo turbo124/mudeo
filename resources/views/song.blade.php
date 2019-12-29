@@ -17,34 +17,6 @@
 @section('body')
 	<style>
 		body {background-color:black}
-
-
-        /* https://stackoverflow.com/a/47039499/497368
-           Make the video relative, instead of absolute, so that
-           the parent container will size based on the video. Also,
-           note the max-height rule. Note the line-height 0 is to prevent
-           a small artifact on the bottom of the video.
-         */
-        .video-js.vjs-fluid,
-        .video-js.vjs-16-9,
-        .video-js.vjs-4-3,
-        video.video-js,
-        video.vjs-tech, {
-          max-height: calc(100vh - 64px);
-          position: relative !important;
-          width: 100%;
-          height: auto !important;
-          max-width: 100% !important;
-          padding-top: 0 !important;
-          line-height: 0;
-        }
-
-        /* Fix the control bar due to us resetting the line-height on the video-js */
-        .vjs-control-bar {
-          line-height: 1;
-        }
-
-
 	</style>
 
 	<p></p>
@@ -69,8 +41,8 @@
 
 	<script>
 		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
-		var player = videojs('my-video');
-		player.fluid(true);
+		//var player = videojs('my-video');
+		//player.fluid(true);
 	</script>
 
 @endsection
