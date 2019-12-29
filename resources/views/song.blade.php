@@ -18,7 +18,7 @@
 	<style>
 		body {background-color:black}
 
-        video[poster]{
+        video {
             object-fit: fill;
         }
 
