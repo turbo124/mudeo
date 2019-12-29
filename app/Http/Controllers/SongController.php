@@ -10,6 +10,9 @@ use App\Jobs\MakeStackedSong;
 use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
+use App\Models\User;
+use App\Notifications\SongSubmitted;
+use App\Notifications\SongApproved;
 use App\Transformers\SongTransformer;
 use Hashids\Hashids;
 use Illuminate\Http\Request;
@@ -36,10 +39,10 @@ class SongController extends BaseController
     public function index(SongFilters $filters)
     {
         $songs = Song::filter($filters)
-            ->with('song_videos.video', 'user', 'comments.user');
+                    ->with('song_videos.video', 'user', 'comments.user')
+                    ->where('is_approved', '=', 1);
 
         return $this->listResponse($songs);
-
     }
 
     /**
@@ -90,8 +93,29 @@ class SongController extends BaseController
             MakeStackedSong::dispatch($song);
         }
 
+        User::admin()->notify(new SongSubmitted($song));
+
         return $this->itemResponse($song->fresh());
     }
+
+    public function approve($hashedId)
+    {
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::findOrFail($hashed_id[0]);
+
+        if ($song->is_approved && request()->tweet != 'force') {
+            return redirect($song->url);
+        }
+
+        $song->is_approved = true;
+        $song->save();
+
+        $song->notify(new SongApproved());
+
+        return redirect('/')->with('status', 'Song has been approved!');
+    }
+
 
     /**
      * Display the specified resource.

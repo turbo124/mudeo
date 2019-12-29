@@ -78,4 +78,20 @@ class Song extends EntityModel
     {
        return $this->hasMany(static::class, 'parent_id');
     }
+
+    public function twitterHandle()
+    {
+        if (! $this->twitter_url) {
+            return false;
+        }
+
+        $parts = explode('/', $this->twitter_url);
+        $part = $parts[count($parts) - 1];
+        $part = ltrim($part, '@');
+
+        $parts = explode('?', $part);
+        $part = $parts[0];
+
+        return '@' . $part;
+    }
 }

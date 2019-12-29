@@ -92,4 +92,8 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(SongFlag::class);
     }
 
+    public static function admin()
+    {
+        return static::where('is_admin', '=', true)->first();
+    }
 }
