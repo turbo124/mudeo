@@ -29,7 +29,7 @@
 
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
-			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-fill'
+			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered'
                 autoplay controls preload='auto' poster='' data-setup='{}' width='100%' height='100%'>
 				<source src='{{ $video_url }}' type='video/mp4'>
 					<p class='vjs-no-js'>
@@ -44,6 +44,7 @@
 		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
 		var player = videojs('my-video');
 		//player.fluid(true);
+        player.fill(true);
 	</script>
 
 @endsection
