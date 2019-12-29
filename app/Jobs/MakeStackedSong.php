@@ -160,12 +160,12 @@ class MakeStackedSong implements ShouldQueue
             ->setAudioKiloBitrate(126)
             ->setAdditionalParameters([
                 '-vcodec', 'libx264',
-                '-vprofile', 'baseline',
+                '-vprofile', 'main',
                 '-level', 3.0,
                 '-movflags', '+faststart',
                 '-pix_fmt', 'yuv420p',
-                '-strict', '-2',
-                '-c:a', 'aac',
+                //'-strict', '-2',
+                //'-c:a', 'aac',
             ]);
 
         $video->save($format, $filepath);
