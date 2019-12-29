@@ -160,8 +160,6 @@ class MakeStackedSong implements ShouldQueue
             ->setAudioKiloBitrate(126)
             ->setAdditionalParameters([
                 '-vcodec', 'libx264',
-                '-vpre', 'slower',
-                '-vpre', 'main',
                 '-vprofile', 'baseline',
                 '-level', 3.0,
                 '-movflags', '+faststart',
