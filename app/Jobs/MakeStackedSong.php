@@ -162,10 +162,11 @@ class MakeStackedSong implements ShouldQueue
                 '-vcodec', 'libx264',
                 '-vprofile', 'baseline',
                 '-level', 3.0,
-                '-movflags', '+faststart',
+                '-movflags', 'faststart',
                 '-pix_fmt', 'yuv420p',
-                '-strict', 'experimental',
-                '-c:a', 'libfdk_aac',
+                '-preset', 'slow',
+                //'-strict', 'experimental',
+                //'-c:a', 'libfdk_aac',
                 //'-c:a', 'aac',
             ]);
 
