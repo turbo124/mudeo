@@ -19,7 +19,9 @@
 		body {background-color:black}
 
         .vjs-custom {
+            position: absolute;
             object-fit: cover;
+            top: 0;
         }
 
 	</style>
