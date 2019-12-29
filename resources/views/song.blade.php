@@ -22,15 +22,14 @@
 
 	<p></p>
 
-
 	<center>
 		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a><p/>
 	</center>
 
 	<div class="container-fluid">
-		<div class="d-flex justify-content-center" style="width:100%;height:100%;">
+		<div class="d-flex justify-content-center">
 			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered'
-                autoplay controls preload='auto' poster='' data-setup='{}' width='100%' height='100%'>
+                autoplay controls preload='auto' poster='' data-setup='{}' height='100%'>
 				<source src='{{ $video_url }}' type='video/mp4'>
 					<p class='vjs-no-js'>
 						To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -43,7 +42,7 @@
 	<script>
 		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
 		var player = videojs('my-video');
-		player.fill(true);
+		player.fluid(true);
 	</script>
 
 @endsection
