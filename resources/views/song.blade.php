@@ -18,13 +18,8 @@
 	<style>
 		body {background-color:black}
 
-        video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            transform: translateX(calc((100% - 100vw) / 2));
+        video[poster]{
+            object-fit: fill;
         }
 
 	</style>
@@ -38,7 +33,7 @@
 
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
-			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered' autoplay controls preload='auto' poster='' data-setup='{}' width="100%" height="100%">
+			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered' autoplay controls preload='auto' poster='' data-setup='{}'>
 				<source src='{{ $video_url }}' type='video/mp4'>
 					<p class='vjs-no-js'>
 						To view this video please enable JavaScript, and consider upgrading to a web browser that
