@@ -56,7 +56,6 @@ class MakeStackedSong implements ShouldQueue
             $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
-        // Standard Def
         $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video = $this->createVideo($tracks, $filepath);
 
@@ -70,22 +69,10 @@ class MakeStackedSong implements ShouldQueue
 
         $this->saveThumbnail($song, $filepath);
 
-        // Lower def for Twitter
-        $filepath = storage_path($this->working_dir) . sha1(time()) . '_low_res.mp4';
-        $video = $this->createVideo($tracks, $filepath, true);
-
-        $hashids = new Hashids('', 10);
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) .
-            '/' . $hashids->encode( $song->id ) . '_low_res.mp4';
-        $file = file_get_contents($filepath);
-
-        $disk = Storage::disk('gcs');
-        $disk->put($remote_storage_file_name, $file);
-
         File::deleteDirectory(storage_path($this->working_dir));
     }
 
-    private function createVideo($tracks, $filepath, $lowRes = false)
+    private function createVideo($tracks, $filepath)
     {
         $ffmpeg = FFMpeg::create([
             //'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
@@ -139,13 +126,8 @@ class MakeStackedSong implements ShouldQueue
                 $count++;
             }
 
-            if ($lowRes) {
-                $width = 640;
-                $height = 480;
-            } else {
-                $width = 1920;
-                $height = 1080;
-            }
+            $width = 1920;
+            $height = 1080;
 
             if ($layout == 'grid') {
                 $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";

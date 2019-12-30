@@ -15,9 +15,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
   <link href="https://vjs.zencdn.net/7.7.4/video-js.css" rel="stylesheet">
-
-  <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-  <script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
   <script src='https://vjs.zencdn.net/7.7.4/video.js'></script>
 
     @yield('head')
