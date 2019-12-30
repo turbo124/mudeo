@@ -70,8 +70,8 @@ class CalculateAudioVolumes implements ShouldQueue
                 if (intval($time) > 10000) {
                     break;
                 }
-            } else {
-                $parts = explode('-', $item);
+            } else if (strpos($item, '=-') !== false) {
+                $parts = explode('=-', $item);
                 $volume = floatval($parts[1]);
                 $times[$time] = $volume;
                 if ($volume > $max) {
