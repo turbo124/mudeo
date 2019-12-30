@@ -12,11 +12,14 @@
     <meta name="twitter:image" content="{{ $song->thumbnail_url }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
+    <meta name="twitter:player" content="{{ $song->video_url }}">
 @endsection
 
 @section('body')
 	<style>
-		body {background-color:black}
+		body {
+            background-color:black
+        }
 
         vjs-custom {
             height: 100%;
@@ -30,7 +33,9 @@
 
 	<center>
 		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a>
-        |
+
+        &nbsp;&nbsp; <span style="color:white">|</span> &nbsp;&nbsp;
+
         <a href="https://twitter.com/mudeo_app" target="_blank" style="font-weight:100">FOLLOW US ON TWITTER</a>
 	</center>
 
