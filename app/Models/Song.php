@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Song extends EntityModel
 {
+    use Notifiable;
     use Filterable;
 
     protected $guarded = [
