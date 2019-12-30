@@ -10,7 +10,8 @@
     <meta name="twitter:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
     <meta name="twitter:description" content="{{ $song->description }}">
     <meta name="twitter:image" content="{{ $song->thumbnail_url }}">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:site" content="mudeo_app">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
     <meta name="twitter:player" content="{{ str_replace('.mp4', '_low_res.mp4', $song->video_url) }}">
 @endsection
