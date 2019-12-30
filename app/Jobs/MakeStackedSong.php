@@ -19,6 +19,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use League\OAuth1\Client\Server\Twitter;
 
 class MakeStackedSong implements ShouldQueue
 {
@@ -55,6 +56,7 @@ class MakeStackedSong implements ShouldQueue
             $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
+        // Standard Def
         $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
         $video = $this->createVideo($tracks, $filepath);
 
@@ -68,10 +70,22 @@ class MakeStackedSong implements ShouldQueue
 
         $this->saveThumbnail($song, $filepath);
 
+        // Lower def for Twitter
+        $filepath = storage_path($this->working_dir) . sha1(time()) . '_low_res.mp4';
+        $video = $this->createVideo($tracks, $filepath, true);
+
+        $hashids = new Hashids('', 10);
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) .
+            '/' . $hashids->encode( $song->id ) . '_low_res.mp4';
+        $file = file_get_contents($filepath);
+
+        $disk = Storage::disk('gcs');
+        $disk->put($remote_storage_file_name, $file);
+
         File::deleteDirectory(storage_path($this->working_dir));
     }
 
-    private function createVideo($tracks, $filepath)
+    private function createVideo($tracks, $filepath, $lowRes = false)
     {
         $ffmpeg = FFMpeg::create([
             //'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
@@ -125,12 +139,20 @@ class MakeStackedSong implements ShouldQueue
                 $count++;
             }
 
-            if ($layout == 'grid') {
-                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:1080[v];";
-            } else if ($layout == 'column') {
-                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:1080[v];";
+            if ($lowRes) {
+                $width = 640;
+                $height = 480;
             } else {
-                $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale=1920:-2[v];";
+                $width = 1920;
+                $height = 1080;
+            }
+
+            if ($layout == 'grid') {
+                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
+            } else if ($layout == 'column') {
+                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
+            } else {
+                $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale={$width}:-2[v];";
             }
 
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
