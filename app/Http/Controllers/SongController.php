@@ -38,9 +38,12 @@ class SongController extends BaseController
 
     public function index(SongFilters $filters)
     {
+        $userId = auth()->check() ? auth()->user()->id : 0;
+
         $songs = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user')
-                    ->where('is_approved', '=', 1);
+                    ->where('is_approved', '=', 1)
+                    ->orWhere('user_id', '=', $userId);
 
         return $this->listResponse($songs);
     }
