@@ -32,6 +32,7 @@ class VideoTransformer extends EntityTransformer
             'updated_at' => $video->updated_at,
             'deleted_at' => $video->deleted_at,
             'remote_video_id' => $video->remote_video_id,
+            'volume_data' => $video->volume_data ? json_decode($video->volume_data) : new \stdClass,
         ];
     }
 
