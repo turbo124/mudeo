@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Models\Song;
 use App\Models\Video;
+use App\Jobs\CalculateAudioVolumes;
 use App\Transformers\VideoTransformer;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
@@ -127,6 +128,8 @@ class VideoController extends BaseController
 
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
+
+            CalculateAudioVolumes::dispatch($video);
         }
 
         if ($request->remote_video_id) {
