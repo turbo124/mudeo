@@ -12,7 +12,7 @@
     <meta name="twitter:image" content="{{ $song->thumbnail_url }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
-    <meta name="twitter:player" content="{{ $song->video_url }}">
+    <meta name="twitter:player" content="{{ str_replace('.mp4', '_low_res.mp4', $song->video_url) }}">
 @endsection
 
 @section('body')
