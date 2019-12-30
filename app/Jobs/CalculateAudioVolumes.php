@@ -43,7 +43,7 @@ class CalculateAudioVolumes implements ShouldQueue
     {
         // Don't include YouTube videos in the stacked video
         $video = $this->video;
-        $filePath = $this->working_dir . '/log.txt';
+        $filePath = $this->working_dir . 'log.txt';
 
         shell_exec("ffmpeg -i {$video->url} -af astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file={$filePath} -f null -");
 
