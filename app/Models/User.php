@@ -96,4 +96,20 @@ class User extends Authenticatable implements CanResetPassword
     {
         return static::where('id', '=', 2)->first();
     }
+
+    public function twitterHandle()
+    {
+        if (! $this->twitter_social_url) {
+            return false;
+        }
+
+        $parts = explode('/', $this->twitter_social_url);
+        $part = $parts[count($parts) - 1];
+        $part = ltrim($part, '@');
+
+        $parts = explode('?', $part);
+        $part = $parts[0];
+
+        return '@' . $part;
+    }
 }

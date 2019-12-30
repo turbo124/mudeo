@@ -20,7 +20,7 @@ class SongApproved extends Notification
     {
         $tweet = 'New Song!! 🙌 ' . $song->title . ' 🎵 🎶';
 
-        if ($handle = $song->twitterHandle()) {
+        if ($handle = $song->user->twitterHandle()) {
             $tweet .= ' ' . $handle;
         }
 
