@@ -94,6 +94,6 @@ class User extends Authenticatable implements CanResetPassword
 
     public static function admin()
     {
-        return static::where('is_admin', '=', true)->first();
+        return static::where('id', '=', 2)->first();
     }
 }

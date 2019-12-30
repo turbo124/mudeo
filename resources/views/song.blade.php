@@ -22,7 +22,7 @@
         }
 
         vjs-custom {
-            height: 100%;
+            height: 90%;
             height: -moz-available;          /* WebKit-based browsers will ignore this. */
             height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
             height: fill-available;
@@ -34,7 +34,7 @@
 	<center>
 		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a>
 
-        &nbsp;&nbsp; <span style="color:white">|</span> &nbsp;&nbsp;
+        &nbsp;&nbsp; <span style="color:white">•</span> &nbsp;&nbsp;
 
         <a href="https://twitter.com/mudeo_app" target="_blank" style="font-weight:100">FOLLOW US ON TWITTER</a>
 	</center>
