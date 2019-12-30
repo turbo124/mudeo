@@ -18,11 +18,15 @@ class SongApproved extends Notification
 
     public function toTwitter($song)
     {
-        $tweet = 'New Song!! 🙌 ' . $song->title . ' 🎵 🎶';
+        $tweet = "New Song by ";
 
         if ($handle = $song->user->twitterHandle()) {
-            $tweet .= ' ' . $handle;
+            $tweet .= $handle;
+        } else {
+            $tweet .= $song->user->handle;
         }
+
+        $tweet .= "!! 🙌 " . $song->title . " 🎵 🎶";
 
         $tweet .= "\n" . $song->url;
 
