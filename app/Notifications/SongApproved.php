@@ -26,7 +26,7 @@ class SongApproved extends Notification
             $tweet .= $song->user->handle;
         }
 
-        $tweet .= "!! 🙌 " . $song->title . " 🎵 🎶";
+        $tweet .= " 🙌 " . $song->title . " 🎵 🎶";
 
         $tweet .= "\n" . $song->url;
 
