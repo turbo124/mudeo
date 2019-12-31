@@ -53,6 +53,8 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
+        \Log::error('store video 1');
+
         $video = new Video();
         $video->fill($request->all());
 
@@ -72,6 +74,8 @@ class VideoController extends BaseController
         }
 
         $video_file = false;
+
+        \Log::error('store video 2');
 
         if ($request->remote_video_id) {
             \Log::error('remote_video_id');
