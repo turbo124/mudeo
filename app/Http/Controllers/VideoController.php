@@ -74,6 +74,7 @@ class VideoController extends BaseController
         $video_file = false;
 
         if ($request->remote_video_id) {
+            \Log::error('remote_video_id');
             parse_str(file_get_contents('https://youtube.com/get_video_info?video_id=' . $request->remote_video_id), $info);
 
             $player = json_decode($info['player_response']);
@@ -98,11 +99,12 @@ class VideoController extends BaseController
                 return 'ERROR';
             }
         } elseif ($request->file('video')) {
+            \Log::error('video file');
             $video_file = $request->file('video');
         }
 
         if ($video_file) {
-
+            \Log::error('has video file');
             $hashids = new Hashids('', 10);
 
             $file_path = $video_file->store( 'videos/' . $hashids->encode( auth()->user()->id ) );
@@ -130,7 +132,7 @@ class VideoController extends BaseController
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
 
-            //CalculateAudioVolumes::dispatchNow($video);
+            CalculateAudioVolumes::dispatchNow($video);
         }
 
         if ($request->remote_video_id) {
