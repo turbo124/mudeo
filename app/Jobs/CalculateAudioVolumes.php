@@ -45,13 +45,16 @@ class CalculateAudioVolumes implements ShouldQueue
         $video = $this->video;
         $filePath = storage_path($this->working_dir) . 'log.txt';
 
+        \Log::error("Handle - URL: " . $video->url);
+
+        if (!$video->url) {
+            return;
+        }
+
         File::makeDirectory(storage_path($this->working_dir), 0755, true, true);
 
         $command = "ffmpeg -i {$video->url} -af astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file={$filePath} -f null -";
-        \Log::error("command: $command");
-
         $response = shell_exec($command);
-        \Log::error("response: $response");
 
         if (file_exists($filePath)) {
             $data = file_get_contents($filePath);
