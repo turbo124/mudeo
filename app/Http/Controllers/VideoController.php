@@ -129,7 +129,7 @@ class VideoController extends BaseController
             $video->thumbnail_url = $disk->url($remote_storage_file_name);
             $video->save();
 
-            CalculateAudioVolumes::dispatch($video);
+            CalculateAudioVolumes::dispatchNow($video);
         }
 
         if ($request->remote_video_id) {
