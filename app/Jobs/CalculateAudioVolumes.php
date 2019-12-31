@@ -75,7 +75,11 @@ class CalculateAudioVolumes implements ShouldQueue
                     $parts = explode('=-', $item);
                     $volume = floatval($parts[1]);
 
-                    if ($volume > 10) {
+                    if ($volume < 20) {
+                        $min = 20;
+                    } else if ($volume > 100) {
+                        $max = 100;
+                    } else {
                         $times[$time] = $volume;
                         if ($volume > $max) {
                             $max = $volume;
@@ -91,6 +95,7 @@ class CalculateAudioVolumes implements ShouldQueue
             }
 
             $video->volume_data = json_encode($obj);
+            $video->max_volume = round($max, 4);
             $video->save();
         }
 
