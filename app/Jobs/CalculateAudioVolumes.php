@@ -74,11 +74,14 @@ class CalculateAudioVolumes implements ShouldQueue
                 } else if (strpos($item, '=-') !== false) {
                     $parts = explode('=-', $item);
                     $volume = floatval($parts[1]);
-                    $times[$time] = $volume;
-                    if ($volume > $max) {
-                        $max = $volume;
-                    } else if ($volume < $min) {
-                        $min = $volume;
+
+                    if ($volume > 10) {
+                        $times[$time] = $volume;
+                        if ($volume > $max) {
+                            $max = $volume;
+                        } else if ($volume < $min) {
+                            $min = $volume;
+                        }
                     }
                 }
             }
@@ -91,6 +94,6 @@ class CalculateAudioVolumes implements ShouldQueue
             $video->save();
         }
 
-        File::deleteDirectory(storage_path($this->working_dir));
+        //File::deleteDirectory(storage_path($this->working_dir));
     }
 }
