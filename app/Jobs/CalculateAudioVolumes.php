@@ -53,45 +53,43 @@ class CalculateAudioVolumes implements ShouldQueue
         $response = shell_exec($command);
         \Log::error("response: $response");
 
-        if (!file_exists($filePath)) {
-            continue;
-        }
+        if (file_exists($filePath)) {
+            $data = file_get_contents($filePath);
+            $data = explode("\n", $data);
 
-        $data = file_get_contents($filePath);
-        $data = explode("\n", $data);
+            $obj = new \stdClass;
+            $time = 0;
+            $times = [];
+            $min = 99999;
+            $max = 0;
 
-        $obj = new \stdClass;
-        $time = 0;
-        $times = [];
-        $min = 99999;
-        $max = 0;
-
-        foreach ($data as $item) {
-            if (substr($item, 0, 5) == 'frame') {
-                preg_match_all('/:([\d\.]*)/', $item, $matches);
-                $time = ltrim($matches[0][2], ':');
-                $time = (floor($time) * 1000) + (($time - floor($time)) * 1000);
-                if (intval($time) > 10000) {
-                    break;
-                }
-            } else if (strpos($item, '=-') !== false) {
-                $parts = explode('=-', $item);
-                $volume = floatval($parts[1]);
-                $times[$time] = $volume;
-                if ($volume > $max) {
-                    $max = $volume;
-                } else if ($volume < $min) {
-                    $min = $volume;
+            foreach ($data as $item) {
+                if (substr($item, 0, 5) == 'frame') {
+                    preg_match_all('/:([\d\.]*)/', $item, $matches);
+                    $time = ltrim($matches[0][2], ':');
+                    $time = (floor($time) * 1000) + (($time - floor($time)) * 1000);
+                    if (intval($time) > 10000) {
+                        break;
+                    }
+                } else if (strpos($item, '=-') !== false) {
+                    $parts = explode('=-', $item);
+                    $volume = floatval($parts[1]);
+                    $times[$time] = $volume;
+                    if ($volume > $max) {
+                        $max = $volume;
+                    } else if ($volume < $min) {
+                        $min = $volume;
+                    }
                 }
             }
-        }
 
-        foreach ($times as $time => $volume) {
-            $obj->$time = round($max - $volume, 4);
-        }
+            foreach ($times as $time => $volume) {
+                $obj->$time = round($max - $volume, 4);
+            }
 
-        $video->volume_data = json_encode($obj);
-        $video->save();
+            $video->volume_data = json_encode($obj);
+            $video->save();
+        }
 
         File::deleteDirectory(storage_path($this->working_dir));
     }
