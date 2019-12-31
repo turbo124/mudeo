@@ -97,6 +97,7 @@ class CalculateAudioVolumes implements ShouldQueue
                 $obj->$time = round($max - $volume, 4);
             }
 
+            $video = $video->fresh();
             $video->volume_data = json_encode($obj);
             $video->max_volume = round($max, 4);
             $video->save();

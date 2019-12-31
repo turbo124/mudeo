@@ -109,6 +109,7 @@ class VideoController extends BaseController
 
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
+            \Log::error('URL: ' . $video->url);
 
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
