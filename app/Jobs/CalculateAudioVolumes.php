@@ -53,6 +53,10 @@ class CalculateAudioVolumes implements ShouldQueue
         $response = shell_exec($command);
         \Log::error("response: $response");
 
+        if (!file_exists($filePath)) {
+            continue;
+        }
+
         $data = file_get_contents($filePath);
         $data = explode("\n", $data);
 
