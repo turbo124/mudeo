@@ -53,8 +53,6 @@ class VideoController extends BaseController
      */
     public function store(CreateVideoRequest $request)
     {
-        \Log::error('store video 1');
-
         $video = new Video();
         $video->fill($request->all());
 
@@ -66,19 +64,19 @@ class VideoController extends BaseController
             $video->thumbnail_url = '';
         }
 
+        /*
         $video->save();
 
         if ($request->input('song_id')) {
             $song = Song::find($request->input('song_id'))->first();
             $song->videos()->sync($video);
         }
+        */
 
         $video_file = false;
 
-        \Log::error('store video 2');
 
         if ($request->remote_video_id) {
-            \Log::error('remote_video_id');
             parse_str(file_get_contents('https://youtube.com/get_video_info?video_id=' . $request->remote_video_id), $info);
 
             $player = json_decode($info['player_response']);
@@ -103,19 +101,18 @@ class VideoController extends BaseController
                 return 'ERROR';
             }
         } elseif ($request->file('video')) {
-            \Log::error('video file');
             $video_file = $request->file('video');
+        } else {
+            return 'ERROR';
         }
 
         if ($video_file) {
-            \Log::error('has video file');
             $hashids = new Hashids('', 10);
 
             $file_path = $video_file->store( 'videos/' . $hashids->encode( auth()->user()->id ) );
 
             $video->url = config('mudeo.asset_url') . $file_path;
             $video->save();
-            \Log::error('URL: ' . $video->url);
 
             $ffmpeg = FFMpeg::create([
                 'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
