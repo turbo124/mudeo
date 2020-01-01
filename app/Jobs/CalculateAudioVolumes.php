@@ -45,8 +45,6 @@ class CalculateAudioVolumes implements ShouldQueue
         $video = $this->video;
         $filePath = storage_path($this->working_dir) . 'log.txt';
 
-        \Log::error("Handle - URL: " . $video->url);
-
         if (!$video->url) {
             return;
         }
