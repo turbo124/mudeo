@@ -22,9 +22,9 @@ class SongSubmitted extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('New song: ' . $this->song->title)
+                    ->subject('New song: ' . $this->song->title . ' ' . date('M jS, g:ia'))
                     ->greeting('Hello!')
-                    ->line('A new song has been submitted!')
+                    ->line('A new song has been submitted by ' . $this->song->user->handle)
                     ->action('View Song', $this->song->url);
     }
 }
