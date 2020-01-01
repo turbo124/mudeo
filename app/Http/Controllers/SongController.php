@@ -162,8 +162,7 @@ class SongController extends BaseController
         $hashids = new Hashids('', 10);
         $user_hash = $hashids->encode($song->user->id);
 
-        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4?updated_at=' . $song->updated_at;
-
+        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4?updated_at=' . str_replace(' ', '_', $replace, $song->updated_at);
     }
 
 
