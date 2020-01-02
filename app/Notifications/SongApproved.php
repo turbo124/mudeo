@@ -18,7 +18,7 @@ class SongApproved extends Notification
 
     public function toTwitter($song)
     {
-        $tweet = "Title: " . $song->title . " 🎵 🎶\nArtist: ";
+        $tweet = "New Song by ";
 
         if ($handle = $song->user->twitterHandle()) {
             $tweet .= $handle;
@@ -26,7 +26,9 @@ class SongApproved extends Notification
             $tweet .= $song->user->handle;
         }
 
-        $tweet .= "\n" . $song->url . ' #mudeo';
+        $tweet .= " 🙌 " . $song->title . " 🎵 🎶";
+
+        $tweet .= "\n\n" . $song->url . ' #mudeo';
 
         if ($song->genre_id) {
             $map = [
