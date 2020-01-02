@@ -28,7 +28,7 @@ class SongApproved extends Notification
 
         $tweet .= " 🙌 " . $song->title . " 🎵 🎶";
 
-        $tweet .= "\n" . $song->url . ' #mudeo';
+        $tweet .= "\n\n" . $song->url . ' #mudeo';
 
         if ($song->genre_id) {
             $map = [
