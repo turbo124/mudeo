@@ -26,7 +26,9 @@ class SongApproved extends Notification
             $tweet .= $song->user->handle;
         }
 
-        $tweet .= " 🙌 " . $song->title . " 🎵";
+        $tweet .= " 🙌 " . $song->title . " 🎵 🎶";
+
+        $tweet .= "\n" . $song->url . ' #mudeo';
 
         if ($song->genre_id) {
             $map = [
@@ -53,9 +55,6 @@ class SongApproved extends Notification
 
             $tweet .= ' #' . $map[$song->genre_id];
         }
-
-
-        $tweet .= " 🎶\n" . $song->url;
 
         return new TwitterStatusUpdate($tweet);
     }
