@@ -53,7 +53,7 @@ class SongApproved extends Notification
                 19 => 'Other',
             ];
 
-            $tweet .= ' #' . $map[$song->genre_id];
+            $tweet .= ' #' . strtolower($map[$song->genre_id]);
         }
 
         return new TwitterStatusUpdate($tweet);
