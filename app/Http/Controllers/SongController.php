@@ -117,7 +117,7 @@ class SongController extends BaseController
 
         $song->notify(new SongApproved());
 
-        UploadSongToYouTube::dispatch($song);
+        //UploadSongToYouTube::dispatch($song);
 
         return redirect('/')->with('status', 'Song has been approved!');
     }
