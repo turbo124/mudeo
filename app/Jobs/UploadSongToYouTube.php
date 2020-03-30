@@ -26,7 +26,10 @@ class UploadSongToYouTube implements ShouldQueue
     */
     public function handle()
     {
-        $video = \Youtube::upload($song->video_url, [
+        $filename = storage_path(sha1(time()) . 'mp4');
+        file_put_contents($filename, fopen($song->video_url, 'r'));
+
+        $video = \Youtube::upload($filename, [
             'title' => $song->title,
             'description' => $song->description,
             'tags' => ['mudeo'],
@@ -35,5 +38,7 @@ class UploadSongToYouTube implements ShouldQueue
 
         $song->youtube_id = $video->getVideoId();
         $song->save();
+
+        unlink($filename);
     }
 }

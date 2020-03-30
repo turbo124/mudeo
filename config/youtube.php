@@ -30,7 +30,7 @@ return [
          * Determine if the Routes should be disabled.
          * Note: We recommend this to be set to "false" immediately after authentication.
          */
-        'enabled' => true,
+        'enabled' => false,
 
         /**
          * The prefix for the below URI's
