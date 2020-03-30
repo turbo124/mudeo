@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Youtube;
 use App\Models\Song;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +13,6 @@ use Illuminate\Queue\SerializesModels;
 class UploadSongToYouTube implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
 
     public function __construct(Song $song)
     {
@@ -29,7 +29,7 @@ class UploadSongToYouTube implements ShouldQueue
         $filename = storage_path(sha1(time()) . 'mp4');
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
-        $video = \Youtube::upload($filename, [
+        $video = Youtube::upload($filename, [
             'title' => $song->title,
             'description' => $song->description,
             'tags' => ['mudeo'],
