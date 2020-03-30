@@ -26,7 +26,7 @@ class UploadSongToYouTube implements ShouldQueue
     */
     public function handle()
     {
-        $video = Youtube::upload($song->video_url, [
+        $video = \Youtube::upload($song->video_url, [
             'title' => $song->title,
             'description' => $song->description,
             'tags' => ['mudeo'],
