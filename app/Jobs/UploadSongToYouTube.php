@@ -14,6 +14,8 @@ class UploadSongToYouTube implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $song;
+
     public function __construct(Song $song)
     {
         $this->song = $song;
