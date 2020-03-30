@@ -7,6 +7,7 @@ use App\Http\Controllers\Requests\Song\CreateSongRequest;
 use App\Http\Controllers\Requests\Song\DestroySongRequest;
 use App\Http\Controllers\Requests\Song\UpdateSongRequest;
 use App\Jobs\MakeStackedSong;
+use App\Jobs\UploadSongToYouTube;
 use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
@@ -116,9 +117,21 @@ class SongController extends BaseController
 
         $song->notify(new SongApproved());
 
+        UploadSongToYouTube::dispatch($song);
+
         return redirect('/')->with('status', 'Song has been approved!');
     }
 
+    public function upload($hashedId)
+    {
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::findOrFail($hashed_id[0]);
+
+        UploadSongToYouTube::dispatch($song);
+
+        echo 'Uploading...';
+    }
 
     /**
      * Display the specified resource.
