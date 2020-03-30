@@ -26,7 +26,9 @@ class UploadSongToYouTube implements ShouldQueue
     */
     public function handle()
     {
+        $song = $this->song;
         $filename = storage_path(sha1(time()) . 'mp4');
+
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
         $video = Youtube::upload($filename, [
