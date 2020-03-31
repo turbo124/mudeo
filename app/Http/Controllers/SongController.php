@@ -149,7 +149,6 @@ class SongController extends BaseController
 
     public function play($hashedId)
     {
-        /*
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
 
@@ -158,8 +157,7 @@ class SongController extends BaseController
         }
 
         $song = Song::findOrFail($hashed_id[0]);
-        */
-        $song = Song::first();
+
         $data = [
             'song' => $song,
             'video_url' => $this->songUrl($song, $hashedId),
