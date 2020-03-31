@@ -122,15 +122,20 @@ class SongController extends BaseController
         return redirect('/')->with('status', 'Song has been approved!');
     }
 
-    public function upload($hashedId)
+    public function publish($hashedId)
     {
+        if (request()->secret != env('PUBLISH_SECRET')) {
+            echo 'Done';
+            exit;
+        }
+
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
         $song = Song::findOrFail($hashed_id[0]);
 
-        UploadSongToYouTube::dispatch($song);
+        UploadSongToYouTube::dispatch($song, true);
 
-        echo 'Uploading...';
+        echo 'Publishing...';
     }
 
     /**

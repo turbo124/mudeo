@@ -16,9 +16,12 @@ class UploadSongToYouTube implements ShouldQueue
 
     protected $song;
 
-    public function __construct(Song $song)
+    protected $publish;
+
+    public function __construct(Song $song, $publish = false)
     {
         $this->song = $song;
+        $this->publish = $publish;
     }
 
     /**
@@ -31,17 +34,25 @@ class UploadSongToYouTube implements ShouldQueue
         $song = $this->song;
         $filename = storage_path(sha1(time()) . 'mp4');
 
+        if ($song->youtube_id && ! $this->publish) {
+            Youtube::delete($song->youtube_id);
+        }
+
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
+        $status = $this->publish ? 'public' : 'unlisted';
         $video = Youtube::upload($filename, [
             'title' => $song->title,
-            'description' => $song->description,
+            'description' => $song->url . "\n\n" . $song->description,
             'tags' => ['mudeo'],
             'category_id' => 10,
-        ], 'unlisted');
+        ], $status);
 
-        $song->youtube_id = $video->getVideoId();
-        $song->save();
+
+        if (! $this->publish) {
+            $song->youtube_id = $video->getVideoId();
+            $song->save();
+        }
 
         unlink($filename);
     }

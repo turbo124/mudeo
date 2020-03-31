@@ -22,4 +22,4 @@ Route::get('/terms', 'HomeController@terms')->name('terms');
 Route::get('/privacy', 'HomeController@privacy')->name('privacy');
 Route::get('/song/{hashed_id}', 'SongController@play')->name('play');
 Route::get('/song/{hashed_id}/approve', 'SongController@approve')->name('approve');
-Route::get('/song/{hashed_id}/upload', 'SongController@upload')->name('upload');
+Route::get('/song/{hashed_id}/publish', 'SongController@publish')->name('publish');
