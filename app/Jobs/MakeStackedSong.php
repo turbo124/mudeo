@@ -72,7 +72,7 @@ class MakeStackedSong implements ShouldQueue
 
         File::deleteDirectory(storage_path($this->working_dir));
 
-        UploadSongToYouTube::dispatch($song);
+        //UploadSongToYouTube::dispatch($song);
     }
 
     private function createVideo($tracks, $filepath)
