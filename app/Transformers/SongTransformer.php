@@ -42,6 +42,7 @@ class SongTransformer extends EntityTransformer
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
             'is_rendered' => (bool) $song->is_rendered,
+            'youtube_id' => $song->youtube_id,
         ];
     }
 
