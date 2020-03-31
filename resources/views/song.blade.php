@@ -9,11 +9,11 @@
 
     <meta name="twitter:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
     <meta name="twitter:description" content="{{ $song->description }}">
-    <meta name="twitter:image" content="{{ $song->thumbnail_url }}">
+    <meta name="twitter:image" content="{{ $song->youTubeThumbnailUrl()}}">
     <meta name="twitter:card" content="player">
     <meta name="twitter:site" content="@mudeo_app">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
-    <meta name="twitter:player" content="https://www.youtube.com/embed/{{ $song->youtube_id }}">
+    <meta name="twitter:player" content="{{ $this->youTubeEmbedUrl() }}">
     <meta name="twitter:player:stream:content_type" content="video/mp4; codecs="avc1.42E01E1, mp4a.40.2"">
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
@@ -45,7 +45,7 @@
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
             <iframe allowfullscreen
-                src="https://www.youtube.com/embed/{{ $song->youtube_id }}?autoplay=1&modestbranding=1&rel=0"
+                src="{{ $this->youTubeEmbedUrl() }}"
                 frameborder="0"></iframe>
 		</div>
 	</div>

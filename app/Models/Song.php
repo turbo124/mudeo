@@ -80,4 +80,14 @@ class Song extends EntityModel
     {
        return $this->hasMany(static::class, 'parent_id');
     }
+
+    public function youTubeEmbedUrl()
+    {
+        return 'https://img.youtube.com/vi/' . $this->youtube_id . '/hqdefault.jpg';
+    }
+
+    public function youTubeThumbnailUrl()
+    {
+        return 'https://www.youtube.com/embed/'. $this->youtube_id . '?autoplay=1&modestbranding=1&rel=0';
+    }
 }
