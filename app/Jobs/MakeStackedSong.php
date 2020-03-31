@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use League\OAuth1\Client\Server\Twitter;
+use App\Jobs\UploadSongToYouTube;
 
 class MakeStackedSong implements ShouldQueue
 {
@@ -70,6 +71,8 @@ class MakeStackedSong implements ShouldQueue
         $this->saveThumbnail($song, $filepath);
 
         File::deleteDirectory(storage_path($this->working_dir));
+
+        UploadSongToYouTube::dispatch($song);
     }
 
     private function createVideo($tracks, $filepath)

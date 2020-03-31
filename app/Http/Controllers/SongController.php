@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Youtube;
 use App\Filters\SongFilters;
 use App\Http\Controllers\Requests\Song\CreateSongRequest;
 use App\Http\Controllers\Requests\Song\DestroySongRequest;
@@ -117,14 +118,12 @@ class SongController extends BaseController
 
         $song->notify(new SongApproved());
 
-        //UploadSongToYouTube::dispatch($song);
-
         return redirect('/')->with('status', 'Song has been approved!');
     }
 
     public function publish($hashedId)
     {
-        if (request()->secret != env('PUBLISH_SECRET')) {
+        if (request()->secret != config('mudeo.publish_secret')) {
             echo 'Done';
             exit;
         }
@@ -239,10 +238,16 @@ class SongController extends BaseController
             }
 
             MakeStackedSong::dispatch($song);
+        } else if ($song->youtube_id) {
+            Youtube::update($song->youtube_id, [
+                'title' => $song->title,
+                'description' => $song->url . "\n\n" . $song->description,
+                'tags' => ['mudeo'],
+                'category_id' => 10,
+            ], 'unlisted');
         }
 
         return $this->itemResponse($song->fresh());
-
     }
 
     /**
