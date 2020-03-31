@@ -23,9 +23,12 @@
 		body {
             background-color:black
         }
-        iframe{
-            width: 100vw;
-            height: calc(100vw/1.83);
+
+        vjs-custom {
+            height: 90%;
+            height: -moz-available;          /* WebKit-based browsers will ignore this. */
+            height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+            height: fill-available;
         }
 	</style>
 
@@ -43,10 +46,21 @@
 
 	<div class="container-fluid">
 		<div class="d-flex justify-content-center">
-            <iframe allowfullscreen
-                src="https://www.youtube.com/embed/{{ $song->youtube_id }}?autoplay=1&modestbranding=1&rel=0"
-                frameborder="0"></iframe>
+			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
+                autoplay controls preload='auto' poster='' data-setup='{}'>
+				<source src='{{ $video_url }}' type='video/mp4'>
+					<p class='vjs-no-js'>
+						To view this video please enable JavaScript, and consider upgrading to a web browser that
+						<a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+					</p>
+			</video>
 		</div>
 	</div>
+
+	<script>
+		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
+		//var player = videojs('my-video');
+		//player.fluid(true);
+	</script>
 
 @endsection

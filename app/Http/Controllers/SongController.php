@@ -149,25 +149,23 @@ class SongController extends BaseController
 
     public function play($hashedId)
     {
-
+        /*
         $hashids = new Hashids('', 10);
-
         $hashed_id = $hashids->decode($hashedId);
 
-
-        if($hashed_id)
-        {
-
-            $song = Song::findOrFail($hashed_id[0]);
-
-            $data = [
-                'song' => $song,
-                'video_url' => $this->songUrl($song, $hashedId),
-            ];
-
-            return view('song', $data);
+        if (!$hashed_id) {
+            abort(404);
         }
 
+        $song = Song::findOrFail($hashed_id[0]);
+        */
+        $song = Song::first();
+        $data = [
+            'song' => $song,
+            'video_url' => $this->songUrl($song, $hashedId),
+        ];
+
+        return view($song->youtube_id ? 'song' : 'song_legacy', $data);
     }
 
     private function songUrl($song, $hashedId)
