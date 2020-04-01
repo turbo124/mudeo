@@ -66,7 +66,6 @@ class BaseController extends Controller
 
         if (is_a($query, "Illuminate\Database\Eloquent\Builder")) {
             $limit = Input::get('per_page', 20);
-
             $paginator = $query->paginate($limit);
             $query = $paginator->getCollection();
             $resource = new Collection($query, $transformer, $entityType);

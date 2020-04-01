@@ -13,17 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['middleware' => ['api_secret_check']], function () {
-
 	Route::post('auth', 'AuthController@passwordAuth');
 	Route::post('oauth', 'AuthController@oauthLogin');
 	Route::post('reset_password', 'AuthController@resetPassword');
 	Route::post('user/create', 'UserAccountController@create');
 	Route::post('user/check_handle', 'UserAccountController@check_handle');
+	Route::get('open_songs', 'SongController@opneIndex');
 });
 
-
 Route::group(['middleware' => ['api_secret_check', 'token_auth']], function () {
-
 	Route::resource('songs', 'SongController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('song_likes', 'SongLikeController'); // name = (songs. index / create / show / update / destroy / edit
 	Route::resource('videos', 'VideoController'); // name = (songs. index / create / show / update / destroy / edit

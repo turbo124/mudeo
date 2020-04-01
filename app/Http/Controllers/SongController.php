@@ -45,7 +45,18 @@ class SongController extends BaseController
         $songs = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user')
                     ->where('is_approved', '=', 1)
-                    ->orWhere('user_id', '=', $userId);
+                    ->orWhere('user_id', '=', $userId)
+                    ->orderBy('id', 'desc');
+
+        return $this->listResponse($songs);
+    }
+
+    public function opneIndex(SongFilters $filters)
+    {
+        $songs = Song::filter($filters)
+                    ->with('user', 'comments.user')
+                    ->where('is_approved', '=', 1)
+                    ->orderBy('id', 'desc');
 
         return $this->listResponse($songs);
     }
@@ -79,7 +90,6 @@ class SongController extends BaseController
         $song->save();
 
         if ($request->input('song_videos')) {
-
             foreach($request->input('song_videos') as $song_video)
             {
                 $sv = SongVideo::firstOrNew([
