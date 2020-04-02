@@ -42,37 +42,44 @@ class CalculateBlurhash extends Command
         $songs = Song::where('blurhash', '=', '')->orderBy('id')->get();
 
         foreach ($songs as $song) {
-            $this->info('Song: ' . $song->youTubeThumbnailUrl());
-
             if ($song->youtube_id) {
                 $file = $song->youTubeThumbnailUrl();
             } else {
                 $file = $song->thumbnail_url;
             }
 
-            $image = imagecreatefromjpeg ($file);
-            list($width, $height) = getimagesize($file);
+            $this->info('Song: ' . $file);
 
-            $pixels = [];
-            for ($y = 0; $y < $height; ++$y) {
-                $row = [];
-                for ($x = 0; $x < $width; ++$x) {
-                    $rgb = imagecolorat($image, $x, $y);
+            try {
+                $image = imagecreatefromjpeg($file);
+                list($width, $height) = getimagesize($file);
 
-                    $r = ($rgb >> 16) & 0xFF;
-                    $g = ($rgb >> 8) & 0xFF;
-                    $b = $rgb & 0xFF;
+                $pixels = [];
+                for ($y = 0; $y < $height; ++$y) {
+                    $row = [];
+                    for ($x = 0; $x < $width; ++$x) {
+                        $rgb = imagecolorat($image, $x, $y);
 
-                    $row[] = [$r, $g, $b];
+                        $r = ($rgb >> 16) & 0xFF;
+                        $g = ($rgb >> 8) & 0xFF;
+                        $b = $rgb & 0xFF;
+
+                        $row[] = [$r, $g, $b];
+                    }
+                    $pixels[] = $row;
                 }
-                $pixels[] = $row;
+
+                $components_x = 4;
+                $components_y = 3;
+
+                $song->blurhash = Blurhash::encode($pixels, $components_x, $components_y);
+                $song->save();
+
+                $this->info('Hash: ' . $song->blurhash);
+            } catch ($e) {
+                //
             }
 
-            $components_x = 4;
-            $components_y = 3;
-
-            $song->blurhash = Blurhash::encode($pixels, $components_x, $components_y);
-            $song->save();
         }
     }
 }
