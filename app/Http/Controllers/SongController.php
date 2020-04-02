@@ -115,6 +115,11 @@ class SongController extends BaseController
 
     public function approve($hashedId)
     {
+        if (request()->secret != config('mudeo.publish_secret')) {
+            echo 'Done';
+            exit;
+        }
+
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
         $song = Song::findOrFail($hashed_id[0]);
@@ -129,6 +134,43 @@ class SongController extends BaseController
         $song->notify(new SongApproved());
 
         return redirect('/')->with('status', 'Song has been approved!');
+    }
+
+
+    public function feature($hashedId)
+    {
+        if (request()->secret != config('mudeo.publish_secret')) {
+            echo 'Done';
+            exit;
+        }
+
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::findOrFail($hashed_id[0]);
+
+
+        $song->is_featured = true;
+        $song->save();
+
+        return redirect('/')->with('status', 'Song has been featured!');
+    }
+
+    public function unfeature($hashedId)
+    {
+        if (request()->secret != config('mudeo.publish_secret')) {
+            echo 'Done';
+            exit;
+        }
+
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::findOrFail($hashed_id[0]);
+
+
+        $song->is_featured = false;
+        $song->save();
+
+        return redirect('/')->with('status', 'Song has been featured!');
     }
 
     public function publish($hashedId)

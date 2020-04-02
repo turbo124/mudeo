@@ -33,6 +33,7 @@ class SongTransformer extends EntityTransformer
             'is_flagged' => (bool) $song->is_flagged,
             'is_public' => (bool) $song->is_public,
             'is_approved' => (bool) $song->is_approved,
+            'is_featured' => (bool) $song->is_featured,
             'genre_id' => (int) $song->genre_id,
             'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
