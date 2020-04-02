@@ -48,6 +48,10 @@ class CalculateBlurhash extends Command
                 $file = $song->thumbnail_url;
             }
 
+            if (!$file) {
+                continue;
+            }
+            
             $this->info('Song: ' . $file);
 
             try {
