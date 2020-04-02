@@ -44,6 +44,7 @@ class SongTransformer extends EntityTransformer
             'layout' => $song->layout,
             'is_rendered' => (bool) $song->is_rendered,
             'youtube_id' => $song->youtube_id,
+            'blurhash' => $song->blurhash,
         ];
     }
 
