@@ -33,7 +33,7 @@
 	<p></p>
 
 	<center>
-		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a>
+		<a href="https://mudeo.app" target="_blank" style="font-weight:100">TRY THE APP</a>
 
         &nbsp;&nbsp; <span style="color:white">•</span> &nbsp;&nbsp;
 

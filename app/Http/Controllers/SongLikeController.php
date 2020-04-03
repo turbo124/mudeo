@@ -41,10 +41,8 @@ class SongLikeController extends BaseController
      */
     public function store(Request $request)
     {
-
-          $song_like = SongLike::firstOrCreate(
-                    ['song_id' => $request->song_id], 
-                    ['user_id' => auth()->user()->id]);
+          $song_like = SongLike::firstOrCreate(['song_id' => $request->song_id,
+                'user_id' => auth()->user()->id]);
 
             return $this->itemResponse($song_like);
 
@@ -92,17 +90,17 @@ class SongLikeController extends BaseController
      */
     public function destroy($id)
     {
-        $song_like = SongLike::where(
-                    ['song_id' => $id], 
-                    ['user_id' => auth()->user()->id])->first();
-        
+        $song_like = SongLike::where([
+                'song_id' => $id,
+                'user_id' => auth()->user()->id])->first();
+
         if($song_like)
             $song_like->delete();
 
             return response()->json([], 200);
     }
 
-    
 
-    
+
+
 }
