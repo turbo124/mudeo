@@ -336,7 +336,7 @@ class SongController extends BaseController
      */
     public function destroy(DestroySongRequest $request, Song $song)
     {
-        if ($song->youtube_id) {
+        if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
             Youtube::delete($song->youtube_id);
         }
 
