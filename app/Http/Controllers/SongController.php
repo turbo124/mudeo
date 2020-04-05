@@ -182,11 +182,19 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
+
         $song = Song::findOrFail($hashed_id[0]);
+        $song->youtube_published_id = $song->youtube_id;
+        $song->save();
 
-        UploadSongToYouTube::dispatch($song, true);
+        Youtube::update($song->youtube_id, [
+            'title' => $song->title,
+            'description' => $song->url . "\n\n" . $song->description,
+            'tags' => ['mudeo'],
+            'category_id' => 10,
+        ], 'public');
 
-        echo 'Publishing...';
+        echo 'Published...';
     }
 
     /**
