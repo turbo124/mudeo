@@ -23,6 +23,7 @@ Route::get('/privacy', 'HomeController@privacy')->name('privacy');
 
 Route::get('/song/{hashed_id}', 'SongController@play')->name('play');
 Route::get('/song/{hashed_id}/approve', 'SongController@approve')->name('approve');
+Route::get('/song/{hashed_id}/unapprove', 'SongController@unapprove')->name('unapprove');
 Route::get('/song/{hashed_id}/feature', 'SongController@feature')->name('feature');
 Route::get('/song/{hashed_id}/unfeature', 'SongController@feature')->name('unfeature');
 Route::get('/song/{hashed_id}/publish', 'SongController@publish')->name('publish');
