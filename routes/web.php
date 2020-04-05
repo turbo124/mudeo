@@ -17,9 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('index');
 Route::get('/terms', 'HomeController@terms')->name('terms');
 Route::get('/privacy', 'HomeController@privacy')->name('privacy');
+
 Route::get('/song/{hashed_id}', 'SongController@play')->name('play');
 Route::get('/song/{hashed_id}/approve', 'SongController@approve')->name('approve');
 Route::get('/song/{hashed_id}/feature', 'SongController@feature')->name('feature');

@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+@extends('layouts.mudeo')
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="mudeo">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="https://mudeo.app/images/icon.png"/>
-
+@section('head')
   <meta property="og:title" content="mudeo"></meta>
   <meta property="og:description" content="make music together"></meta>
-  <meta property="og:image" content=""></meta>
-  <meta property="og:url" content=""></meta>
+  <meta property="og:image" content="https://mudeo.app/images/banner.jpg"></meta>
+  <meta property="og:url" content="https://mudeo.app"></meta>
   <meta property="og:site_name" content="mudeo"></meta>
 
   <meta name="twitter:card" content="summary_large_image"></meta>
@@ -27,10 +14,15 @@
   <meta name="twitter:site" content="@mudeo_app"></meta>
   <meta name="twitter:creator" content="@hillelcoren"></meta>
 
-  <title>mudeo</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="mudeo">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  
   <link rel="manifest" href="manifest.json">
-</head>
-<body>
+@endsection
+
+@section('body')
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -42,5 +34,4 @@
     }
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
-</body>
-</html>
+@endsection

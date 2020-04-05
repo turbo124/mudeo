@@ -12,7 +12,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect('https://itsallwidgets.com/flutter-app/mudeo');
+        return view('flutter');
     }
 
     public function terms()
@@ -26,6 +26,6 @@ class HomeController extends Controller
     {
 
         return view('privacy');
-        
+
     }
 }

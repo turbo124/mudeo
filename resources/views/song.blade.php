@@ -12,6 +12,7 @@
     <meta name="twitter:image" content="{{ $song->youTubeThumbnailUrl() }}">
     <meta name="twitter:card" content="player">
     <meta name="twitter:site" content="@mudeo_app">
+    <meta name="twitter:creator" content="@hillelcoren"></meta>
     <meta name="twitter:image:alt" content="{{ $song->title }}">
     <meta name="twitter:player" content="{{ $song->youTubeEmbedUrl() }}">
     <meta name="twitter:player:stream:content_type" content="video/mp4; codecs="avc1.42E01E1, mp4a.40.2"">
