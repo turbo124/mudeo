@@ -21,33 +21,34 @@
 
 @section('body')
 	<style>
-		body {
-            background-color:black
+
+        body {
+            margin: 0;
         }
-        iframe{
+
+        iframe {
+            display: block;
+            background: #000;
+            border: none;
+            height: 100vh;
             width: 100vw;
-            height: calc(100vw/1.83);
         }
+
+        #links {
+            color: red;
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+        }
+
 	</style>
 
-	<p></p>
+    <div id="links" title="Try the app">
+        <a href="https://mudeo.app" target="_blank" border="0">
+            <img src="/images/icon.png" style="border-radius: 50%; width: 80px;"/>
+        </a>
+    </div>
 
-	<center>
-		<a href="https://mudeo.app" target="_blank" style="font-weight:100">TRY THE APP</a>
-
-        &nbsp;&nbsp; <span style="color:white">•</span> &nbsp;&nbsp;
-
-        <a href="https://twitter.com/mudeo_app" target="_blank" style="font-weight:100">FOLLOW US ON TWITTER</a>
-	</center>
-
-    <p></p>
-
-	<div class="container-fluid">
-		<div class="d-flex justify-content-center">
-            <iframe allowfullscreen
-                src="{{ $song->youTubeEmbedUrl() }}"
-                frameborder="0"></iframe>
-		</div>
-	</div>
+    <iframe src="{{ $song->youTubeEmbedUrl() }}" frameborder="0"></iframe>
 
 @endsection
