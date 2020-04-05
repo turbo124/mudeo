@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Transformers\UserAccountTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Hashids\Hashids;
+use Storage;
 
 class UserAccountController extends BaseController
 {
@@ -16,10 +18,15 @@ class UserAccountController extends BaseController
     public function create(CreateUserRequest $request) {
 
     	$user = User::create($request->all());
-
     	$user->save();
-        
     	$user->refresh();
+
+        if ($request->profile_image_url) {
+            $contents = file_get_contents($request->profile_image_url);
+            $name = 'users/' . $hashids->encode( auth()->user()->id );
+            $user->profile_image_url = config('mudeo.asset_url') . Storage::put($name, $contents);
+            $user->save();
+        }
 
         $data = $this->createItem($user, new UserAccountTransformer(), User::class);
 
