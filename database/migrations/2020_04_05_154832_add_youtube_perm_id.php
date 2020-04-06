@@ -16,6 +16,14 @@ class AddYoutubePermId extends Migration
         Schema::table('songs', function (Blueprint $table) {
             $table->string('youtube_published_id')->nullable();
         });
+
+        Schema::table('song_video', function (Blueprint $table) {
+            $table->dropForeign('song_video_song_id_foreign');
+            $table->dropForeign('song_video_video_id_foreign');
+
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
+            $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
+        });
     }
 
     /**
