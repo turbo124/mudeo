@@ -45,7 +45,7 @@
 
     <div id="links" title="Try the app">
         <a href="https://mudeo.app" target="_blank" border="0">
-            <img src="/images/icon.png" style="border-radius: 50%; width: 80px;"/>
+            <img src="/images/icon.png" style="border-radius: 50%; width: 60px;"/>
         </a>
     </div>
 
