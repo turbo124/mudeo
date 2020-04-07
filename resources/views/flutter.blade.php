@@ -36,5 +36,9 @@
       });
     }
   </script>
-  <script src="main.dart.js" type="application/javascript"></script>
+
+  <center style="font-family:Tahoma,Geneva,sans-serif;font-size:28px;color:#888888;padding-top:100px">
+    Loading...
+  </center>
+
 @endsection
