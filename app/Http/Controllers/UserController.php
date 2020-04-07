@@ -91,7 +91,10 @@ class UserController extends BaseController
      */
     public function destroy(DestroyUserRequest $request, User $user)
     {
-        \Log::info('## DELETE USER ##');
+        if ($user->id != auth()->user()->id) {
+            return 'FAILURE';
+        }
+
         $user = auth()->user();
 
         if ($user->profile_image_url) {
@@ -105,28 +108,22 @@ class UserController extends BaseController
         // Delete all track videos
         $videos = Video::withTrashed()->whereUserId($user->id)->orderBy('id')->get();
         foreach ($videos as $video) {
-            \Log::info('Delete video: ' . $video->url);
-            \Log::info('Delete video thumbnail' . $video->thumbnail_url);
-            //Storage::delete($video->url);
-            //Storage::delete($video->thumbnail_url);
+            Storage::delete($video->url);
+            Storage::delete($video->thumbnail_url);
         }
 
         // Delete all songs videos
         $songs = Song::withTrashed()->whereUserId($user->id)->orderBy('id')->get();
         foreach ($songs as $song) {
-            \Log::info('Delete song: ' . $song->video_url);
-            \Log::info('Delete song thumbnail' . $song->thumbnail_url);
-            //Storage::delete($song->video_url);
-            //Storage::delete($song->thumbnail_url);
+            Storage::delete($song->video_url);
+            Storage::delete($song->thumbnail_url);
 
             if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
-                \Log::info('Delete youtube video');
-                //Youtube::delete($song->youtube_id);
+                Youtube::delete($song->youtube_id);
             }
         }
 
-        \Log::info('Delete user');
-        //$user->forceDelete();
+        $user->forceDelete();
 
         return 'SUCCESS';
     }
