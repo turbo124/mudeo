@@ -82,9 +82,8 @@ class CalculateBlurhash extends Command
 
                 $this->info('Hash: ' . $song->blurhash);
             } catch (Exception $e) {
-
+                // do nothing
             }
-
         }
     }
 }
