@@ -39,7 +39,8 @@ class CalculateBlurhash extends Command
      */
     public function handle()
     {
-        $songs = Song::where('blurhash', '=', '')->orderBy('id')->get();
+        $songs = Song::where('blurhash', '=', '')
+            ->orderBy('id')->get();
 
         foreach ($songs as $song) {
             if ($song->youtube_id) {
@@ -51,7 +52,7 @@ class CalculateBlurhash extends Command
             if (!$file) {
                 continue;
             }
-            
+
             $this->info('Song: ' . $file);
 
             try {
