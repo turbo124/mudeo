@@ -31,7 +31,7 @@ class UploadSongToYouTube implements ShouldQueue
         $song = $this->song;
         $filename = storage_path(sha1(time()) . 'mp4');
 
-        if ($song->youtube_id) {
+        if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
             Youtube::delete($song->youtube_id);
         }
 

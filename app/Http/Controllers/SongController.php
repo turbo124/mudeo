@@ -137,6 +137,24 @@ class SongController extends BaseController
     }
 
 
+    public function unapprove($hashedId)
+    {
+        if (request()->secret != config('mudeo.publish_secret')) {
+            echo 'Done';
+            exit;
+        }
+
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::findOrFail($hashed_id[0]);
+
+        $song->is_approved = false;
+        $song->save();
+
+        return redirect('/')->with('status', 'Song has been approved!');
+    }
+
+
     public function feature($hashedId)
     {
         if (request()->secret != config('mudeo.publish_secret')) {
@@ -182,11 +200,19 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
+
         $song = Song::findOrFail($hashed_id[0]);
+        $song->youtube_published_id = $song->youtube_id;
+        $song->save();
 
-        UploadSongToYouTube::dispatch($song, true);
+        Youtube::update($song->youtube_id, [
+            'title' => $song->title,
+            'description' => $song->url . "\n\n" . $song->description,
+            'tags' => ['mudeo'],
+            'category_id' => 10,
+        ], 'public');
 
-        echo 'Publishing...';
+        echo 'Published...';
     }
 
     /**
@@ -310,7 +336,7 @@ class SongController extends BaseController
      */
     public function destroy(DestroySongRequest $request, Song $song)
     {
-        if ($song->youtube_id) {
+        if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
             Youtube::delete($song->youtube_id);
         }
 
