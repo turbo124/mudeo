@@ -48,7 +48,7 @@ class CalculateSongSize extends Command
         foreach ($songs as $song) {
             $this->info('## Song: ' . $song->id);
 
-            $image = imagecreatefromjpeg($song->thumbnail_url);
+            $image = imagecreatefromjpeg($song->youTubeThumbnailUrl());
             $image = imagecropauto($image, IMG_CROP_SIDES);
 
             $song->width = imagesx($image);
