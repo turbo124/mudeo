@@ -92,7 +92,7 @@ class UserController extends BaseController
     public function destroy(DestroyUserRequest $request, User $user)
     {
         if ($user->id != auth()->user()->id) {
-            return 'FAILURE';
+            abort(400);
         }
 
         $user = auth()->user();
@@ -125,6 +125,6 @@ class UserController extends BaseController
 
         $user->forceDelete();
 
-        return 'SUCCESS';
+        return '{"message": "SUCCESS"}';
     }
 }
