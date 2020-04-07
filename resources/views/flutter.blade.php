@@ -14,9 +14,13 @@
   <meta name="twitter:site" content="@mudeo_app"></meta>
   <meta name="twitter:creator" content="@hillelcoren"></meta>
 
+  <meta name="msapplication-starturl" content="/">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="mudeo">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <link rel="apple-touch-icon" href="https://mudeo.app/images/icon.png">
   <link rel="manifest" href="manifest.json">
 @endsection

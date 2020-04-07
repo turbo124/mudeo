@@ -15,6 +15,7 @@
     <meta name="description" content="A new Flutter project.">
     <link rel="shortcut icon" type="image/png" href="https://mudeo.app/images/icon.png"/>
 
+    <meta name="application-name" content="mudeo">
     <meta name="twitter:app:name:iphone" content="mudeo">
     <meta name="twitter:app:id:iphone" content="id1459106474">
     <meta name="twitter:app:url:iphone" content="https://itunes.apple.com/us/app/mudeo/id1459106474?mt=8">
