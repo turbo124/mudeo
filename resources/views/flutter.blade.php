@@ -26,9 +26,11 @@
 @endsection
 
 @section('body')
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
+
+  <center style="font-family:Tahoma,Geneva,sans-serif;font-size:28px;color:#888888;padding-top:100px">
+    Loading...
+  </center>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -36,5 +38,6 @@
       });
     }
   </script>
-  <script src="main.dart.js" type="application/javascript"></script>
+  <script src="main.dart.js" type="application/javascript"></script>	
+
 @endsection
