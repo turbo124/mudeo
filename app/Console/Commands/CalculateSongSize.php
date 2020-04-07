@@ -41,6 +41,7 @@ class CalculateSongSize extends Command
         $this->info('Starting...');
 
         $songs = Song::where('height', '=', 0)
+            ->where('youtube_id', '!=', '')
             ->orderBy('id')
             ->get();
 
