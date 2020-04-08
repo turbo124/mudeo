@@ -39,8 +39,7 @@ class CalculateBlurhash extends Command
      */
     public function handle()
     {
-        $songs = Song::where('blurhash', '=', '')
-            ->orderBy('id')->get();
+        $songs = Song::where('blurhash', '!=', '')->orderBy('id')->get();
 
         foreach ($songs as $song) {
             if ($song->youtube_id) {
@@ -56,10 +55,19 @@ class CalculateBlurhash extends Command
             $this->info('Song: ' . $file);
 
             try {
-                $image = imagecreatefromjpeg($file);
+                $image = @imagecreatefromjpeg($file);
+
+                if (!$image) {
+                    continue;
+                }
+
                 list($width, $height) = getimagesize($file);
 
                 $pixels = [];
+                $histo = [];
+                $histo_color = [];
+                $n = $width * $height;
+
                 for ($y = 0; $y < $height; ++$y) {
                     $row = [];
                     for ($x = 0; $x < $width; ++$x) {
@@ -70,20 +78,51 @@ class CalculateBlurhash extends Command
                         $b = $rgb & 0xFF;
 
                         $row[] = [$r, $g, $b];
+
+                        $V = round(($r + $g + $b) / 3);
+                        if (!isset($histo[$V])) {
+                            $histo[$V] = 0;
+                        }
+                        $histo[$V] += $V / $n;
+                        $histo_color[$V] = $this->rgb2hex([$r,$g,$b]);
                     }
                     $pixels[] = $row;
                 }
+
+
+                $max = 0;
+                for ($i=0; $i<255; $i++)
+                {
+                    if ($histo[$i] > $max)
+                    {
+                        $max = $histo[$i];
+                    }
+                }
+
+                $key = array_search ($max, $histo);
+                $color = $histo_color[$key];
 
                 $components_x = 4;
                 $components_y = 3;
 
                 $song->blurhash = Blurhash::encode($pixels, $components_x, $components_y);
+                $song->color = $color;
                 $song->save();
 
-                $this->info('Hash: ' . $song->blurhash);
+                $this->info('Hash: ' . $song->blurhash . ' Color: ' . $col);
             } catch (Exception $e) {
                 // do nothing
             }
         }
     }
+
+    private function rgb2hex($rgb) {
+        $hex = "#";
+        $hex .= str_pad(dechex($rgb[0]), 2, "0", STR_PAD_LEFT);
+        $hex .= str_pad(dechex($rgb[1]), 2, "0", STR_PAD_LEFT);
+        $hex .= str_pad(dechex($rgb[2]), 2, "0", STR_PAD_LEFT);
+
+        return $hex; // returns the hex value including the number sign (#)
+    }
+
 }

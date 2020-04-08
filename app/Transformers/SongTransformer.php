@@ -47,6 +47,7 @@ class SongTransformer extends EntityTransformer
             'blurhash' => $song->blurhash ?: '',
             'width' => (int) $song->width,
             'height' => (int) $song->height,
+            'color' => $song->color,
         ];
     }
 
