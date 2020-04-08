@@ -39,7 +39,7 @@ class CalculateBlurhash extends Command
      */
     public function handle()
     {
-        $songs = Song::where('blurhash', '!=', '')->orderBy('id')->get();
+        $songs = Song::where('blurhash', '=', '')->orderBy('id')->get();
 
         foreach ($songs as $song) {
             if ($song->youtube_id) {
@@ -93,7 +93,7 @@ class CalculateBlurhash extends Command
                 $max = 0;
                 for ($i=0; $i<255; $i++)
                 {
-                    if ($histo[$i] > $max)
+                    if (isset($histo[$i]) && $histo[$i] > $max)
                     {
                         $max = $histo[$i];
                     }
@@ -109,7 +109,7 @@ class CalculateBlurhash extends Command
                 $song->color = $color;
                 $song->save();
 
-                $this->info('Hash: ' . $song->blurhash . ' Color: ' . $col);
+                $this->info('Hash: ' . $song->blurhash . ' Color: ' . $color);
             } catch (Exception $e) {
                 // do nothing
             }
