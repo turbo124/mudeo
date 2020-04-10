@@ -27,6 +27,10 @@ class Song extends EntityModel
         'url',
         'video_url',
         'thumbnail_url',
+        'youtube_id',
+        'youtube_published_id',
+        'is_featured',
+        'is_approved',
     ];
 
     use SoftDeletes;
