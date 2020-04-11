@@ -16,6 +16,7 @@
     "require": {
         "php": "^7.1.3",
         "dawson/youtube": "^4.3",
+        "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.2",
         "guzzlehttp/guzzle": "^6.3",
