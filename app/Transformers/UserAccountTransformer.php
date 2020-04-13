@@ -48,7 +48,7 @@ class UserAccountTransformer extends EntityTransformer
             'confirmed' => (bool) $user->confirmed,
             'is_flagged' => (bool) $user->is_flagged,
             'order_id' => $user->order_id ?: '',
-            'order_expires' => $user->order_id ?: '',
+            'order_expires' => $user->order_expires ?: '',
         ];
     }
 
