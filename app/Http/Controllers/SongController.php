@@ -381,5 +381,4 @@ class SongController extends BaseController
         return response()->json(['building'],200);
 
     }
-
 }
