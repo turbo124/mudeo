@@ -141,10 +141,12 @@ class UserController extends BaseController
             return '{"message":"The order is invalid"}';
         }
 
+        $expires = Carbon::createFromTimestamp($timestamp)->addMonth()->format('Y-m-d');
+
         $user->order_id = $orderId;
-        $user->order_expires = Carbon::createFromTimestamp($timestamp)->addMonth()->format('Y-m-d');
+        $user->order_expires = $expires;
         $user->save();
 
-        return '{"message":"SUCCESS"}';
+        return '{"message":"SUCCESS", "expires": "' . $expires . '"}';
     }
 }
