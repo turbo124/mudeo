@@ -90,12 +90,12 @@ class SongController extends BaseController
     public function store(CreateSongRequest $request)
     {
         $user = auth()->user();
+        $song = Song::create($request->all());
 
         if ($user->hasPrivateStorage() && ! filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN)) {
             $song->is_public = false;
         }
 
-        $song = Song::create($request->all());
         $song->save();
 
         $hashids = new Hashids('', 10);
