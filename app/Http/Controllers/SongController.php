@@ -40,13 +40,21 @@ class SongController extends BaseController
 
     public function index(SongFilters $filters)
     {
-        $userId = auth()->check() ? auth()->user()->id : 0;
+        $user = auth()->user();
+        $userWhere = [
+            ['user_id', '=', $user->id],
+        ];
+        if (! $user->hasPrivateStorage()) {
+            $userWhere[] = ['is_public', '=', 1];
+        }
 
         $songs = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user')
-                    ->where('is_approved', '=', 1)
-                    ->where('is_public', '=', 1)
-                    ->orWhere('user_id', '=', $userId)
+                    ->where([
+                        ['is_approved', '=', 1],
+                        ['is_public', '=', 1],
+                    ])
+                    ->orWhere($userWhere)
                     ->orderBy('id', 'desc');
 
         return $this->listResponse($songs);
@@ -130,7 +138,7 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
         if ($song->is_approved && request()->tweet != 'force') {
             return redirect($song->url);
@@ -154,7 +162,7 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
         $song->is_approved = false;
         $song->save();
@@ -172,7 +180,7 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
 
         $song->is_featured = true;
@@ -190,7 +198,7 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
 
         $song->is_featured = false;
@@ -209,7 +217,7 @@ class SongController extends BaseController
         $hashids = new Hashids('', 10);
         $hashed_id = $hashids->decode($hashedId);
 
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
         $song->youtube_published_id = $song->youtube_id;
         $song->save();
 
@@ -246,7 +254,7 @@ class SongController extends BaseController
             abort(404);
         }
 
-        $song = Song::findOrFail($hashed_id[0]);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
         $data = [
             'song' => $song,
