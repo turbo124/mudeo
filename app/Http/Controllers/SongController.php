@@ -91,7 +91,7 @@ class SongController extends BaseController
     {
         $user = auth()->user();
 
-        if ($user->hasPrivateStorage() && $request->is_private) {
+        if ($user->hasPrivateStorage() && ! filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN)) {
             $song->is_public = false;
         }
 
@@ -298,8 +298,8 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->is_rendered = false;
 
-        if ($user->hasPrivateStorage() && ! $request->is_private) {
-            $song->is_public = true;
+        if ($user->hasPrivateStorage() && ! filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN)) {
+            $song->is_public = false;
         }
 
         $song->save();
