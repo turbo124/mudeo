@@ -112,4 +112,9 @@ class User extends Authenticatable implements CanResetPassword
 
         return '@' . $part;
     }
+
+    public function hasPrivateStorage()
+    {
+        return $this->order_expires && $this->order_expires >= date('Y-m-d');
+    }
 }

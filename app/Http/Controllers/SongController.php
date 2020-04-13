@@ -81,6 +81,12 @@ class SongController extends BaseController
      */
     public function store(CreateSongRequest $request)
     {
+        $user = auth()->user();
+
+        if ($user->hasPrivateStorage() && $request->is_private) {
+            $song->is_public = false;
+        }
+
         $song = Song::create($request->all());
         $song->save();
 
@@ -279,8 +285,15 @@ class SongController extends BaseController
      */
     public function update(UpdateSongRequest $request, Song $song)
     {
+        $user = auth()->user();
+
         $song->fill($request->all());
         $song->is_rendered = false;
+
+        if ($user->hasPrivateStorage() && ! $request->is_private) {
+            $song->is_public = true;
+        }
+
         $song->save();
 
         if ($request->input('song_videos')) {
