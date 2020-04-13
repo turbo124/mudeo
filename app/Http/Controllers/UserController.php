@@ -13,7 +13,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Storage;
 use Youtube;
-use Carbon;
+use Carbon\Carbon;
 
 class UserController extends BaseController
 {
