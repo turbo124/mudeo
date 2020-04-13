@@ -45,6 +45,8 @@ class UserTransformer extends EntityTransformer
             'twitter_social_url' => $user->twitter_social_url ?: '',
             'website_social_url' => $user->website_social_url ?: '',
             'follower_count' => $user->follower_count ?: 0,
+            'order_id' => $user->order_id ?: '',
+            'order_expires' => $user->order_id ?: '',
         ];
     }
 

@@ -13,6 +13,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Storage;
 use Youtube;
+use Carbon;
 
 class UserController extends BaseController
 {
@@ -126,5 +127,22 @@ class UserController extends BaseController
         $user->forceDelete();
 
         return '{"message": "SUCCESS"}';
+    }
+
+    public function upgrade(Request $request)
+    {
+        $user = auth()->user();
+        $orderId = $request->order_id;
+        $timestamp = $request->timestamp;
+
+        if (Carbon::createFromTimestamp($timestamp) < Carbon::now()->subMonth()) {
+            return '{"message":"The order is expired"}';
+        }
+
+        $user->order_id = $orderId;
+        $user->order_expires = Carbon::createFromTimestamp($timestamp)->addMonth()->format('Y-m-d');
+        $user->save();
+
+        return '{"message":"success"}';
     }
 }
