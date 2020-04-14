@@ -135,13 +135,19 @@ class UserController extends BaseController
         $orderId = $request->order_id;
         $timestamp = $request->timestamp;
 
-        if (Carbon::createFromTimestamp($timestamp) < Carbon::now()->subMonth()) {
+        $purchased = Carbon::createFromTimestamp($timestamp);
+
+        if ($purchased->year > 2100) {
+            $purchased = Carbon::createFromTimestamp($timestamp / 1000);
+        }
+
+        if ($purchased < Carbon::now()->subMonth()) {
             return '{"message":"The order is expired"}';
-        } else if (Carbon::createFromTimestamp($timestamp) > Carbon::now()->addDay()) {
+        } else if ($purchased > Carbon::now()->addDay()) {
             return '{"message":"The order is invalid"}';
         }
 
-        $expires = Carbon::createFromTimestamp($timestamp)->addMonth()->format('Y-m-d');
+        $expires = $purchased->addMonth()->format('Y-m-d');
 
         $user->order_id = $orderId;
         $user->order_expires = $expires;
