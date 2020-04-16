@@ -112,9 +112,14 @@ class TransferFiles extends Command
             return false;
         }
 
-        $file = file_get_contents($url);
+        $file = @file_get_contents($url);
+
+        if (! $file) {
+            $this->info("Error - file does not exist");
+        }
+
         if (! Storage::disk('do_spaces')->put($path, $file)) {
-            $this->info("Failed to upload file");
+            $this->info("Error - failed to upload file");
             return false;
         }
 
