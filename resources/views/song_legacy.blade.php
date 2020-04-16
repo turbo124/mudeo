@@ -22,7 +22,7 @@
     <link href="https://vjs.zencdn.net/7.7.4/video-js.css" rel="stylesheet">
     <script src='https://vjs.zencdn.net/7.7.4/video.js'></script>
     -->
-    
+
 @endsection
 
 @section('body')
@@ -79,8 +79,10 @@
     </video>
     </center>
 
+    <!--
     <script>
         videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
     </script>
-
+    -->
+    
 @endsection
