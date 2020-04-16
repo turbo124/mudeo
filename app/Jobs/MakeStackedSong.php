@@ -244,7 +244,7 @@ class MakeStackedSong implements ShouldQueue
             $height_collection->push($dimension->getWidth());
             $width_collection->push($dimension->getHeight());
 
-            $ffprobe = FFMpeg\FFProbe::create();
+            $ffprobe = FFProbe::create();
             $duration = $ffprobe
                 ->format($this->getUrl($video)) // extracts file informations
                 ->get('duration');             // returns the duration property
