@@ -40,10 +40,14 @@ class CalculateSongSize extends Command
     {
         $this->info('Starting...');
 
+        /*
         $songs = Song::where('height', '=', 0)
             ->where('youtube_id', '!=', '')
             ->orderBy('id')
             ->get();
+        */
+
+        $songs = Songs::orderBy('id')->get();
 
         foreach ($songs as $song) {
             $this->info('## Song: ' . $song->id);
@@ -52,7 +56,7 @@ class CalculateSongSize extends Command
                 $image = @imagecreatefromjpeg($song->thumbnail_url);
 
                 if ($image) {
-                    $image = imagecropauto($image, IMG_CROP_SIDES);
+                    //$image = imagecropauto($image, IMG_CROP_SIDES);
 
                     $song->width = imagesx($image);
                     $song->height = imagesy($image);
