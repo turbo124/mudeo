@@ -47,7 +47,7 @@ class CalculateSongSize extends Command
             ->get();
         */
 
-        $songs = Songs::orderBy('id')->get();
+        $songs = Song::orderBy('id')->get();
 
         foreach ($songs as $song) {
             $this->info('## Song: ' . $song->id);
