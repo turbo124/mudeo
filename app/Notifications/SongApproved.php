@@ -56,6 +56,11 @@ class SongApproved extends Notification
             $tweet .= ' #' . strtolower($map[$song->genre_id]);
         }
 
-        return (new TwitterStatusUpdate($tweet))->withImage($song->thumbnail_url);
+        $contents = file_get_contents($song->thumbnail_url);
+        $fileName = sha1(time());
+        $path = '/tmp/' . $fileName;
+        file_put_contents($path, $contents);
+
+        return (new TwitterStatusUpdate($tweet))->withImage($path);
     }
 }
