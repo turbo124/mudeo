@@ -55,11 +55,9 @@ class TransferFiles extends Command
                     $user->save();
                 }
             }
-            if ($user->header_image_url) {
-                if ($url = $this->uploadFile($user->header_image_url)) {
-                    $user->header_image_url = $url;
-                    $user->save();
-                }
+            if ($url = $this->uploadFile($user->header_image_url)) {
+                $user->header_image_url = $url;
+                $user->save();
             }
         }
 
@@ -91,7 +89,7 @@ class TransferFiles extends Command
     private function uploadFile($url, $path = false)
     {
         if (! $url) {
-            return;
+            return false;
         }
 
         $this->info("Handling: $url");
