@@ -221,6 +221,7 @@ class MakeStackedSong implements ShouldQueue
     {
         $height_collection = collect();
         $width_collection = collect();
+        $duration_collection = collect();
 
         foreach($tracks as $song_video)
         {
@@ -242,6 +243,14 @@ class MakeStackedSong implements ShouldQueue
 
             $height_collection->push($dimension->getWidth());
             $width_collection->push($dimension->getHeight());
+
+            $ffprobe = FFMpeg\FFProbe::create();
+            $duration = $ffprobe
+                ->format($this->getUrl($video)) // extracts file informations
+                ->get('duration');             // returns the duration property
+
+            \Log::error('DURATION: ' . $duration);
+            $duration_collection->push($duration);
         }
 
         $data = new \stdClass;
@@ -249,6 +258,8 @@ class MakeStackedSong implements ShouldQueue
         $data->max_height = $height_collection->max();
         $data->min_width = $width_collection->min();
         $data->max_width = $width_collection->max();
+        $data->duration = $duration_collection->max();
+        \Log::error('MAX DURATION: ' . $data->duration);
 
         return $data;
     }
