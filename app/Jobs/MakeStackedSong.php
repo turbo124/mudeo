@@ -65,7 +65,7 @@ class MakeStackedSong implements ShouldQueue
             '/' . $hashids->encode( $song->id ) . '.mp4';
         $file = file_get_contents($filepath);
 
-        $disk = Storage::disk('gcs');
+        $disk = Storage::disk('do_spaces');
         $disk->put($remote_storage_file_name, $file);
 
         $this->saveThumbnail($song, $filepath);

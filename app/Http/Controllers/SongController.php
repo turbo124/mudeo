@@ -298,8 +298,8 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->is_rendered = false;
 
-        if ($user->hasPrivateStorage() && filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN)) {
-            $song->is_public = true;
+        if ($user->hasPrivateStorage()) {
+            $song->is_public = filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN);
         }
 
         $song->save();
