@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Hashids\Hashids;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Song;
@@ -44,7 +45,12 @@ class TransferFiles extends Command
         $users = User::orderBy('id')->get();
         foreach ($users as $user) {
             if ($user->profile_image_url) {
-                if ($url = $this->uploadFile($user->profile_image_url)) {
+                $path = false;
+                if (strpos($user->profile_image_url, 'googleusercontent') !== false) {
+                    $hashids = new Hashids('', 10);
+                    $path = '/users/' .  $hashids->encode( $user->id) . '/' . sha1(time()) . '.jpg';
+                }
+                if ($url = $this->uploadFile($user->profile_image_url, $path)) {
                     $user->profile_image_url = $url;
                     $user->save();
                 }
@@ -82,7 +88,7 @@ class TransferFiles extends Command
         }
     }
 
-    private function uploadFile($url)
+    private function uploadFile($url, $path = false)
     {
         if (! $url) {
             return;
@@ -98,8 +104,10 @@ class TransferFiles extends Command
             return false;
         }
 
-        $path = str_replace('http://storage.googleapis.com/mudeo', '', $url);
-        $path = str_replace('https://storage.googleapis.com/mudeo', '', $path);
+        if (! $path) {
+            $path = str_replace('http://storage.googleapis.com/mudeo', '', $url);
+            $path = str_replace('https://storage.googleapis.com/mudeo', '', $path);
+        }
 
         if (Storage::disk('do_spaces')->has($path)) {
             $this->info("Skipping - already uploaded to DO");
