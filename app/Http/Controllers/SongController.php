@@ -261,7 +261,8 @@ class SongController extends BaseController
             'song' => $song,
         ];
 
-        return view($song->youtube_id ? 'song' : 'song_legacy', $data);
+        //return view($song->youtube_id ? 'song' : 'song_legacy', $data);
+        return view('song_legacy', $data);
     }
 
     /**
