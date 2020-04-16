@@ -41,7 +41,7 @@ class TransferFiles extends Command
      */
     public function handle()
     {
-        $users = User::orderBy('id')->limit(2)->get();
+        $users = User::orderBy('id')->get();
         foreach ($users as $user) {
             if ($user->profile_image_url) {
                 if ($url = $this->uploadFile($user->profile_image_url)) {
@@ -57,7 +57,7 @@ class TransferFiles extends Command
             }
         }
 
-        $songs = Song::orderBy('id')->limit(1)->get();
+        $songs = Song::orderBy('id')->get();
         foreach ($songs as $song) {
             if ($url = $this->uploadFile($song->video_url)) {
                 $song->video_url = $url;
@@ -69,7 +69,7 @@ class TransferFiles extends Command
             }
         }
 
-        $videos = Video::orderBy('id')->limit(1)->get();
+        $videos = Video::orderBy('id')->get();
         foreach ($videos as $video) {
             if ($url = $this->uploadFile($video->url)) {
                 $video->url = $url;
