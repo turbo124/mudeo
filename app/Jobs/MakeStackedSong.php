@@ -101,6 +101,11 @@ class MakeStackedSong implements ShouldQueue
             $filterVideo = '';
             $filterAudio = '';
 
+            if ($sizes->duration > (60 * 3)) {
+                \Log::error("Duration ({$sizes->duration}) for {$this->song->id}: {$this->song->title} is too long");
+                exit;
+            }
+
             foreach ($tracks as $track) {
                 $delay = $track->delay;
 
@@ -249,7 +254,6 @@ class MakeStackedSong implements ShouldQueue
                 ->format($this->getUrl($video)) // extracts file informations
                 ->get('duration');             // returns the duration property
 
-            \Log::error('DURATION: ' . $duration);
             $duration_collection->push($duration);
         }
 
@@ -259,7 +263,6 @@ class MakeStackedSong implements ShouldQueue
         $data->min_width = $width_collection->min();
         $data->max_width = $width_collection->max();
         $data->duration = $duration_collection->max();
-        \Log::error('MAX DURATION: ' . $data->duration);
 
         return $data;
     }
