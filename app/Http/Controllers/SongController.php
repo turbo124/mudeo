@@ -147,7 +147,7 @@ class SongController extends BaseController
         $song->is_approved = true;
         $song->save();
 
-        $song->notify(new SongApproved());
+        //$song->notify(new SongApproved());
 
         return redirect('/')->with('status', 'Song has been approved!');
     }

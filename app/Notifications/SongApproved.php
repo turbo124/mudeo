@@ -36,7 +36,7 @@ class SongApproved extends Notification
                 2 => 'Arabic',
                 3 => 'Asian',
                 4 => 'AvantGarde',
-                5 => 'Blue',
+                5 => 'Blues',
                 6 => 'Caribbean',
                 7 => 'ClassicalMusic',
                 8 => 'Comedy',
