@@ -13,7 +13,6 @@ use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
 use App\Models\User;
-use App\Notifications\SongSubmitted;
 use App\Notifications\SongApproved;
 use App\Transformers\SongTransformer;
 use Hashids\Hashids;
@@ -124,8 +123,6 @@ class SongController extends BaseController
 
             MakeStackedSong::dispatch($song);
         }
-
-        User::admin()->notify(new SongSubmitted($song));
 
         return $this->itemResponse($song->fresh());
     }

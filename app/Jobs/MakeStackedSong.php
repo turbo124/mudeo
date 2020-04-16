@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use App\Models\Song;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFMpeg;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use League\OAuth1\Client\Server\Twitter;
 use App\Jobs\UploadSongToYouTube;
 use Illuminate\Support\Str;
+use App\Notifications\SongSubmitted;
 
 class MakeStackedSong implements ShouldQueue
 {
@@ -46,6 +48,7 @@ class MakeStackedSong implements ShouldQueue
         // Don't include YouTube videos in the stacked video
         $song = $this->song;
         $tracks = $song->local_song_videos;
+        $isNew = ! $song->is_rendered;
 
         if (count($tracks) == 0) {
             return;
@@ -73,6 +76,10 @@ class MakeStackedSong implements ShouldQueue
         File::deleteDirectory(storage_path($this->working_dir));
 
         //UploadSongToYouTube::dispatch($song);
+
+        if ($isNew) {
+            User::admin()->notify(new SongSubmitted($song));
+        }
     }
 
     private function createVideo($tracks, $filepath)

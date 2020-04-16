@@ -137,7 +137,7 @@ class UserController extends BaseController
 
         $purchased = Carbon::createFromTimestamp($timestamp);
 
-        if ($purchased->year > 2100) {
+        if ($purchased->year > 3000) {
             $purchased = Carbon::createFromTimestamp($timestamp / 1000);
         }
 
