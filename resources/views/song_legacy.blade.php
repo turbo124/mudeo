@@ -14,7 +14,7 @@
     <meta name="twitter:site" content="@mudeo_app">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
     <meta name="twitter:player" content="{{ $song->video_url }}">
-    <meta name="twitter:player:stream:content_type" content="video/mp4; codecs="avc1.42E01E1, mp4a.40.2"">
+    <meta name="twitter:player:stream:content_type" content="video/mp4;" codecs="avc1.42E01E1, mp4a.40.2">
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
 
