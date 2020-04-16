@@ -60,28 +60,33 @@
     </div>
 
     <center>
-    <video controls autoplay id="video">
-        <source src="{{ $song->video_url }}" type="video/mp4">
-        <!--
-        <div class="container-fluid">
-    		<div class="d-flex justify-content-center">
-    			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
-                    controls preload='auto' poster='' data-setup='{}'>
-    				<source src='{{ $song->video_url }}' type='video/mp4'>
-    					<p class='vjs-no-js'>
-    						To view this video please enable JavaScript, and consider upgrading to a web browser that
-    						<a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
-    					</p>
-    			</video>
-    		</div>
-    	</div>
-        -->
-    </video>
+        @if ($song->is_rendered)
+            <video controls autoplay id="video">
+                <source src="{{ $song->video_url }}" type="video/mp4">
+            </video>
+        @else
+            <div style="color: white; padding-top: 180px; font-family:arial,sans-serif; font-size:22px">
+                The video is processing, it should be ready in a few minutes
+            </div>
+        @endif
     </center>
 
     <!--
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center">
+            <video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
+                controls preload='auto' poster='' data-setup='{}'>
+                <source src='{{ $song->video_url }}' type='video/mp4'>
+                    <p class='vjs-no-js'>
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+                    </p>
+            </video>
+        </div>
+    </div>
+
     <script>
-        videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
+        videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is processing, it should be ready in a few minutes"});
     </script>
     -->
 
