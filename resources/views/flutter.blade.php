@@ -1,6 +1,9 @@
 @extends('layouts.mudeo')
 
 @section('head')
+  <title>mudeo | a collaborative multi-track music app</title>
+  <meta name="description" content="The app enables you to easily collaborate on multi-track music videos. One artist can start a song and then any other artist can edit it to add their own tracks. It's sort of a mashup between TikTok and GitHub.">
+
   <meta property="og:title" content="mudeo"></meta>
   <meta property="og:description" content="make music together"></meta>
   <meta property="og:image" content="https://mudeo.app/images/banner.jpg"></meta>
@@ -38,6 +41,6 @@
       });
     }
   </script>
-  <script src="main.dart.js" type="application/javascript"></script>	
+  <script src="main.dart.js" type="application/javascript"></script>
 
 @endsection

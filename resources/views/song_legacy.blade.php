@@ -1,6 +1,9 @@
 @extends('layouts.mudeo')
 
 @section('head')
+    <title>{{ $song->user->handle . ' - ' . $song->title }} | mudeo</title>
+    <meta name="description" content="{{ $song->description }}">
+
     <meta property="og:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
     <meta property="og:description" content="{{ $song->description }}">
     <meta property="og:image" content="{{ $song->thumbnail_url }}">
