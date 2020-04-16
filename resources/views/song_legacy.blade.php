@@ -18,8 +18,11 @@
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
 
+    <!--
     <link href="https://vjs.zencdn.net/7.7.4/video-js.css" rel="stylesheet">
     <script src='https://vjs.zencdn.net/7.7.4/video.js'></script>
+    -->
+    
 @endsection
 
 @section('body')
