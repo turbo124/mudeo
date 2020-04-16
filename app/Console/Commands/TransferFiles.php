@@ -106,7 +106,10 @@ class TransferFiles extends Command
         }
 
         $file = file_get_contents($url);
-        Storage::disk('do_spaces')->put($path, $file, 'public');
+        if (! Storage::disk('do_spaces')->put($path, $file, 'public')) {
+            $this->info("Failed to upload file");
+            return false;
+        }
 
         $path = 'https://mudeo.nyc3.cdn.digitaloceanspaces.com' . $path;
         $this->info("Uploaded: $path");
