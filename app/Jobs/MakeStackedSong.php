@@ -77,7 +77,7 @@ class MakeStackedSong implements ShouldQueue
 
         //UploadSongToYouTube::dispatch($song);
 
-        if ($isNew) {
+        if ($isNew && $song->is_public) {
             User::admin()->notify(new SongSubmitted($song));
         }
     }

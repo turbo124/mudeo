@@ -150,6 +150,21 @@ class SongController extends BaseController
         return redirect('/')->with('status', 'Song has been approved!');
     }
 
+    public function tweet($hashedId)
+    {
+        if (request()->secret != config('mudeo.publish_secret')) {
+            echo 'Done';
+            exit;
+        }
+
+        $hashids = new Hashids('', 10);
+        $hashed_id = $hashids->decode($hashedId);
+        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
+
+        $song->notify(new SongApproved());
+
+        return redirect('/')->with('status', 'Song has been tweeted!');
+    }
 
     public function unapprove($hashedId)
     {
