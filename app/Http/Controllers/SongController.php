@@ -257,6 +257,8 @@ class SongController extends BaseController
 
         $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
+        //$song = Song::find(1);
+
         $data = [
             'song' => $song,
         ];

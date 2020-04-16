@@ -196,6 +196,18 @@ class MakeStackedSong implements ShouldQueue
         $song->thumbnail_url = $disk->url($remote_storage_file_name);
         $song->is_rendered = true;
         $song->save();
+
+        try {
+            $image = @imagecreatefromjpeg($song->thumbnail_url);
+            if ($image) {
+                $image = imagecropauto($image, IMG_CROP_SIDES);
+                $song->width = imagesx($image);
+                $song->height = imagesy($image);
+                $song->save();
+            }
+        } catch (Exception $e) {
+            // do nothing
+        }
     }
 
     private function getSizes($tracks)

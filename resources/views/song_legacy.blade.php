@@ -34,8 +34,14 @@
         }
 
         #video {
-            height: 100vh;
-            min-height: 100%;
+            @if ($song->width > $song->height)
+                width: 100vh;
+                min-width: 100%;
+                transform: translateY(50%);
+            @else
+                height: 100vh;
+                min-height: 100%;
+            @endif
         }
 
         #links {

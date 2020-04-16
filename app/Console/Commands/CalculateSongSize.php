@@ -49,14 +49,14 @@ class CalculateSongSize extends Command
             $this->info('## Song: ' . $song->id);
 
             try {
-                $image = @imagecreatefromjpeg($song->youTubeThumbnailUrl());
+                $image = @imagecreatefromjpeg($song->thumbnail_url);
 
                 if ($image) {
                     $image = imagecropauto($image, IMG_CROP_SIDES);
 
                     $song->width = imagesx($image);
                     $song->height = imagesy($image);
-                    $song->save();                    
+                    $song->save();
                 }
 
             } catch (Exception $e) {
