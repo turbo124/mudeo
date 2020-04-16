@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use League\OAuth1\Client\Server\Twitter;
 use App\Jobs\UploadSongToYouTube;
+use Illuminate\Support\Str;
 
 class MakeStackedSong implements ShouldQueue
 {
@@ -61,8 +62,7 @@ class MakeStackedSong implements ShouldQueue
         $video = $this->createVideo($tracks, $filepath);
 
         $hashids = new Hashids('', 10);
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) .
-            '/' . $hashids->encode( $song->id ) . '.mp4';
+        $remote_storage_file_name = str_replace(config('mudeo.asset_url'), '', $song->video_url);
         $file = file_get_contents($filepath);
 
         $disk = Storage::disk('do_spaces');
@@ -171,6 +171,10 @@ class MakeStackedSong implements ShouldQueue
 
     private function saveThumbnail($song, $filepath)
     {
+        if ($song->thumbnail_url) {
+            Storage::delete($song->thumbnail_url);
+        }
+
         $ffmpeg = FFMpeg::create([
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
             'ffprobe.binaries' => '/usr/bin/ffprobe'
@@ -179,12 +183,12 @@ class MakeStackedSong implements ShouldQueue
         $video = $ffmpeg->open($filepath);
 
         $hashids = new Hashids('', 10);
-        $tmp_file_name = sha1(time()) . '.jpg';
+        $tmp_file_name = Str::random(40) . '.jpg';
         $vid_object = $video->frame(TimeCode::fromSeconds(1))->save('', false, true);
         $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
         $disk = Storage::disk(config('filesystems.default'));
-        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->user_id ) . '_' .$tmp_file_name;
+        $remote_storage_file_name = 'videos/' . $hashids->encode( $song->user_id ) . '/' . $tmp_file_name;
 
         $disk->put($remote_storage_file_name, Storage::disk('local')->get($tmp_file_name));
         Storage::disk('local')->delete($tmp_file_name);

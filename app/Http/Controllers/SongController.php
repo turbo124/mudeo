@@ -19,6 +19,7 @@ use App\Transformers\SongTransformer;
 use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SongController extends BaseController
 {
@@ -101,7 +102,7 @@ class SongController extends BaseController
         $hashids = new Hashids('', 10);
 
         $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
-        $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . $hashids->encode( $song->id ) . '.mp4';
+        $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . Str::random(40) . '.mp4';
 
         $song->save();
 
@@ -258,20 +259,10 @@ class SongController extends BaseController
 
         $data = [
             'song' => $song,
-            'video_url' => $this->songUrl($song, $hashedId),
         ];
 
         return view($song->youtube_id ? 'song' : 'song_legacy', $data);
     }
-
-    private function songUrl($song, $hashedId)
-    {
-        $hashids = new Hashids('', 10);
-        $user_hash = $hashids->encode($song->user->id);
-
-        return  config('mudeo.asset_url') . 'videos/' . $user_hash . '/' . $hashedId . '.mp4?updated_at=' . str_replace(' ', '_', $song->updated_at);
-    }
-
 
     /**
      * Show the form for editing the specified resource.
