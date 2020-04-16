@@ -17,6 +17,8 @@
     <meta name="twitter:player:stream:content_type" content="video/mp4; codecs="avc1.42E01E1, mp4a.40.2"">
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 @endsection
 
 @section('body')
