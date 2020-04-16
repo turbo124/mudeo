@@ -107,7 +107,7 @@ class TransferFiles extends Command
         }
 
         $file = file_get_contents($url);
-        if (! Storage::disk('do_spaces')->put($path, $file, 'public')) {
+        if (! Storage::disk('do_spaces')->put($path, $file)) {
             $this->info("Failed to upload file");
             return false;
         }
