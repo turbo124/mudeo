@@ -98,7 +98,8 @@ class TransferFiles extends Command
             return false;
         }
 
-        $path = str_replace('https://storage.googleapis.com/mudeo', '', $url);
+        $path = str_replace('http://storage.googleapis.com/mudeo', '', $url);
+        $path = str_replace('https://storage.googleapis.com/mudeo', '', $path);
 
         if (Storage::disk('do_spaces')->has($path)) {
             $this->info("Skipping - already uploaded to DO");
@@ -111,7 +112,7 @@ class TransferFiles extends Command
             return false;
         }
 
-        $path = 'https://mudeo.nyc3.cdn.digitaloceanspaces.com' . $path;
+        $path = "https://mudeo.nyc3.digitaloceanspaces.com{$path}";
         $this->info("Uploaded: $path");
 
         return $path;
