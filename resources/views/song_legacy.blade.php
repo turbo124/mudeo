@@ -23,9 +23,23 @@
 @endsection
 
 @section('body')
-	<style>
-		body {
-            background-color:black
+
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+        }
+
+        #video {
+            height: 100vh;
+            min-height: 100%;
+        }
+
+        #links {
+            color: red;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
         vjs-custom {
@@ -34,35 +48,34 @@
             height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
             height: fill-available;
         }
-	</style>
+    </style>
 
-	<p></p>
+    <div id="links" title="Try the app">
+        <a href="https://mudeo.app" target="_blank" border="0">
+            <img src="/images/icon.png" style="border-radius: 50%; width: 50px;"/>
+        </a>
+    </div>
 
-	<center>
-		<a href="https://mudeo.app" target="_blank" style="font-weight:100">DOWNLOAD THE APP</a>
+    <center>
+    <video controls autoplay id="video">
+        <source src="{{ $song->video_url }}" type="video/mp4">
+        <div class="container-fluid">
+    		<div class="d-flex justify-content-center">
+    			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
+                    autoplay controls preload='auto' poster='' data-setup='{}'>
+    				<source src='{{ $song->video_url }}' type='video/mp4'>
+    					<p class='vjs-no-js'>
+    						To view this video please enable JavaScript, and consider upgrading to a web browser that
+    						<a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+    					</p>
+    			</video>
+    		</div>
+    	</div>
+    </video>
+    </center>
 
-        &nbsp;&nbsp; <span style="color:white">•</span> &nbsp;&nbsp;
-
-        <a href="https://twitter.com/mudeo_app" target="_blank" style="font-weight:100">FOLLOW US ON TWITTER</a>
-	</center>
-
-    <p></p>
-
-	<div class="container-fluid">
-		<div class="d-flex justify-content-center">
-			<video id='my-video' class='video-js vjs-default-skin vjs-big-play-centered vjs-custom'
-                autoplay controls preload='auto' poster='' data-setup='{}'>
-				<source src='{{ $song->video_url }}' type='video/mp4'>
-					<p class='vjs-no-js'>
-						To view this video please enable JavaScript, and consider upgrading to a web browser that
-						<a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
-					</p>
-			</video>
-		</div>
-	</div>
-
-	<script>
-		videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
-	</script>
+    <script>
+        videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is still processing, please try again in a few minutes."});
+    </script>
 
 @endsection
