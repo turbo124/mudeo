@@ -37,7 +37,7 @@
             @if ($song->width > $song->height)
                 width: 100vh;
                 min-width: 100%;
-                transform: translateY(50%);
+                max-height: 100vh;
             @else
                 height: 100vh;
                 min-height: 100%;
@@ -51,12 +51,15 @@
             left: 20px;
         }
 
+        /*
         vjs-custom {
             height: 90%;
-            height: -moz-available;          /* WebKit-based browsers will ignore this. */
-            height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+            height: -moz-available;
+            height: -webkit-fill-available;
             height: fill-available;
         }
+        */
+
     </style>
 
     <div id="links" title="Try the app">
