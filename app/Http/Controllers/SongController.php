@@ -178,7 +178,7 @@ class SongController extends BaseController
         file_put_contents($path, $contents);
 
         $result = $twitter->upload('media/upload', [
-            'media' => $file_path,
+            'media' => $path,
             'media_type' => 'video/mp4'
         ], true);
 
