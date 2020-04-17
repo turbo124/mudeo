@@ -167,7 +167,7 @@ class SongController extends BaseController
             config('services.twitter.consumer_key'),
             config('services.twitter.consumer_secret'),
             config('services.twitter.access_token'),
-            config('services.twitter.access_secret'),
+            config('services.twitter.access_secret')
         );
         $twitter->setTimeouts(120, 60);
 
