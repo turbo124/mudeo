@@ -49,12 +49,6 @@ class UploadSongToTwitter implements ShouldQueue
         ]);
 
         $video = $ffmpeg->open($filename);
-
-        /*
-        $video->filters()
-            ->clip(TimeCode::fromSeconds(0), TimeCode::fromSeconds(30));
-        */
-
         $filter = '[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[v];[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a]';
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
@@ -77,7 +71,7 @@ class UploadSongToTwitter implements ShouldQueue
                 '-pix_fmt', 'yuv420p',
             ]);
 
-        $video->save($format, $filename . 'trimmed');
+        $video->save($format, 'trimmed_' . $filename);
 
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
@@ -88,12 +82,12 @@ class UploadSongToTwitter implements ShouldQueue
         $twitter->setTimeouts(120, 60);
 
         $response = $twitter->upload('media/upload', [
-            'media' => $filename . 'trimmed',
+            'media' => 'trimmed_' . $filename,
             'media_type' => 'video/mp4'
         ], true);
 
         unlink($filename);
-        unlink($filename . 'trimmed');
+        unlink('trimmed_' . $filename);
 
         \Log::error('UPLOAD RESPONSE: ' . json_encode($response));
 
