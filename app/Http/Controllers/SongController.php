@@ -19,6 +19,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 class SongController extends BaseController
 {
