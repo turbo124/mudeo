@@ -121,7 +121,7 @@
         function calcVH() {
             $('#video').innerHeight( $(this).innerHeight() );
         }
-        $(window).on('load resize orientationchange', function() {
+        $(window).on('DOMContentLoaded load resize orientationchange', function() {
             calcVH();
         });
     </script>
