@@ -190,7 +190,7 @@ class SongController extends BaseController
             $tweet .= $song->user->handle;
         }
 
-        $tweet .= " 🙌 " . $song->title . " 🎵 🎶 " . $song->url . " https://mudeo.app #mudeo";
+        $tweet .= " 🙌 " . $song->title . " 🎵 🎶 " . $song->url . " #mudeo";
 
         if ($song->genre_id) {
             $map = [
@@ -215,7 +215,7 @@ class SongController extends BaseController
                 19 => 'Other',
             ];
 
-            $tweet .= ' #' . strtolower($map[$song->genre_id]);
+            $tweet .= ' #' . strtolower(str_replace(' ', '', $song->genre()));
         }
 
         $parameters = [
@@ -227,7 +227,7 @@ class SongController extends BaseController
 
         unlink($path);
 
-        \Log::error(json_encode($response->getBody()));
+        \Log::error(json_encode($response));
 
         return redirect('/')->with('status', 'Song has been tweeted!');
     }

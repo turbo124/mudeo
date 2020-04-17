@@ -95,4 +95,35 @@ class Song extends EntityModel
     {
         return 'https://www.youtube.com/embed/'. $this->youtube_id . '?autoplay=1&modestbranding=1&rel=0';
     }
+
+    public function genre()
+    {
+        if (! $this->genre_id) {
+            return '';
+        }
+
+        $map = [
+            1 => 'African',
+            2 => 'Arabic',
+            3 => 'Asian',
+            4 => 'Avant Garde',
+            5 => 'Blues',
+            6 => 'Caribbean',
+            7 => 'Classical Music',
+            8 => 'Comedy',
+            9 => 'Country',
+            10 => 'Easy Listening',
+            11 => 'Electronic',
+            12 => 'Folk',
+            13 => 'Hip Hop',
+            14 => 'Jazz',
+            15 => 'Latin',
+            16 => 'Pop',
+            17 => 'Soul',
+            18 => 'Rock',
+            19 => 'Other',
+        ];
+
+        return $map[$this->genre_id];
+    }
 }

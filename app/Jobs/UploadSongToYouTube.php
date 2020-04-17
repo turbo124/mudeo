@@ -29,6 +29,12 @@ class UploadSongToYouTube implements ShouldQueue
     public function handle()
     {
         $song = $this->song;
+
+        if (! $song->is_public) {
+            return;
+        }
+
+
         $filename = storage_path(sha1(time()) . 'mp4');
 
         /*
@@ -39,13 +45,17 @@ class UploadSongToYouTube implements ShouldQueue
 
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
+        $tags = ['mudeo'];
+        if ($song->genre_id) {
+            $tags[] = $song->genre();
+        }
+
         $video = Youtube::upload($filename, [
             'title' => $song->title,
-            'description' => $song->url . " https://mudeo.app\n\n" . $song->description,
-            'tags' => ['mudeo'],
+            'description' => $song->url . "\n\n" . $song->description,
+            'tags' => $tags,
             'category_id' => 10,
         ], 'unlisted');
-
 
         $song->youtube_id = $video->getVideoId();
         $song->save();
