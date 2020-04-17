@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use FFMpeg\Filters\Audio\SimpleFilter;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 use FFMpeg\Coordinate\TimeCode;
@@ -50,6 +51,10 @@ class UploadSongToTwitter implements ShouldQueue
         $video = $ffmpeg->open($filename);
         $video->filters()
             ->clip(TimeCode::fromSeconds(0), TimeCode::fromSeconds(30));
+
+        $video->addFilter(new SimpleFilter(['-map', '[v]']))
+            ->addFilter(new SimpleFilter(['-map', '[a]']))
+            ->addFilter(new SimpleFilter(['-ac', '2']));
 
         $format = new X264();
         $format->setPasses(1)
