@@ -61,7 +61,7 @@ class SongController extends BaseController
                     ->where($systemWhere)
                     ->orWhere($userWhere)
                     ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC")
-                    ->limit(100);
+                    ->limit(200);
 
         return $this->listResponse($songs);
     }
