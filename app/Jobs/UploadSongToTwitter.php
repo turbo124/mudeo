@@ -65,7 +65,7 @@ class UploadSongToTwitter implements ShouldQueue
                 '-pix_fmt', 'yuv420p',
             ]);
 
-        $video->save($format, $filepath . 'trimmed');
+        $video->save($format, $filename . 'trimmed');
 
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
