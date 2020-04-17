@@ -113,16 +113,7 @@
     -->
 
     <script>
-        /* https://stackoverflow.com/q/39384154/497368 */
-        /*
-        function calcVH() {
-            $('#video').innerHeight( $(this).innerHeight() );
-        }
-        $(window).on('DOMContentLoaded load resize orientationchange', function() {
-            calcVH();
-        });
-        */
-
+        /* https://stackoverflow.com/a/40156488/497368 */
         function calcVH() {
           var vH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
           document.getElementById("video").setAttribute("style", "height:" + vH + "px;");
