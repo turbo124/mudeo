@@ -34,7 +34,7 @@ class UploadSongToTwitter implements ShouldQueue
             exit;
         }
 
-        $filename = storage_path(sha1(time()) . 'mp4');
+        $filename = storage_path(sha1(time()));
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
         $twitter = new TwitterOAuth(
@@ -71,10 +71,11 @@ class UploadSongToTwitter implements ShouldQueue
 
         $response = $twitter->post('statuses/update', $parameters);
 
-        if ($response) {
-            $song->twitter_id = $response->id;
+        if ($response instanceof ErrorException) {
+            //$song->twitter_id = 'failed_to_upload';
+            $song->twitter_id = $response->getMessage();
         } else {
-            $song->twitter_id = 'failed_to_upload';
+            $song->twitter_id = $response->id;
         }
 
         $song->save();
