@@ -42,6 +42,7 @@ class SongController extends BaseController
     {
         $user = auth()->user();
 
+        /*
         $systemWhere = [
             ['is_public', '=', 1],
         ];
@@ -62,6 +63,23 @@ class SongController extends BaseController
                     ->orWhere($userWhere)
                     ->orderBy('id', 'desc');
                     //->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
+        */
+
+        $userWhere = [
+            ['user_id', '=', $user->id],
+        ];
+        if (! $user->hasPrivateStorage()) {
+            $userWhere[] = ['is_public', '=', 1];
+        }
+
+        $songs = Song::filter($filters)
+            ->with('song_videos.video', 'user', 'comments.user')
+            ->where([
+                ['is_approved', '=', 1],
+                ['is_public', '=', 1],
+            ])
+            ->orWhere($userWhere)
+            ->orderBy('id', 'desc');
 
         return $this->listResponse($songs);
     }
