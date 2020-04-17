@@ -64,6 +64,8 @@ class SongController extends BaseController
                     ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
         */
 
+        $count = Song::whereUserId($user->id)->count();
+
         $userWhere = [
             ['user_id', '=', $user->id],
         ];
@@ -78,7 +80,8 @@ class SongController extends BaseController
                 ['is_public', '=', 1],
             ])
             ->orWhere($userWhere)
-            ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
+            ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 99999999999 ELSE `songs`.`id` END DESC")
+            ->limit(100 + $count);
 
         return $this->listResponse($songs);
     }
