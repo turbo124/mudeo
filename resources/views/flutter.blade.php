@@ -1,7 +1,7 @@
 @extends('layouts.mudeo')
 
 @section('head')
-  <title>mudeo | a collaborative multi-track music app</title>
+  <title>mudeo | a collaborative music video app</title>
   <meta name="description" content="The app enables you to easily collaborate on multi-track music videos. One artist can start a song and then any other artist can edit it to add their own tracks. It's sort of a mashup between TikTok and GitHub.">
 
   <meta property="og:title" content="mudeo"></meta>
