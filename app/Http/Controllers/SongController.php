@@ -164,6 +164,10 @@ class SongController extends BaseController
 
         //$song->notify(new SongApproved());
 
+        if (! $song->is_public) {
+            exit;
+        }
+
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
             config('services.twitter.consumer_secret'),
