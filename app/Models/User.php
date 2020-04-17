@@ -120,6 +120,6 @@ class User extends Authenticatable implements CanResetPassword
 
     public function isAdmin()
     {
-        return $this->id === 2;
+        return $this->id == 2;
     }
 }
