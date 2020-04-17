@@ -126,4 +126,26 @@ class Song extends EntityModel
 
         return $map[$this->genre_id];
     }
+
+    public function getVideoUrl()
+    {
+        if (! $this->video_url) {
+            return '';
+        }
+
+        $url = str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->video_url);
+
+        return $url . '?updated_at=' . urlencode($this->updated_at);
+    }
+
+    public function getThumbnailUrl()
+    {
+        if (! $this->thumbnail_url) {
+            return '';
+        }
+
+        $url = str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->thumbnail_url);
+
+        return $url . '?updated_at=' . urlencode($this->updated_at);
+    }
 }

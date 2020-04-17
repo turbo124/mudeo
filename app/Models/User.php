@@ -122,4 +122,27 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->id == 2;
     }
+
+    public function getProfileImageUrl()
+    {
+        if (! $this->profile_image_url) {
+            return '';
+        }
+
+        $url = str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->profile_image_url);
+
+        return $url . '?updated_at=' . urlencode($this->updated_at);
+    }
+
+    public function getHeaderImageUrl()
+    {
+        if (! $this->header_image_url) {
+            return '';
+        }
+
+        $url = str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->header_image_url);
+
+        return $url . '?updated_at=' . urlencode($this->updated_at);
+    }
+
 }

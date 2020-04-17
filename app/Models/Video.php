@@ -40,4 +40,22 @@ class Video extends EntityModel
     {
         return $this->hasMany(VideoLike::class);
     }
+
+    public function getUrl()
+    {
+        if (! $this->url) {
+            return '';
+        }
+
+        return str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->url);
+    }
+
+    public function getThumbnailUrl()
+    {
+        if (! $this->thumbnail_url) {
+            return '';
+        }
+
+        return str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->thumbnail_url);        
+    }
 }

@@ -38,8 +38,8 @@ class SongTransformer extends EntityTransformer
             'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
-            'video_url' => $song->video_url ?: '',
-            'thumbnail_url' => $song->thumbnail_url ?: '',
+            'video_url' => $song->getVideoUrl(),
+            'thumbnail_url' => $song->getThumbnailUrl(),
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
             'is_rendered' => (bool) $song->is_rendered,
@@ -48,6 +48,8 @@ class SongTransformer extends EntityTransformer
             'width' => (int) $song->width,
             'height' => (int) $song->height,
             'color' => $song->color,
+            'twitter_id' => $song->twitter_id ?: '',
+            'youtube_key' => $song->youtube_id ?: '',
         ];
     }
 
