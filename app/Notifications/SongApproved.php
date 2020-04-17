@@ -28,7 +28,8 @@ class SongApproved extends Notification
 
         $tweet .= " 🙌 " . $song->title . " 🎵 🎶";
 
-        $tweet .= "\n\n" . $song->url . ' #mudeo';
+        //$tweet .= "\n\n" . $song->url . ' #mudeo';
+        $tweet .= "\n\nhttps://mudeo.app #mudeo";
 
         if ($song->genre_id) {
             $map = [
@@ -56,8 +57,8 @@ class SongApproved extends Notification
             $tweet .= ' #' . strtolower($map[$song->genre_id]);
         }
 
-        $contents = file_get_contents($song->thumbnail_url);
-        $fileName = sha1(time());
+        $contents = file_get_contents($song->video_url);
+        $fileName = sha1(time()) . '.mp4';
         $path = '/tmp/' . $fileName;
         file_put_contents($path, $contents);
 
