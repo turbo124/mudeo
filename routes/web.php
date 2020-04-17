@@ -28,3 +28,4 @@ Route::get('/song/{hashed_id}/feature', 'SongController@feature')->name('feature
 Route::get('/song/{hashed_id}/unfeature', 'SongController@feature')->name('unfeature');
 Route::get('/song/{hashed_id}/publish', 'SongController@publish')->name('publish');
 Route::get('/song/{hashed_id}/tweet', 'SongController@tweet')->name('tweet');
+Route::get('/song/{hashed_id}/build', 'SongController@buildVideo');

@@ -36,5 +36,3 @@ Route::group(['middleware' => ['api_secret_check', 'token_auth']], function () {
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');
 });
-
-Route::get('songs/build/{song_hash}', 'SongController@buildVideo');
