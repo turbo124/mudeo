@@ -60,8 +60,7 @@ class SongController extends BaseController
                     ->with('song_videos.video', 'user', 'comments.user')
                     ->where($systemWhere)
                     ->orWhere($userWhere)
-                    ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC")
-                    ->limit(200);
+                    ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
 
         return $this->listResponse($songs);
     }
