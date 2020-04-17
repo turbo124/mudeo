@@ -38,12 +38,12 @@
 
         #video {
             @if ($song->width > $song->height)
-                width: 100vh;
+                width: 100vw;
                 min-width: 100%;
                 max-width: 99vw;
                 max-height: 99vh;
             @else
-                height: 100vw;
+                height: 100vh;
                 min-height: 100%;
                 max-height: 99vh;
                 max-width: 99vw;
