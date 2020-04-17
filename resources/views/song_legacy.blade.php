@@ -43,6 +43,7 @@
                 max-width: 99vw;
                 max-height: 99vh;
             @else
+                height: -webkit-fill-available;
                 height: 100vh;
                 min-height: -webkit-fill-available;
                 min-height: 100%;
