@@ -71,7 +71,12 @@ class UploadSongToTwitter implements ShouldQueue
 
         $response = $twitter->post('statuses/update', $parameters);
 
-        $song->twitter_id = $response->id;
+        if ($response) {
+            $song->twitter_id = $response->id;
+        } else {
+            $song->twitter_id = 'failed_to_upload';
+        }
+
         $song->save();
 
         unlink($filename);
