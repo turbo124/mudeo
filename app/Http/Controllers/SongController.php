@@ -61,8 +61,7 @@ class SongController extends BaseController
                     ->with('song_videos.video', 'user', 'comments.user')
                     ->where($systemWhere)
                     ->orWhere($userWhere)
-                    ->orderBy('id', 'desc');
-                    //->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
+                    ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
         */
 
         $userWhere = [
@@ -79,7 +78,7 @@ class SongController extends BaseController
                 ['is_public', '=', 1],
             ])
             ->orWhere($userWhere)
-            ->orderBy('id', 'desc');
+            ->orderByRaw("CASE WHEN `songs`.`user_id` = {$user->id} THEN 0 ELSE 1 END ASC");
 
         return $this->listResponse($songs);
     }
