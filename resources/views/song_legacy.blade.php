@@ -125,7 +125,7 @@
 
         function calcVH() {
           var vH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-          document.getElementById("#video").setAttribute("style", "height:" + vH + "px;");
+          document.getElementById("video").setAttribute("style", "height:" + vH + "px;");
         }
         calcVH();
         window.addEventListener('DOMContentLoaded', calcVH, true);
