@@ -34,8 +34,10 @@ class UploadSongToTwitter implements ShouldQueue
             exit;
         }
 
-        $filename = storage_path(sha1(time()));
-        file_put_contents($filename, fopen($song->video_url, 'r'));
+        $contents = file_get_contents($song->video_url);
+        $fileName = sha1(time());
+        $path = '/tmp/' . $fileName;
+        file_put_contents($path, $contents);
 
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
@@ -46,7 +48,7 @@ class UploadSongToTwitter implements ShouldQueue
         $twitter->setTimeouts(120, 60);
 
         $result = $twitter->upload('media/upload', [
-            'media' => $filename,
+            'media' => $path,
             'media_type' => 'video/mp4'
         ], true);
 
@@ -80,6 +82,6 @@ class UploadSongToTwitter implements ShouldQueue
 
         $song->save();
 
-        unlink($filename);
+        unlink($path);
     }
 }
