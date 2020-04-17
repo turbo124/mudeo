@@ -58,7 +58,7 @@ class SongApproved extends Notification
         }
 
         $contents = file_get_contents($song->video_url);
-        $fileName = sha1(time()) . '.mp4';
+        $fileName = sha1(time());
         $path = '/tmp/' . $fileName;
         file_put_contents($path, $contents);
 
