@@ -40,11 +40,13 @@
             @if ($song->width > $song->height)
                 width: 100vh;
                 min-width: 100%;
+                max-width: 100vw;
                 max-height: 99vh;
             @else
-                height: 100vh;
+                height: 100vw;
                 min-height: 100%;
-                max-width: 99vh;
+                max-height: 100vh;
+                max-width: 99vw;
             @endif
         }
 
@@ -69,13 +71,13 @@
 
     <div id="links">
         <a href="https://mudeo.app" target="_blank" border="0" title="Try the app">
-            <img src="/images/icon.png" style="border-radius: 50%; width: 4vh; padding-right: .5vh;"/>
+            <img src="/images/icon.png" style="border-radius: 50%; width: 5vh; padding-right: .7vh;"/>
         </a>
         <a href="https://www.youtube.com/channel/UCX5ONbOAOG3bYe3vTXrWgPA" target="_blank" border="0" title="YouTube">
-            <img src="/images/youtube.png" style="border-radius: 50%; width: 4vh; padding-right: .5vh;"/>
+            <img src="/images/youtube.png" style="border-radius: 50%; width: 5vh; padding-right: .7vh;"/>
         </a>
         <a href="https://twitter.com/mudeo_app" target="_blank" border="0" title="Twitter">
-            <img src="/images/twitter.png" style="border-radius: 50%; width: 4vh;"/>
+            <img src="/images/twitter.png" style="border-radius: 50%; width: 5vh;"/>
         </a>
     </div>
 
