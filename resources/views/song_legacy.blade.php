@@ -21,6 +21,10 @@
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
 
+    <script
+      src="https://code.jquery.com/jquery-3.5.0.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous"></script>
     <!--
     <link href="https://vjs.zencdn.net/7.7.4/video-js.css" rel="stylesheet">
     <script src='https://vjs.zencdn.net/7.7.4/video.js'></script>
@@ -43,9 +47,7 @@
                 max-width: 99vw;
                 max-height: 99vh;
             @else
-                height: -webkit-fill-available;
                 height: 100vh;
-                min-height: -webkit-fill-available;
                 min-height: 100%;
                 max-height: 99vh;
                 max-width: 99vw;
@@ -54,7 +56,7 @@
 
         #links {
             color: red;
-            position: absolute;
+            position: fixed;
             bottom: 10vh;
             right: 2vh;
             z-index: 1;
@@ -113,5 +115,15 @@
         videojs.addLanguage('en', {"The media could not be loaded, either because the server or network failed or because the format is not supported.": "The video is processing, it should be ready in a few minutes"});
     </script>
     -->
+
+    <script>
+        /* https://stackoverflow.com/q/39384154/497368 */
+        function calcVH() {
+            $('#video').innerHeight( $(this).innerHeight() );
+        }
+        $(window).on('load resize orientationchange', function() {
+            calcVH();
+        });
+    </script>
 
 @endsection
