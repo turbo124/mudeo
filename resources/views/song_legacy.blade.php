@@ -40,12 +40,12 @@
             @if ($song->width > $song->height)
                 width: 100vh;
                 min-width: 100%;
-                max-width: 100vw;
+                max-width: 99vw;
                 max-height: 99vh;
             @else
                 height: 100vw;
                 min-height: 100%;
-                max-height: 100vh;
+                max-height: 99vh;
                 max-width: 99vw;
             @endif
         }
