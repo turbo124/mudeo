@@ -30,12 +30,9 @@ class UploadSongToYouTube implements ShouldQueue
     {
         $song = $this->song;
 
-        if (! $song->is_public) {
+        if (! $song->is_public || $song->deleted_at) {
             return;
         }
-
-
-        $filename = storage_path(sha1(time()) . 'mp4');
 
         /*
         if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
@@ -43,6 +40,7 @@ class UploadSongToYouTube implements ShouldQueue
         }
         */
 
+        $filename = storage_path(sha1(time()) . 'mp4');
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
         $tags = ['mudeo'];

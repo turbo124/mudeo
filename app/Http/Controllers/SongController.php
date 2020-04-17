@@ -8,7 +8,7 @@ use App\Http\Controllers\Requests\Song\CreateSongRequest;
 use App\Http\Controllers\Requests\Song\DestroySongRequest;
 use App\Http\Controllers\Requests\Song\UpdateSongRequest;
 use App\Jobs\MakeStackedSong;
-use App\Jobs\UploadSongToYouTube;
+use App\Jobs\UploadSongToTwitter;
 use App\Models\Song;
 use App\Models\SongVideo;
 use App\Models\Video;
@@ -19,7 +19,6 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Abraham\TwitterOAuth\TwitterOAuth;
 
 class SongController extends BaseController
 {
@@ -162,77 +161,7 @@ class SongController extends BaseController
         $hashed_id = $hashids->decode($hashedId);
         $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
-        //$song->notify(new SongApproved());
-
-        if (! $song->is_public) {
-            exit;
-        }
-
-        $twitter = new TwitterOAuth(
-            config('services.twitter.consumer_key'),
-            config('services.twitter.consumer_secret'),
-            config('services.twitter.access_token'),
-            config('services.twitter.access_secret')
-        );
-        $twitter->setTimeouts(120, 60);
-
-        $contents = file_get_contents($song->video_url);
-        $fileName = sha1(time());
-        $path = '/tmp/' . $fileName;
-        file_put_contents($path, $contents);
-
-        $result = $twitter->upload('media/upload', [
-            'media' => $path,
-            'media_type' => 'video/mp4'
-        ], true);
-
-        $tweet = "New Song by ";
-
-        if ($handle = $song->user->twitterHandle()) {
-            $tweet .= $handle;
-        } else {
-            $tweet .= $song->user->handle;
-        }
-
-        $tweet .= " 🙌 " . $song->title . " 🎵 🎶 " . $song->url . " #mudeo";
-
-        if ($song->genre_id) {
-            $map = [
-                1 => 'African',
-                2 => 'Arabic',
-                3 => 'Asian',
-                4 => 'AvantGarde',
-                5 => 'Blues',
-                6 => 'Caribbean',
-                7 => 'ClassicalMusic',
-                8 => 'Comedy',
-                9 => 'Country',
-                10 => 'EasyListening',
-                11 => 'Electronic',
-                12 => 'Folk',
-                13 => 'HipHop',
-                14 => 'Jazz',
-                15 => 'Latin',
-                16 => 'Pop',
-                17 => 'Soul',
-                18 => 'Rock',
-                19 => 'Other',
-            ];
-
-            $tweet .= ' #' . strtolower(str_replace(' ', '', $song->genre()));
-        }
-
-        $parameters = [
-            'status' => $tweet,
-            'media_ids' => $result->media_id_string
-        ];
-
-        $response = $twitter->post('statuses/update', $parameters);
-
-        $song->twitter_id = $response->id;
-        $song->save();
-
-        unlink($path);
+        UploadSongToTwitter::dispatch($song);
 
         return redirect('/')->with('status', 'Song has been tweeted!');
     }
