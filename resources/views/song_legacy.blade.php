@@ -21,10 +21,6 @@
     <meta name="twitter:player:height" content="480">
     <meta name="twitter:player:width" content="640">
 
-    <script
-      src="https://code.jquery.com/jquery-3.5.0.min.js"
-      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
-      crossorigin="anonymous"></script>
     <!--
     <link href="https://vjs.zencdn.net/7.7.4/video-js.css" rel="stylesheet">
     <script src='https://vjs.zencdn.net/7.7.4/video.js'></script>
@@ -118,12 +114,24 @@
 
     <script>
         /* https://stackoverflow.com/q/39384154/497368 */
+        /*
         function calcVH() {
             $('#video').innerHeight( $(this).innerHeight() );
         }
         $(window).on('DOMContentLoaded load resize orientationchange', function() {
             calcVH();
         });
+        */
+
+        function calcVH() {
+          var vH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          document.getElementById("#video").setAttribute("style", "height:" + vH + "px;");
+        }
+        calcVH();
+        window.addEventListener('DOMContentLoaded', calcVH, true);
+        window.addEventListener('load', calcVH, true);
+        window.addEventListener('resize', calcVH, true);
+        window.addEventListener('onorientationchange', calcVH, true);
     </script>
 
 @endsection
