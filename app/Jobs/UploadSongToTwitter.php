@@ -9,6 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Coordinate\TimeCode;
 
 class UploadSongToTwitter implements ShouldQueue
 {
@@ -37,6 +40,13 @@ class UploadSongToTwitter implements ShouldQueue
         $filename = storage_path(sha1(time()) . 'mp4');
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
+        $ffmpeg = FFMpeg\FFMpeg::create();
+        $video = $ffmpeg->open($filename);
+        $video->filters()->clip(
+            FFMpeg\Coordinate\TimeCode::fromSeconds(0),
+            FFMpeg\Coordinate\TimeCode::fromSeconds(30));
+        $video->save(new FFMpeg\Format\Video\X264(), $filename . 'trimmed');
+
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
             config('services.twitter.consumer_secret'),
@@ -46,11 +56,12 @@ class UploadSongToTwitter implements ShouldQueue
         $twitter->setTimeouts(120, 60);
 
         $response = $twitter->upload('media/upload', [
-            'media' => $filename,
+            'media' => $filename . 'trimmed',
             'media_type' => 'video/mp4'
         ], true);
 
         unlink($filename);
+        unlink($filename . 'trimmed');
 
         \Log::error('UPLOAD RESPONSE: ' . json_encode($response));
 
