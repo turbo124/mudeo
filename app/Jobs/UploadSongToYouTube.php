@@ -41,7 +41,7 @@ class UploadSongToYouTube implements ShouldQueue
 
         $video = Youtube::upload($filename, [
             'title' => $song->title,
-            'description' => $song->url . "\n\n" . $song->description,
+            'description' => $song->url . " https://mudeo.app\n\n" . $song->description,
             'tags' => ['mudeo'],
             'category_id' => 10,
         ], 'unlisted');
