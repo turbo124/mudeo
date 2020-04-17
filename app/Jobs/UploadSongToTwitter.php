@@ -40,10 +40,32 @@ class UploadSongToTwitter implements ShouldQueue
         $filename = storage_path(sha1(time()) . 'mp4');
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
-        $ffmpeg = FFMpeg::create();
+        $ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe',
+            'timeout'          => 0,
+            'ffmpeg.threads'   => 12,
+        ]);
+
         $video = $ffmpeg->open($filename);
-        $video->filters()->clip(TimeCode::fromSeconds(0), TimeCode::fromSeconds(30));
-        $video->save(new X264(), $filename . 'trimmed');
+        $video->filters()
+            ->clip(TimeCode::fromSeconds(0), TimeCode::fromSeconds(30));
+
+        $format = new X264();
+        $format->setPasses(1)
+            ->setAudioCodec('aac')
+            ->setKiloBitrate(1200)
+            ->setAudioChannels(2)
+            ->setAudioKiloBitrate(192)
+            ->setAdditionalParameters([
+                '-vcodec', 'libx264',
+                '-vprofile', 'baseline',
+                '-level', 3.0,
+                '-movflags', 'faststart',
+                '-pix_fmt', 'yuv420p',
+            ]);
+
+        $video->save($format, $filepath . 'trimmed');
 
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
