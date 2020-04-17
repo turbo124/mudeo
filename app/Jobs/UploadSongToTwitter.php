@@ -45,16 +45,16 @@ class UploadSongToTwitter implements ShouldQueue
         );
         $twitter->setTimeouts(120, 60);
 
-        $result = $twitter->upload('media/upload', [
+        $response = $twitter->upload('media/upload', [
             'media' => $filename,
             'media_type' => 'video/mp4'
         ], true);
 
         unlink($filename);
 
-        \Log::error('UPLOAD RESULT: ' . json_encode($result));
+        \Log::error('UPLOAD RESPONSE: ' . json_encode($response));
 
-        if (property_exists($result, 'errors')) {
+        if (property_exists($response, 'errors')) {
             $song->twitter_id = 'failed_to_upload:' . $response->errors[0]->message;
             $song->save();
             exit;
@@ -76,12 +76,12 @@ class UploadSongToTwitter implements ShouldQueue
 
         $parameters = [
             'status' => $tweet,
-            'media_ids' => $result->media_id_string
+            'media_ids' => $response->media_id_string
         ];
 
         $response = $twitter->post('statuses/update', $parameters);
 
-        \Log::error('TWEET RESULT: ' . json_encode($response));
+        \Log::error('TWEET RESPONSE: ' . json_encode($response));
 
         if (property_exists($response, 'errors')) {
             $song->twitter_id = 'failed_to_upload:' . $response->errors[0]->message;
