@@ -42,11 +42,7 @@ class CalculateBlurhash extends Command
         $songs = Song::where('blurhash', '=', '')->orderBy('id')->get();
 
         foreach ($songs as $song) {
-            if ($song->youtube_id) {
-                $file = $song->youTubeThumbnailUrl();
-            } else {
-                $file = $song->thumbnail_url;
-            }
+            $file = $song->thumbnail_url;
 
             if (!$file) {
                 continue;
