@@ -56,7 +56,7 @@
 
         #links {
             color: red;
-            position: fixed;
+            position: absolute;
             bottom: 10vh;
             right: 2vh;
             z-index: 1;
