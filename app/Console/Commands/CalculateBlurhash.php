@@ -39,7 +39,9 @@ class CalculateBlurhash extends Command
      */
     public function handle()
     {
-        $songs = Song::where('blurhash', '=', '')->orderBy('id')->get();
+        $songs = Song::where('blurhash', '=', '')
+            ->orderBy('id')
+            ->get();
 
         foreach ($songs as $song) {
             $file = $song->thumbnail_url;
