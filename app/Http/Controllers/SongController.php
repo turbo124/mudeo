@@ -225,9 +225,10 @@ class SongController extends BaseController
 
         $response = $twitter->post('statuses/update', $parameters);
 
-        unlink($path);
+        $song->twitter_id = $response->id;
+        $song->save();
 
-        \Log::error(json_encode($response));
+        unlink($path);
 
         return redirect('/')->with('status', 'Song has been tweeted!');
     }
