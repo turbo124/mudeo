@@ -38,7 +38,7 @@ class UploadSongToTwitter implements ShouldQueue
             exit;
         }
 
-        $filename = storage_path(sha1(time()) . 'mp4');
+        $filename = storage_path(sha1(time()) . '.mp4');
         file_put_contents($filename, fopen($song->video_url, 'r'));
 
         $ffmpeg = FFMpeg::create([
@@ -55,11 +55,11 @@ class UploadSongToTwitter implements ShouldQueue
             ->clip(TimeCode::fromSeconds(0), TimeCode::fromSeconds(30));
         */
 
-        $filter = '[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[v0];[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a0];';
+        $filter = '[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[v];[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a]';
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
-            ->addFilter(new SimpleFilter(['-map', '[v0]']))
-            ->addFilter(new SimpleFilter(['-map', '[a0]']))
+            ->addFilter(new SimpleFilter(['-map', '[v]']))
+            ->addFilter(new SimpleFilter(['-map', '[a]']))
             ->addFilter(new SimpleFilter(['-ac', '2']))
             ->filters();
 
