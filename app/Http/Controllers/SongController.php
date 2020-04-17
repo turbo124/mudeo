@@ -41,6 +41,14 @@ class SongController extends BaseController
     public function index(SongFilters $filters)
     {
         $user = auth()->user();
+
+        $systemWhere = [
+            ['is_public', '=', 1],
+        ];
+        if (! $user->isAdmin()) {
+            $systemWhere[] = ['is_approved', '=', 1];
+        }
+
         $userWhere = [
             ['user_id', '=', $user->id],
         ];
@@ -50,10 +58,7 @@ class SongController extends BaseController
 
         $songs = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user')
-                    ->where([
-                        ['is_approved', '=', 1],
-                        ['is_public', '=', 1],
-                    ])
+                    ->where($systemWhere)
                     ->orWhere($userWhere)
                     ->orderBy('id', 'desc');
 

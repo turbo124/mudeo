@@ -117,4 +117,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->order_expires && $this->order_expires >= date('Y-m-d');
     }
+
+    public function isAdmin()
+    {
+        return $this->id === 2;
+    }
 }
