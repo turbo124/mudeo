@@ -52,6 +52,8 @@ class UploadSongToTwitter implements ShouldQueue
 
         unlink($filename);
 
+        \Log::error('UPLOAD RESULT: ' . json_encode($result));
+
         if ($result instanceof ErrorException) {
             $song->twitter_id = $result->getMessage();
             $song->save();
@@ -78,6 +80,8 @@ class UploadSongToTwitter implements ShouldQueue
         ];
 
         $response = $twitter->post('statuses/update', $parameters);
+
+        \Log::error('TWEET RESULT: ' . json_encode($response));
 
         if ($response instanceof ErrorException) {
             //$song->twitter_id = 'failed_to_upload';
