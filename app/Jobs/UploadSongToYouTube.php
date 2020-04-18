@@ -55,7 +55,7 @@ class UploadSongToYouTube implements ShouldQueue
             'description' => $song->url . " • https://mudeo.app\n\n" . $song->description,
             'tags' => $tags,
             'category_id' => 10,
-        ], 'unlisted');
+        ], 'public');
 
         $song->youtube_id = $video->getVideoId();
         $song->save();
