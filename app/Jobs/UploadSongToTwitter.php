@@ -58,7 +58,12 @@ class UploadSongToTwitter implements ShouldQueue
             ->addFilter(new SimpleFilter(['-map', '[v]']))
             ->addFilter(new SimpleFilter(['-map', '[a]']))
             ->addFilter(new SimpleFilter(['-ac', '2']))
-            ->filters();
+            ->filters()
+            ->watermark(public_path('images/watermark.png'), array(
+                'position' => 'relative',
+                'bottom' => 50,
+                'right' => 50,
+            ));
 
         $format = new X264();
         $format->setPasses(1)
