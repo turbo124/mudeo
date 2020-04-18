@@ -210,6 +210,7 @@ class MakeStackedSong implements ShouldQueue
 
         $song->thumbnail_url = $disk->url($remote_storage_file_name);
         $song->is_rendered = true;
+        $song->needs_render = false;
         $song->save();
 
         try {
