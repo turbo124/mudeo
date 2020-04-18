@@ -290,12 +290,12 @@ class SongController extends BaseController
         $hashed_id = $hashids->decode($hashedId);
 
         if (!$hashed_id) {
-            abort(404);
+            //abort(404);
         }
 
-        $song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
+        //$song = Song::where('is_public', '=', true)->findOrFail($hashed_id[0]);
 
-        //$song = Song::find(3);
+        $song = Song::find(3);
 
         $data = [
             'song' => $song,

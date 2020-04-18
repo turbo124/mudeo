@@ -53,8 +53,8 @@
         #links {
             color: red;
             position: absolute;
-            bottom: 10vh;
-            right: 2vh;
+            bottom: 11vh;
+            right: 6vh;
             z-index: 1;
         }
 
@@ -83,7 +83,7 @@
 
     <center>
         @if ($song->is_rendered)
-            <video controls autoplay id="video">
+            <video controls controlsList="nodownload" autoplay id="video">
                 <source src="{{ $song->video_url }}" type="video/mp4">
             </video>
         @else
