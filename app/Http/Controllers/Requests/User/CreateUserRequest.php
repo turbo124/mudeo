@@ -5,6 +5,7 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\Request;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\ExternalLink;
 
 class CreateUserRequest extends Request
 {
@@ -17,6 +18,12 @@ class CreateUserRequest extends Request
             'email' => 'required|unique:users|string|email|max:100',
             'handle' => 'required|alpha_dash|unique:users|max:100',
             'password' => 'sometimes|required|string|min:6',
+            'twitter_social_url' => [new ExternalLink('https://twitter.com/')],
+            'facebook_social_url' => [new ExternalLink('https://www.facebook.com/')],
+            'youtube_social_url' => [new ExternalLink('https://www.youtube.com/')],
+            'instagram_social_url' => [new ExternalLink('https://www.instagram.com/')],
+            'soundcloud_social_url' => [new ExternalLink('https://soundcloud.com/')],
+            'twitch_social_url' => [new ExternalLink('https://www.twitch.tv/')],
         ];
     }
 

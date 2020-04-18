@@ -5,6 +5,7 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\Request;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\ExternalLink;
 
 class UpdateUserRequest extends Request
 {
@@ -19,6 +20,12 @@ class UpdateUserRequest extends Request
         $this->sanitize();
 
         return [
+            'twitter_social_url' => [new ExternalLink('https://twitter.com/')],
+            'facebook_social_url' => [new ExternalLink('https://www.facebook.com/')],
+            'youtube_social_url' => [new ExternalLink('https://www.youtube.com/')],
+            'instagram_social_url' => [new ExternalLink('https://www.instagram.com/')],
+            'soundcloud_social_url' => [new ExternalLink('https://soundcloud.com/')],
+            'twitch_social_url' => [new ExternalLink('https://www.twitch.tv/')],
         ];
     }
 
@@ -27,7 +34,7 @@ class UpdateUserRequest extends Request
         $input = $this->all();
 
 
-        if(isset($input['password']))   
+        if(isset($input['password']))
             unset($input['password']);
 
         $input['facebook_social_url'] = isset($input['facebook_social_url']) ? $input['facebook_social_url'] : '';
@@ -40,8 +47,8 @@ class UpdateUserRequest extends Request
         $input['description'] = isset($input['description']) ? $input['description'] : '';
         $input['profile_image_url'] = isset($input['profile_image_url']) ? $input['profile_image_url'] : '';
         $input['name'] = isset($input['name']) ? $input['name'] : '';
-        
-        $this->replace($input);     
+
+        $this->replace($input);
     }
 
 }
