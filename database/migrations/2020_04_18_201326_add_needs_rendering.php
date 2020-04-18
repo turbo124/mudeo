@@ -16,6 +16,11 @@ class AddNeedsRendering extends Migration
         Schema::table('songs', function (Blueprint $table) {
             $table->boolean('needs_render')->default(false);
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('platform')->nullable();
+            $table->string('device')->nullable();
+        });
     }
 
     /**
@@ -27,6 +32,11 @@ class AddNeedsRendering extends Migration
     {
         Schema::table('songs', function (Blueprint $table) {
             $table->dropColumn('needs_render');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('platform');
+            $table->dropColumn('device');
         });
     }
 }
