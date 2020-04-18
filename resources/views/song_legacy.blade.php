@@ -66,7 +66,6 @@
             transform: scale(1.15);
         }
 
-
         /*
         vjs-custom {
             height: 90%;
