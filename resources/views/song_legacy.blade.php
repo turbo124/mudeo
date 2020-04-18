@@ -58,6 +58,15 @@
             z-index: 1;
         }
 
+        #links img {
+            transition: all .2s ease-in-out;
+        }
+
+        #links img:hover {
+            transform: scale(1.15);
+        }
+
+
         /*
         vjs-custom {
             height: 90%;
