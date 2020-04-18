@@ -20,6 +20,8 @@ class UploadSongToTwitter implements ShouldQueue
 
     protected $song;
 
+    public $tries = 1;
+
     public function __construct(Song $song)
     {
         $this->song = $song;
