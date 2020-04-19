@@ -52,18 +52,14 @@ class UploadSongToTwitter implements ShouldQueue
         ]);
 
         $video = $ffmpeg->open($filename);
-        $filter = '[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[v];[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a]';
+        $video->addFilter(new SimpleFilter(['-i', public_path('images/watermark.png')]));
+        $filter = "[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[1:v][1:v]overlay='if(gte(t,1), -w+(t-1)*200, NAN)':(main_h-overlay_h)/2[v];[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a]";
 
         $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
             ->addFilter(new SimpleFilter(['-map', '[v]']))
             ->addFilter(new SimpleFilter(['-map', '[a]']))
             ->addFilter(new SimpleFilter(['-ac', '2']))
-            ->filters()
-            ->watermark(public_path('images/watermark.png'), array(
-                'position' => 'relative',
-                'bottom' => 50,
-                'right' => 50,
-            ));
+            ->filters();
 
         $format = new X264();
         $format->setPasses(1)
