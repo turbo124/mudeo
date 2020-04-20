@@ -11,7 +11,6 @@
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="A new Flutter project.">
     <link rel="shortcut icon" type="image/png" href="https://mudeo.app/images/icon.png"/>
 
     <meta name="application-name" content="mudeo">
@@ -24,7 +23,7 @@
     @yield('head')
 </head>
 
-<body>
+<body id="app-container">
     @section('body')
     @yield('body')
 
