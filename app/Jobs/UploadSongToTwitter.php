@@ -20,6 +20,7 @@ class UploadSongToTwitter implements ShouldQueue
 
     protected $song;
 
+    public $timeout = 600;
     public $tries = 1;
 
     public function __construct(Song $song)
