@@ -119,9 +119,11 @@ class UserController extends BaseController
             Storage::delete($song->video_url);
             Storage::delete($song->thumbnail_url);
 
+            /*
             if ($song->youtube_id && $song->youtube_id != $song->youtube_published_id) {
                 Youtube::delete($song->youtube_id);
             }
+            */
         }
 
         $user->forceDelete();
