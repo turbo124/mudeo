@@ -7,6 +7,7 @@ use Hashids\Hashids;
 use App\Models\Song;
 use App\Jobs\UploadSongToTwitter;
 use App\Jobs\UploadSongToYouTube;
+use Carbon\Carbon;
 
 class Publish extends Command
 {
@@ -45,6 +46,7 @@ class Publish extends Command
         $song = Song::whereNull('twitter_id')
             ->where('is_approved', '=', true)
             ->where('is_public', '=', true)
+            ->where('approved_at', '<', Carbon::now()->subDays(1))
             ->orderBy('id')
             ->first();
 
@@ -59,6 +61,7 @@ class Publish extends Command
         $song = Song::whereNull('youtube_id')
             ->where('is_approved', '=', true)
             ->where('is_public', '=', true)
+            ->where('approved_at', '<', Carbon::now()->subDays(1))
             ->orderBy('id')
             ->first();
 

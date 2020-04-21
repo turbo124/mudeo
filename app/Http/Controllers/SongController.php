@@ -170,6 +170,7 @@ class SongController extends BaseController
         }
 
         $song->is_approved = true;
+        $song->approved_at = now();
         $song->save();
 
         //$song->notify(new SongApproved());

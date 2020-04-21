@@ -32,6 +32,7 @@ class Song extends EntityModel
         'is_featured',
         'is_approved',
         'is_public',
+        'approved_at',
     ];
 
     use SoftDeletes;
