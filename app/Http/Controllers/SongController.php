@@ -19,6 +19,7 @@ use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Notifications\SongSubmitted;
 
 class SongController extends BaseController
 {
@@ -333,7 +334,13 @@ class SongController extends BaseController
         $song->needs_render = true;
 
         if ($user->hasPrivateStorage()) {
-            $song->is_public = filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN);
+            $isPublic = filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN);
+
+            if ($isPublic && !$song->is_public) {
+                User::admin()->notify(new SongSubmitted($song));
+            }
+
+            $song->is_public = $isPublic;
         }
 
         $song->save();
