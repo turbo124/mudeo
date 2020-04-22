@@ -82,7 +82,7 @@
         <a href="https://www.youtube.com/channel/{{ config('mudeo.youtube_channel') }}" target="_blank" border="0" title="YouTube">
             <img src="/images/youtube.png" style="border-radius: 50%; width: 5vh; padding-right: .7vh;"/>
         </a>
-        <a href="https://twitter.com/{{ stre_replace('@', '', config('mudeo.twitter_handle')) }}" target="_blank" border="0" title="Twitter">
+        <a href="https://twitter.com/{{ str_replace('@', '', config('mudeo.twitter_handle')) }}" target="_blank" border="0" title="Twitter">
             <img src="/images/twitter.png" style="border-radius: 50%; width: 5vh;"/>
         </a>
     </div>
