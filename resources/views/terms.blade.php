@@ -22,15 +22,15 @@ Users between 13 and 18 need permission from a parent or guardian. Users between
 </li>
 </ol>
 
-<h4>Music Creation</h4>
+<h4>Video Creation</h4>
 <ol>
-<li>The app allows you to create and record music & video. You are solely responsible for all your content from the point of creation and, to the extent permitted by law, we exclude all liability (including liability for copyright infringement) with respect to your content and the activities of any other users of these.
+<li>The app enables you to create videos. You are solely responsible for all your content from the point of creation and, to the extent permitted by law, we exclude all liability (including liability for copyright infringement) with respect to your content and the activities of any other users of these.
 </li>
 <li>
 You retain all ownership rights in content that you create. You grant us an irrevocable, perpetual, worldwide, non-exclusive, royalty-free, transferable license to use, store, upload, modify, reproduce, display and perform the content as necessary to allow you to share your content with other users of the App.
 </li>
 <li>
-The Music you create will be considered non-confidential and non-proprietary. Public videos may be shared on YouTube and/or Twitter.
+The videos you create will be considered non-confidential and non-proprietary. Public videos may be shared on YouTube and/or Twitter.
 </li>
 <li>
 You confirm that such music created or uploaded to the app do not violate the Terms or any third-party agreement, applicable law or the intellectual property rights of any third party. You agree to indemnify and hold us harmless of any loss or damage we suffer as a result of your breach of this clause.
