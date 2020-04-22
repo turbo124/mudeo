@@ -1,30 +1,27 @@
 @extends('layouts.mudeo')
 
 @section('head')
-  <title>mudeo | a collaborative music video app</title>
-  <meta name="description" content="The app enables you to easily collaborate on multi-track music videos. One artist can start a song and then any other artist can edit it to add their own tracks. It's sort of a mashup between TikTok, Acapella and GitHub.">
+  <title>{{ config('app.name') }} | {{ config('mudeo.tag_line') }}</title>
+  <meta name="description" content="{{ config('mudeo.app_description') }}">
 
-  <meta property="og:title" content="mudeo"></meta>
-  <meta property="og:description" content="make music together"></meta>
-  <meta property="og:image" content="https://mudeo.app/images/banner.jpg"></meta>
-  <meta property="og:url" content="https://mudeo.app"></meta>
-  <meta property="og:site_name" content="mudeo"></meta>
+  <meta property="og:title" content="{{ config('app.name') }}"></meta>
+  <meta property="og:description" content="{{ config('mudeo.tag_line') }}"></meta>
+  <meta property="og:image" content="/images/banner.jpg"></meta>
+  <meta property="og:url" content="{{ config('app.url') }}"></meta>
 
   <meta name="twitter:card" content="summary_large_image"></meta>
-  <meta name="twitter:title" content="mudeo"></meta>
-  <meta name="twitter:description" content="make music together"></meta>
-  <meta name="twitter:image" content="https://mudeo.app/images/banner.jpg"></meta>
-  <meta name="twitter:site" content="@mudeo_app"></meta>
-  <meta name="twitter:creator" content="@hillelcoren"></meta>
+  <meta name="twitter:title" content="{{ config('app.name') }}"></meta>
+  <meta name="twitter:description" content="{{ config('mudeo.tag_line') }}"></meta>
+  <meta name="twitter:image" content="/images/banner.jpg"></meta>
 
   <meta name="msapplication-starturl" content="/">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="mudeo">
+  <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="apple-touch-icon" href="https://mudeo.app/images/icon.png">
+  <link rel="apple-touch-icon" href="/images/icon.png">
   <link rel="manifest" href="manifest.json">
 @endsection
 

@@ -11,14 +11,18 @@
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <link rel="shortcut icon" type="image/png" href="https://mudeo.app/images/icon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/images/icon.png"/>
 
-    <meta name="application-name" content="mudeo">
-    <meta name="twitter:app:name:iphone" content="mudeo">
-    <meta name="twitter:app:id:iphone" content="id1459106474">
-    <meta name="twitter:app:url:iphone" content="https://itunes.apple.com/us/app/mudeo/id1459106474?mt=8">
-    <meta name="twitter:app:name:googleplay" content="mudeo">
-    <meta name="twitter:app:id:googleplay" content="app.mudeo.mudeo"/>
+    <meta property="og:site_name" content="{{ config('app.name') }}"></meta>
+    <meta name="twitter:site" content="{{ config('mudeo.twitter_handle') }}"></meta>
+    <meta name="twitter:creator" content="@hillelcoren"></meta>
+
+    <meta name="application-name" content="{{ config('app.name') }}">
+    <meta name="twitter:app:name:iphone" content="{{ config('app.name') }}">
+    <meta name="twitter:app:id:iphone" content="{{ config('mudeo.app_id_ios') }}">
+    <meta name="twitter:app:url:iphone" content="https://itunes.apple.com/us/app/mudeo/{{ config('mudeo.app_id_ios') }}?mt=8">
+    <meta name="twitter:app:name:googleplay" content="{{ config('app.name') }}">
+    <meta name="twitter:app:id:googleplay" content="{{ config('mudeo.app_id_android') }}"/>
 
     @yield('head')
 </head>

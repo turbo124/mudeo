@@ -1,20 +1,18 @@
 @extends('layouts.mudeo')
 
 @section('head')
-    <title>{{ $song->user->handle . ' - ' . $song->title }} | mudeo</title>
+    <title>{{ $song->user->handle . ' - ' . $song->title }} | {{ config('app.name') }}</title>
     <meta name="description" content="{{ $song->description }}">
 
     <meta property="og:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
     <meta property="og:description" content="{{ $song->description }}">
     <meta property="og:image" content="{{ $song->thumbnail_url }}">
     <meta property="og:url" content="{{ $song->url }}">
-    <meta property="og:site_name" content="mudeo">
 
     <meta name="twitter:title" content="{{ $song->user->handle . ' - ' . $song->title }}">
     <meta name="twitter:description" content="{{ $song->description }}">
     <meta name="twitter:image" content="{{ $song->thumbnail_url }}">
     <meta name="twitter:card" content="player">
-    <meta name="twitter:site" content="@mudeo_app">
     <meta name="twitter:image:alt" content="{{ $song->title }}">
     <meta name="twitter:player" content="{{ $song->video_url }}">
     <meta name="twitter:player:stream:content_type" content="video/mp4;" codecs="avc1.42E01E1, mp4a.40.2">
@@ -78,13 +76,13 @@
     </style>
 
     <div id="links">
-        <a href="https://mudeo.app" target="_blank" border="0" title="Try the app">
+        <a href="{{ config('app.url') }}" target="_blank" border="0" title="Try the app">
             <img src="/images/icon.png" style="border-radius: 50%; width: 5vh; padding-right: .7vh;"/>
         </a>
-        <a href="https://www.youtube.com/channel/UCX5ONbOAOG3bYe3vTXrWgPA" target="_blank" border="0" title="YouTube">
+        <a href="https://www.youtube.com/channel/{{ config('mudeo.youtube_channel') }}" target="_blank" border="0" title="YouTube">
             <img src="/images/youtube.png" style="border-radius: 50%; width: 5vh; padding-right: .7vh;"/>
         </a>
-        <a href="https://twitter.com/mudeo_app" target="_blank" border="0" title="Twitter">
+        <a href="https://twitter.com/{{ stre_replace('@', '', config('mudeo.twitter_handle')) }}" target="_blank" border="0" title="Twitter">
             <img src="/images/twitter.png" style="border-radius: 50%; width: 5vh;"/>
         </a>
     </div>
