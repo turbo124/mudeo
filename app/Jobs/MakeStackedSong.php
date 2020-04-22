@@ -129,13 +129,19 @@ class MakeStackedSong implements ShouldQueue
                     $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
                 }
 
+                $volume = $track->volume;
+
+                if (config('app.name') == 'Dance Like Me' && $count > 0) {
+                    $volume = 0;
+                }
+
                 if ($delay > 0) {
                     $filterVideo = "[{$count}-scale:v]tpad=start_duration=" . ($delay / 1000) . "[{$count}-delay:v];"
                         . "[{$count}:a]adelay={$delay}|{$delay}[{$count}-delay:a];"
-                        . "[{$count}-delay:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                        . "[{$count}-delay:a]volume=" . ($volume / 100) . "[{$count}-volume:a];"
                         . "{$filterVideo}[{$count}-delay:v]";
                 } else {
-                    $filterVideo = "[{$count}:a]volume=" . ($track->volume / 100) . "[{$count}-volume:a];"
+                    $filterVideo = "[{$count}:a]volume=" . ($volume / 100) . "[{$count}-volume:a];"
                         . "{$filterVideo}[{$count}-scale:v]";
                 }
 
