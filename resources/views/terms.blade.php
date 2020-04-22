@@ -1,16 +1,16 @@
-<h3>Mudeo Terms of Use</h3>
+<h3>{{ config('app.name') }} Terms of Use</h3>
 <h4>Introduction</h4>
 
-Below is anagreement between you (the User) and Mudeo.app ("Mudeo", "our" or “the app”) which sets out the terms of use for your use of mudeo = MUsic + video app, available for Google Play & iOS, including data, media, and services available through the app. All terminology for “music” & “video” are defined within and used interchangeably below as “content.”
+Below is anagreement between you (the User) and {{ config('app.name') }}.app ("{{ config('app.name') }}", "our" or “the app”) which sets out the terms of use for your use of {{ config('app.name') }} app, available for Google Play & iOS, including data, media, and services available through the app. All terminology for “music” & “video” are defined within and used interchangeably below as “content.”
 <p/>
 
-By downloading and/or using the app you agree to these legally binding terms. If you do not agree to the Terms, you must not download and/or stop using the Mudeo app.
+By downloading and/or using the app you agree to these legally binding terms. If you do not agree to the Terms, you must not download and/or stop using the {{ config('app.name') }} app.
 <p/>
 
 We license use of the App to you on the basis of these Terms and subject to the rules or policies applied by Google Play Terms of Service &/or the Apple App Store Terms & Conditions from where you may download the App. We remain the owners of the App and all rights in it at all times.
 <p/>
 
-If you have any comments or questions relating to the App, please email mudeo.app@gmail.com
+If you have any comments or questions relating to the App, please email {{ config('mudeo.contact_email') }}
 <p/>
 
 <h4>Age Restrictions</h4>
@@ -18,7 +18,7 @@ If you have any comments or questions relating to the App, please email mudeo.ap
 <li>You must be at least 13 years old to this app, by using the app you represent that you are 13 or older.
 </li>
 <li>
-Users between 13 and 18 need permission from a parent or guardian. Users between 13 and 18 years of age may utilize a mudeo account established by their parent or legal guardian, with such parent or guardian’s approval.
+Users between 13 and 18 need permission from a parent or guardian. Users between 13 and 18 years of age may utilize a {{ config('app.name') }} account established by their parent or legal guardian, with such parent or guardian’s approval.
 </li>
 </ol>
 
@@ -30,7 +30,7 @@ Users between 13 and 18 need permission from a parent or guardian. Users between
 You retain all ownership rights in content that you create. You grant us an irrevocable, perpetual, worldwide, non-exclusive, royalty-free, transferable license to use, store, upload, modify, reproduce, display and perform the content as necessary to allow you to share your content with other users of the App.
 </li>
 <li>
-The Music you create will be considered non-confidential and non-proprietary. Public songs may be shared on YouTube and/or Twitter.
+The Music you create will be considered non-confidential and non-proprietary. Public videos may be shared on YouTube and/or Twitter.
 </li>
 <li>
 You confirm that such music created or uploaded to the app do not violate the Terms or any third-party agreement, applicable law or the intellectual property rights of any third party. You agree to indemnify and hold us harmless of any loss or damage we suffer as a result of your breach of this clause.

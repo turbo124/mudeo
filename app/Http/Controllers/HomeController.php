@@ -12,7 +12,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('flutter');
+        return view('layouts.mudeo');
+        //return view('flutter');
     }
 
     public function terms()
