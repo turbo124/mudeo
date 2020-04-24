@@ -35,6 +35,7 @@ class VideoTransformer extends EntityTransformer
             'volume_data' => $video->volume_data ? json_decode($video->volume_data) : new \stdClass,
             'max_volume' => $video->max_volume,
             'recognitions' => $video->recognitions,
+            'timestamp' => (int) $video->timestamp,
         ];
     }
 
