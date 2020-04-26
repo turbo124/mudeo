@@ -12,8 +12,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.mudeo');
-        //return view('flutter');
+	if (config('mudeo.is_dance')) {	
+		return redirect('https://play.google.com/apps/testing/app.mudeo.dancelikeme');
+	}
+
+        return view('flutter');
     }
 
     public function terms()
