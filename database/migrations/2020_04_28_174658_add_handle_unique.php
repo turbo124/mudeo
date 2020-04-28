@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MakeFieldsNullable extends Migration
+class AddHandleUnique extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,9 @@ class MakeFieldsNullable extends Migration
      */
     public function up()
     {
-        DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-
-        Schema::table('songs', function (Blueprint $table) {
-            $table->string('blurhash')->nullable()->change();
-        });
-
         Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique(['oauth_provider_id']);
+            $table->unique(['handle']);
         });
-
     }
 
     /**
