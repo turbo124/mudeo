@@ -24,7 +24,7 @@ class UserAccountController extends BaseController
         if ($request->profile_image_url) {
             $contents = file_get_contents($request->profile_image_url);
             $hashids = new Hashids('', 10);
-            $path = 'users/' . $hashids->encode( $user->id ) . 'jpg';
+            $path = 'users/' . $hashids->encode( $user->id ) . '/' . sha1(time()) . '.jpg';
             Storage::put($path, $contents);
             $user->profile_image_url = config('mudeo.asset_url') . $path;
             $user->save();
