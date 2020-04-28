@@ -23,8 +23,12 @@ class VideoTransformer extends EntityTransformer
             'id' => (int) $video->id,
             'user_id' => (int) $video->user_id,
             'title' => $video->title ?: '',
-            'url' => $video->getUrl(),
-            'thumbnail_url' => $video->getThumbnailUrl(),
+            'url' => config('mudeo.enable_cdn')
+                ? $video->getUrl()
+                : $video->url,
+            'thumbnail_url' => config('mudeo.enable_cdn')
+                ? $video->getThumbnailUrl()
+                : $video->thumbnail_url,
             'description' => $video->description ?: '',
             'duration' => (int) $video->duration,
             'is_flagged' => (bool) $video->is_flagged,

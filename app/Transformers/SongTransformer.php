@@ -40,8 +40,12 @@ class SongTransformer extends EntityTransformer
             'parent_id' => (int) $song->parent_id,
             'updated_at' => $song->updated_at,
             'deleted_at' => $song->deleted_at,
-            'video_url' => $song->getVideoUrl(),
-            'thumbnail_url' => $song->getThumbnailUrl(),
+            'video_url' => config('mudeo.enable_cdn')
+                ? $song->getVideoUrl()
+                : $song->video_url,
+            'thumbnail_url' => config('mudeo.enable_cdn')
+                ? $song->getThumbnailUrl()
+                : $song->thumbnail_url,
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
             'blurhash' => $song->blurhash ?: '',
