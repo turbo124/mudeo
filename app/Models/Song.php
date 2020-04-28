@@ -111,27 +111,40 @@ class Song extends EntityModel
             return '';
         }
 
-        $map = [
-            1 => 'African',
-            2 => 'Arabic',
-            3 => 'Asian',
-            4 => 'Avant Garde',
-            5 => 'Blues',
-            6 => 'Caribbean',
-            7 => 'Classical Music',
-            8 => 'Comedy',
-            9 => 'Country',
-            10 => 'Easy Listening',
-            11 => 'Electronic',
-            12 => 'Folk',
-            13 => 'Hip Hop',
-            14 => 'Jazz',
-            15 => 'Latin',
-            16 => 'Pop',
-            17 => 'Soul',
-            18 => 'Rock',
-            19 => 'Other',
-        ];
+        if (config('mudeo.is_dance')) {
+            $map = [
+                1 => 'Ballet',
+                2 => 'Tap',
+                3 => 'Jazz',
+                4 => 'Modern',
+                5 => 'Lyrical',
+                6 => 'Hip Hop',
+                7 => 'Contemporary',
+                8 => 'Other',
+            ];
+        } else {
+            $map = [
+                1 => 'African',
+                2 => 'Arabic',
+                3 => 'Asian',
+                4 => 'Avant Garde',
+                5 => 'Blues',
+                6 => 'Caribbean',
+                7 => 'Classical Music',
+                8 => 'Comedy',
+                9 => 'Country',
+                10 => 'Easy Listening',
+                11 => 'Electronic',
+                12 => 'Folk',
+                13 => 'Hip Hop',
+                14 => 'Jazz',
+                15 => 'Latin',
+                16 => 'Pop',
+                17 => 'Soul',
+                18 => 'Rock',
+                19 => 'Other',
+            ];
+        }
 
         return $map[$this->genre_id];
     }
