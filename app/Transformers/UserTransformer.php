@@ -35,7 +35,7 @@ class UserTransformer extends EntityTransformer
                 ? $user->getProfileImageUrl()
                 : $user->profile_image_url,
             'header_image_url' => config('mudeo.enable_cdn')
-                ? $user->getHeaderImageUrl() 
+                ? $user->getHeaderImageUrl()
                 : $user->header_image_url,
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
@@ -49,6 +49,7 @@ class UserTransformer extends EntityTransformer
             'twitter_social_url' => $user->twitter_social_url ?: '',
             'website_social_url' => $user->website_social_url ?: '',
             'follower_count' => $user->follower_count ?: 0,
+            'is_admin' => (bool) $user->isAdmin(),
         ];
     }
 
