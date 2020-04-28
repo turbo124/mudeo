@@ -205,7 +205,7 @@ class MakeStackedSong implements ShouldQueue
 
         $hashids = new Hashids('', 10);
         $tmp_file_name = Str::random(40) . '.jpg';
-        $vid_object = $video->frame(TimeCode::fromSeconds(1))->save('', false, true);
+        $vid_object = $video->frame(TimeCode::fromSeconds(2))->save('', false, true);
         $tmp_file = Storage::disk('local')->put($tmp_file_name , $vid_object);
 
         $disk = Storage::disk(config('filesystems.default'));
