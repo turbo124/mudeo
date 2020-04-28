@@ -13,11 +13,12 @@ class UserFollowerController extends BaseController
 
     public function store(Request $request)
     {
-          $follower = UserFollower::firstOrCreate(
-                    ['user_following_id' => $request->user_following_id], 
-                    ['user_id' => auth()->user()->id]);
+        $follower = UserFollower::firstOrCreate([
+            'user_following_id' => $request->user_following_id,
+            'user_id' => auth()->user()->id
+        ]);
 
-            return $this->itemResponse($follower);
+        return $this->itemResponse($follower);
     }
 
     /**
@@ -28,10 +29,11 @@ class UserFollowerController extends BaseController
      */
     public function destroy($id)
     {
-        $follower = UserFollower::where(
-                    ['user_following_id' => $id], 
-                    ['user_id' => auth()->user()->id])->first();
-        
+        $follower = UserFollower::where([
+            'user_following_id' => $id,
+            'user_id' => auth()->user()->id
+        ])->first();
+
         if($follower)
             $follower->delete();
 

@@ -41,11 +41,12 @@ class SongLikeController extends BaseController
      */
     public function store(Request $request)
     {
-          $song_like = SongLike::firstOrCreate(['song_id' => $request->song_id,
-                'user_id' => auth()->user()->id]);
+        $song_like = SongLike::firstOrCreate([
+            'song_id' => $request->song_id,
+            'user_id' => auth()->user()->id]
+        );
 
-            return $this->itemResponse($song_like);
-
+        return $this->itemResponse($song_like);
     }
 
     /**

@@ -21,11 +21,12 @@ class UserFlagController extends BaseController
      */
     public function store(Request $request)
     {
-        $user_flag = UserFlag::firstOrCreate(
-            ['flag_user_id' => $request->user_id], 
-            ['user_id' => auth()->user()->id]);
+        $user_flag = UserFlag::firstOrCreate([
+            'flag_user_id' => $request->user_id,
+            'user_id' => auth()->user()->id
+        ]);
 
-            return $this->itemResponse($user_flag);
+        return $this->itemResponse($user_flag);
     }
 
     /**
@@ -36,10 +37,11 @@ class UserFlagController extends BaseController
      */
     public function destroy($id)
     {
-        $user_flag = UserFlag::where(
-            ['flag_user_id' => $id], 
-            ['user_id' => auth()->user()->id])->first();
-        
+        $user_flag = UserFlag::where([
+            'flag_user_id' => $id,
+            'user_id' => auth()->user()->id
+        ])->first();
+
         if($user_flag)
             $user_flag->delete();
 
