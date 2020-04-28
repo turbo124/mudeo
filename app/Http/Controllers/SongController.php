@@ -136,11 +136,9 @@ class SongController extends BaseController
         if ($request->input('song_videos')) {
             foreach($request->input('song_videos') as $song_video)
             {
-                $sv = SongVideo::firstOrNew([
-                    'song_id' => $song->id,
-                    'video_id' => $song_video['video']['id']
-                ]);
-
+                $sv = new SongVideo();
+                $sv->song_id = $song->id;
+                $sv->video_id = $song_video['video']['id'];
                 $sv->volume = $song_video['volume'];
                 $sv->order_id = $song_video['order_id'];
                 $sv->delay = isset($song_video['delay']) ? $song_video['delay'] : 0;
