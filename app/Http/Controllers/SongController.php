@@ -90,7 +90,7 @@ class SongController extends BaseController
     public function opneIndex(SongFilters $filters)
     {
         $songs = Song::filter($filters)
-                    ->with('user', 'comments.user')
+                    ->with('song_videos.video', 'user', 'comments.user')
                     ->where('is_approved', '=', 1)
                     ->where('is_public', '=', 1)
                     ->orderBy('id', 'desc');
