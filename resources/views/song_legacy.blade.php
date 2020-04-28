@@ -89,7 +89,7 @@
 
     <center>
         @if ($song->is_rendered)
-            <video controls controlsList="nodownload" autoplay id="video">
+            <video controls autoplay id="video">
                 <source src="{{ $song->getVideoUrl() }}" type="video/mp4">
             </video>
         @else
