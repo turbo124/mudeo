@@ -26,6 +26,7 @@ class Song extends EntityModel
         'comments',
         'url',
         'video_url',
+        'track_video_url',
         'thumbnail_url',
         'youtube_id',
         'youtube_published_id',
