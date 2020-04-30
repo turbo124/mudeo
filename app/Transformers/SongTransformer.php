@@ -75,7 +75,7 @@ class SongTransformer extends EntityTransformer
     {
         $transformer = new SongVideoTransformer($this->serializer);
 
-        return $this->includeCollection(auth()->check() ? $song->song_videos : [], $transformer, SongVideo::class);
+        return $this->includeCollection($song->song_videos, $transformer, SongVideo::class);
     }
 
     public function includeUser(Song $song)
