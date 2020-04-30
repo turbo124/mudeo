@@ -133,9 +133,9 @@ class MakeStackedSong implements ShouldQueue
 
                 if ($onlyFirstTrack) {
                     if ($count == 0) {
-                        $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                        $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
                     } else {
-                        $filterVideo = "[{$count}:v]scale=0:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                        $filterVideo = "[{$count}:v]scale={$sizes->min_width}:1[{$count}-scale:v];$filterVideo";
                     }
                 } else if ($layout == 'grid') {
                     $width = $sizes->min_width;
@@ -171,12 +171,13 @@ class MakeStackedSong implements ShouldQueue
             $width = 1920;
             $height = 1080;
 
-            if ($layout == 'grid') {
-                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
-            } else if ($layout == 'column') {
-                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
-            } else {
+            if ($layout == 'column' || $onlyFirstTrack) {
                 $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale={$width}:-2[v];";
+            } if ($layout == 'grid') {
+                $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
+            } else else {
+                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
+
             }
 
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
