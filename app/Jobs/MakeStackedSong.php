@@ -131,22 +131,14 @@ class MakeStackedSong implements ShouldQueue
                     $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
                 }
 
-                if ($onlyFirstTrack) {
-                    if ($count == 0) {
-                        $filterVideo = "[{$count}:v]scale=-2:{$sizes->first_height}[{$count}-scale:v];$filterVideo";
-                    } else {
-                        $filterVideo = "[{$count}:v]scale=0:{$sizes->first_height}[{$count}-scale:v];$filterVideo";
-                    }
-                } else {
-                    if ($layout == 'grid') {
-                        $width = $sizes->min_width;
-                        $height = $sizes->min_height;
-                        $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
-                    } else if ($layout == 'column') {
-                        $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
-                    } else if ($layout == 'row') {
-                        $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
-                    }
+                if ($layout == 'grid') {
+                    $width = $sizes->min_width;
+                    $height = $sizes->min_height;
+                    $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
+                } else if ($layout == 'column') {
+                    $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
+                } else if ($layout == 'row') {
+                    $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
                 }
 
                 $volume = $track->volume;
@@ -173,7 +165,9 @@ class MakeStackedSong implements ShouldQueue
             $width = 1920;
             $height = 1080;
 
-            if ($layout == 'grid') {
+            if ($onlyFirstTrack) {
+                $filter = "{$filterVideo}hstack=inputs=1[v-pre];[v-pre]scale={$width}:-2[v];";
+            } else if ($layout == 'grid') {
                 $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
             } else if ($layout == 'column') {
                 $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
