@@ -74,7 +74,7 @@ class MakeStackedSong implements ShouldQueue
         $disk->put($remote_storage_file_name, file_get_contents($filepath));
         $this->saveThumbnail($song, $filepath);
 
-        if (count($tracks) > 1 && $tracks[0]->delay > 0) {
+        if (! config('mudeo.is_dance') && count($tracks) > 1 && $tracks[0]->delay > 0) {
             $videoUrl = $song->track_video_url;
 
             if (!$videoUrl) {
@@ -151,7 +151,7 @@ class MakeStackedSong implements ShouldQueue
 
                 $volume = $track->volume;
 
-                if (config('app.name') == 'Dance Like Me' && $count > 0) {
+                if (config('mudeo.is_dance') && $count > 0) {
                     $volume = 0;
                 }
 
