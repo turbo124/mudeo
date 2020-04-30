@@ -172,11 +172,11 @@ class MakeStackedSong implements ShouldQueue
             $height = 1080;
 
             if ($layout == 'column' || $onlyFirstTrack) {
-                $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale={$width}:-2[v];";
+                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";                
             } else if ($layout == 'grid') {
                 $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
             } else {
-                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
+                $filter = "{$filterVideo}hstack=inputs={$count}[v-pre];[v-pre]scale={$width}:-2[v];";
             }
 
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
