@@ -135,7 +135,7 @@ class MakeStackedSong implements ShouldQueue
                     if ($count == 0) {
                         $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
                     } else {
-                        $filterVideo = "[{$count}:v]scale=1:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                        $filterVideo = "[{$count}:v]scale=0:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
                     }
                 } else if ($layout == 'grid') {
                     $width = $sizes->min_width;
