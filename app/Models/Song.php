@@ -160,6 +160,17 @@ class Song extends EntityModel
         return $url . '?updated_at=' . urlencode($this->updated_at);
     }
 
+    public function getTrackVideoUrl()
+    {
+        if (! $this->track_video_url) {
+            return '';
+        }
+
+        $url = str_replace('nyc3.digitaloceanspaces', 'nyc3.cdn.digitaloceanspaces', $this->track_video_url);
+
+        return $url . '?updated_at=' . urlencode($this->updated_at);
+    }
+
     public function getThumbnailUrl()
     {
         if (! $this->thumbnail_url) {

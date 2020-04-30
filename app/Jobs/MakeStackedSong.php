@@ -64,17 +64,29 @@ class MakeStackedSong implements ShouldQueue
             $client->request('GET', $track->video->url, ['sink' => $this->getUrl($track->video)]);
         }
 
-        $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
-        $video = $this->createVideo($tracks, $filepath);
-
-        $hashids = new Hashids('', 10);
-        $remote_storage_file_name = str_replace(config('mudeo.asset_url'), '', $song->video_url);
-        $file = file_get_contents($filepath);
-
         $disk = Storage::disk('do_spaces');
-        $disk->put($remote_storage_file_name, $file);
+        $hashids = new Hashids('', 10);
+        $filepath = storage_path($this->working_dir) . sha1(time()) . '.mp4';
 
+        $video = $this->createVideo($tracks, $filepath);
+        $remote_storage_file_name = str_replace(config('mudeo.asset_url'), '', $song->video_url);
+
+        $disk->put($remote_storage_file_name, file_get_contents($filepath));
         $this->saveThumbnail($song, $filepath);
+
+        if (count($tracks) > 1 && $tracks[0]->delay > 0) {
+            $videoUrl = $song->track_video_url;
+
+            if (!$videoUrl) {
+                $videoUrl = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . Str::random(40) . '.mp4';
+                $song->track_video_url = $videoUrl;
+                $song->save();
+            }
+
+            $video = $this->createVideo($tracks, $filepath, true);
+            $remote_storage_file_name = str_replace(config('mudeo.asset_url'), '', $song->track_video_url);
+            $disk->put($remote_storage_file_name, file_get_contents($filepath));
+        }
 
         File::deleteDirectory(storage_path($this->working_dir));
 
@@ -85,7 +97,7 @@ class MakeStackedSong implements ShouldQueue
         }
     }
 
-    private function createVideo($tracks, $filepath)
+    private function createVideo($tracks, $filepath, $onlyFirstTrack = false)
     {
         $ffmpeg = FFMpeg::create([
             //'ffmpeg.binaries'  => '/usr/local/bin/ffmpeg',
@@ -119,14 +131,22 @@ class MakeStackedSong implements ShouldQueue
                     $video->addFilter(new SimpleFilter(['-i', $this->getUrl($track->video)]));
                 }
 
-                if ($layout == 'grid') {
-                    $width = $sizes->min_width;
-                    $height = $sizes->min_height;
-                    $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
-                } else if ($layout == 'column') {
-                    $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
-                } else if ($layout == 'row') {
-                    $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                if ($onlyFirstTrack) {
+                    if ($count == 0) {
+                        $filterVideo = "[{$count}:v]scale=-2:{$sizes->first_height}[{$count}-scale:v];$filterVideo";
+                    } else {
+                        $filterVideo = "[{$count}:v]scale=0:-2[{$count}-scale:v];$filterVideo";
+                    }
+                } else {
+                    if ($layout == 'grid') {
+                        $width = $sizes->min_width;
+                        $height = $sizes->min_height;
+                        $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
+                    } else if ($layout == 'column') {
+                        $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
+                    } else if ($layout == 'row') {
+                        $filterVideo = "[{$count}:v]scale=-2:{$sizes->min_height}[{$count}-scale:v];$filterVideo";
+                    }
                 }
 
                 $volume = $track->volume;
@@ -238,6 +258,9 @@ class MakeStackedSong implements ShouldQueue
         $width_collection = collect();
         $duration_collection = collect();
 
+        $data = new \stdClass;
+        $is_first = true;
+
         foreach($tracks as $song_video)
         {
             $song = $song_video->song;
@@ -259,15 +282,19 @@ class MakeStackedSong implements ShouldQueue
             $height_collection->push($dimension->getWidth());
             $width_collection->push($dimension->getHeight());
 
+            if ($is_first) {
+                $data->first_height = $dimension->getWidth();
+            }
+
             $ffprobe = FFProbe::create();
             $duration = $ffprobe
                 ->format($this->getUrl($video)) // extracts file informations
                 ->get('duration');             // returns the duration property
 
             $duration_collection->push($duration);
+            $is_first = false;
         }
 
-        $data = new \stdClass;
         $data->min_height = $height_collection->min();
         $data->max_height = $height_collection->max();
         $data->min_width = $width_collection->min();

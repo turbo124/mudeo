@@ -43,6 +43,9 @@ class SongTransformer extends EntityTransformer
             'video_url' => config('mudeo.enable_cdn')
                 ? $song->getVideoUrl()
                 : $song->video_url,
+            'track_video_url' => config('mudeo.enable_cdn')
+                ? $song->getTrackVideoUrl()
+                : $song->track_video_url,
             'thumbnail_url' => config('mudeo.enable_cdn')
                 ? $song->getThumbnailUrl()
                 : $song->thumbnail_url,
