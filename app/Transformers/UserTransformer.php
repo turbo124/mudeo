@@ -33,10 +33,10 @@ class UserTransformer extends EntityTransformer
             'description' => $user->description ?: '',
             'profile_image_url' => config('mudeo.enable_cdn')
                 ? $user->getProfileImageUrl()
-                : $user->profile_image_url,
+                : ($user->profile_image_url ?: ''),
             'header_image_url' => config('mudeo.enable_cdn')
                 ? $user->getHeaderImageUrl()
-                : $user->header_image_url,
+                : ($user->header_image_url ?: ''),
             'updated_at' => $user->updated_at,
             'deleted_at' => $user->deleted_at,
             'handle' => $user->handle ?:'',

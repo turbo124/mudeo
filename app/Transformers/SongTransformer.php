@@ -42,13 +42,13 @@ class SongTransformer extends EntityTransformer
             'deleted_at' => $song->deleted_at,
             'video_url' => config('mudeo.enable_cdn')
                 ? $song->getVideoUrl()
-                : $song->video_url,
+                : ($song->video_url ?: ''),
             'track_video_url' => config('mudeo.enable_cdn')
                 ? $song->getTrackVideoUrl()
-                : $song->track_video_url,
+                : ($song->track_video_url ?: ''),
             'thumbnail_url' => config('mudeo.enable_cdn')
                 ? $song->getThumbnailUrl()
-                : $song->thumbnail_url,
+                : ($song->thumbnail_url ?: ''),
             'count_like' => (int) $song->count_like,
             'layout' => $song->layout,
             'blurhash' => $song->blurhash ?: '',

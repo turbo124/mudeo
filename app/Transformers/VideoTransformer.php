@@ -25,10 +25,10 @@ class VideoTransformer extends EntityTransformer
             'title' => $video->title ?: '',
             'url' => config('mudeo.enable_cdn')
                 ? $video->getUrl()
-                : $video->url,
+                : ($video->url ?: ''),
             'thumbnail_url' => config('mudeo.enable_cdn')
                 ? $video->getThumbnailUrl()
-                : $video->thumbnail_url,
+                : ($video->thumbnail_url ?: ''),
             'description' => $video->description ?: '',
             'duration' => (int) $video->duration,
             'is_flagged' => (bool) $video->is_flagged,

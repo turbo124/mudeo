@@ -74,7 +74,7 @@ class MakeStackedSong implements ShouldQueue
         $disk->put($remote_storage_file_name, file_get_contents($filepath));
         $this->saveThumbnail($song, $filepath);
 
-        if (! config('mudeo.is_dance') && count($tracks) > 1 && $tracks[1]->delay > 0) {
+        if (! config('mudeo.is_dance') && count($tracks) > 1) {
             $videoUrl = $song->track_video_url;
 
             if (!$videoUrl) {
@@ -172,7 +172,7 @@ class MakeStackedSong implements ShouldQueue
             $height = 1080;
 
             if ($layout == 'column' || $onlyFirstTrack) {
-                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";                
+                $filter = "{$filterVideo}vstack=inputs={$count}[v-pre];[v-pre]scale=-2:{$height}[v];";
             } else if ($layout == 'grid') {
                 $filter = "{$filterVideo}xstack=inputs={$count}:layout=0_0|w0_0|0_h0|w0_h0[v-pre];[v-pre]scale=-2:{$height}[v];";
             } else {
