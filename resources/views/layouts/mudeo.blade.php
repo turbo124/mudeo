@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-flavor="{{ config('mudeo.is_dance') ? 'dance' : 'mudeo' }}">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('mudeo.analytics_id') }}"></script>
     <script>
