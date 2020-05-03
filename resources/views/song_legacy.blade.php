@@ -89,13 +89,9 @@
 
     <center>
         @if ($song->is_rendered)
-            <video controls autoplay id="video" src="{{ $song->getVideoUrl() }}">
-            </video>
-            <!--
             <video controls autoplay id="video">
                 <source src="{{ $song->getVideoUrl() }}" type="video/mp4">
             </video>
-            -->
         @else
             <div style="color: white; padding-top: 180px; font-family:arial,sans-serif; font-size:22px">
                 The video is processing, it should be ready in a few minutes
