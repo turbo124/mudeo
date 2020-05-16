@@ -32,7 +32,7 @@ class MakeStackedSong implements ShouldQueue
     protected $song;
     protected $working_dir;
 
-    public $timeout = 600;
+    public $timeout = 1200;
     public $tries = 1;
 
     public function __construct(Song $song)
