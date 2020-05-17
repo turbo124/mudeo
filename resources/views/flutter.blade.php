@@ -38,6 +38,6 @@
       });
     }
   </script>
-  <script src="main.dart.js" type="application/javascript"></script>
+  <script src="main.dart.js?clear_cache=1" type="application/javascript"></script>
 
 @endsection
