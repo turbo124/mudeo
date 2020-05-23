@@ -456,7 +456,7 @@ class SongController extends BaseController
     {
         $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
 
-        $song->users->attach(auth()->user()->id);
+        $song->users()->attach(auth()->user()->id);
 
         return response()->json(['success'], 200);
     }
@@ -465,7 +465,7 @@ class SongController extends BaseController
     {
         $song = Song::find(request()->song_id);
 
-        $song->users->detach(auth()->user()->id);
+        $song->users()->detach(auth()->user()->id);
 
         return response()->json(['success'], 200);
     }
