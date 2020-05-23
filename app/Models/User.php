@@ -40,7 +40,19 @@ class User extends Authenticatable implements CanResetPassword
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'order_id',
+        'order_expires',
+        'platform',
+        'device',
+        'oauth_token',
+        'token',
+        'ip',
+        'email',
+        'email_verified_at',
+        'oauth_user_id',
+        'oauth_provider_id',
     ];
 
     /**
@@ -65,6 +77,11 @@ class User extends Authenticatable implements CanResetPassword
     public function song_comments()
     {
         return $this->hasMany(SongComment::class);
+    }
+
+    public function joinedSongs()
+    {
+        return $this->belongsToMany('App\Models\Song');
     }
 
     public function song_likes()

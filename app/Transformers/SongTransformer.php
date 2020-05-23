@@ -57,6 +57,7 @@ class SongTransformer extends EntityTransformer
             'color' => $song->color,
             'twitter_id' => $song->twitter_id ?: '',
             'youtube_id' => $song->youtube_id ?: '',
+            'sharing_key' => (auth()->user() && auth()->user()->id == $song->user_id) ? $song->sharing_key : '',
         ];
     }
 

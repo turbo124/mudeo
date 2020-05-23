@@ -50,6 +50,7 @@ class UserTransformer extends EntityTransformer
             'website_social_url' => $user->website_social_url ?: '',
             'follower_count' => $user->follower_count ?: 0,
             'is_admin' => (bool) $user->isAdmin(),
+            'is_paid' => $user->hasPrivateStorage(),
         ];
     }
 

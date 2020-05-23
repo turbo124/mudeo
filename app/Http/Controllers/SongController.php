@@ -93,7 +93,30 @@ class SongController extends BaseController
                     ->with('song_videos.video', 'user', 'comments.user')
                     ->where('is_approved', '=', 1)
                     ->where('is_public', '=', 1)
-                    ->orderBy('id', 'desc');
+                    ->orderBy('id', 'desc')
+                    ->limit(100);
+
+        return $this->listResponse($songs);
+    }
+
+    public function userSongs(SongFilters $filters)
+    {
+        $user = auth()->user();
+
+        $userWhere = [
+            ['user_id', '=', $user->id],
+        ];
+        if (! $user->hasPrivateStorage()) {
+            $userWhere[] = ['is_public', '=', 1];
+        }
+
+        $songs = Song::filter($filters)
+            ->with('song_videos.video', 'user', 'comments.user')
+            ->where($userWhere)
+            ->orWhereHas('users', function($query) use ($user) {
+                $query->where('user_id', '=', $user->id);
+            })
+            ->orderBy('id', 'desc');
 
         return $this->listResponse($songs);
     }
@@ -331,6 +354,12 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->needs_render = true;
 
+        if ($song->sharing_mode != 'off'
+            && !$song->sharing_key
+            && $user->id == $song->user_id) {
+            $song->sharing_key = \Str::random(20);
+        }
+
         if ($user->hasPrivateStorage()) {
             $isPublic = filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN);
 
@@ -379,12 +408,14 @@ class SongController extends BaseController
 
             MakeStackedSong::dispatch($song);
         } else if ($song->youtube_id) {
+            /*
             Youtube::update($song->youtube_id, [
                 'title' => $song->title,
                 'description' => $song->url . "\n\n" . $song->description,
                 'tags' => ['mudeo'],
                 'category_id' => 10,
             ], 'unlisted');
+            */
         }
 
         return $this->itemResponse($song->fresh());
@@ -417,7 +448,25 @@ class SongController extends BaseController
 
         MakeStackedSong::dispatch($song);
 
-        return response()->json(['building'],200);
+        return response()->json(['building'], 200);
 
+    }
+
+    public function join()
+    {
+        $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
+
+        $song->users->attach(auth()->user()->id);
+
+        return response()->json(['success'], 200);
+    }
+
+    public function leave()
+    {
+        $song = Song::find(request()->song_id);
+
+        $song->users->detach(auth()->user()->id);
+
+        return response()->json(['success'], 200);
     }
 }

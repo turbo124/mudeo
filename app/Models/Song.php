@@ -42,6 +42,14 @@ class Song extends EntityModel
         'width',
         'height',
         'blurhash',
+        'sharing_key',
+        'sharing_reuse',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'sharing_key',
     ];
 
     use SoftDeletes;
@@ -49,6 +57,11 @@ class Song extends EntityModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User');
     }
 
     public function videos()

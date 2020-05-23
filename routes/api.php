@@ -33,6 +33,10 @@ Route::group(['middleware' => ['api_secret_check', 'token_auth']], function () {
 	Route::resource('user_flag', 'UserFlagController');
 	Route::resource('song_flag', 'SongFlagController');
 
+	Route::get('user_songs', 'SongController@userSongs');
+	Route::post('join_song', 'SongController@join');
+	Route::post('leave_song', 'SongController@leave');
+
 	Route::post('user/profile_image', 'UserController@storeProfileImage');
 	Route::post('user/header_image', 'UserController@storeBackgroundImage');
 });
