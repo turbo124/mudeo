@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::group(['middleware' => ['api_secret_check']], function () {
-Route::group(['middleware' => []], function () {
+Route::group(['middleware' => ['api_secret_check']], function () {
 	Route::post('auth', 'AuthController@passwordAuth');
 	Route::post('oauth', 'AuthController@oauthLogin');
 	Route::post('reset_password', 'AuthController@resetPassword');
