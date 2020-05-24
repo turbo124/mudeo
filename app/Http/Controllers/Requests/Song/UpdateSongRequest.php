@@ -11,7 +11,9 @@ class UpdateSongRequest extends Request
 
     public function authorize()
     {
-        return auth()->user()->id === $this->song->user_id;
+        $user = auth()->user();
+
+        return $user->id === $this->song->user_id || $this->song->users->contains($user->id);
     }
 
     public function rules()

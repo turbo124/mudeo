@@ -13,6 +13,7 @@ class Song extends EntityModel
 
     protected $guarded = [
         'id',
+        'user_id',
         'updated_at',
         'created_at',
         'deleted_at',
