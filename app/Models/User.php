@@ -81,7 +81,7 @@ class User extends Authenticatable implements CanResetPassword
 
     public function joinedSongs()
     {
-        return $this->belongsToMany('App\Models\Song');
+        return $this->belongsToMany('App\Models\Song')->withTimestamps();
     }
 
     public function song_likes()

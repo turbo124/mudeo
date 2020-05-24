@@ -15,7 +15,7 @@ class AddSongSharing extends Migration
     {
         Schema::table('songs', function (Blueprint $table) {
             $table->enum('sharing_mode', ['off', 'single', 'group'])->default('off');
-            $table->string('sharing_key')->nullable();
+            $table->string('sharing_key')->nullable()->unique();
         });
 
         Schema::create('song_user', function (Blueprint $table) {

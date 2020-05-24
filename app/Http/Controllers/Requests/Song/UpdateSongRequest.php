@@ -13,7 +13,7 @@ class UpdateSongRequest extends Request
     {
         $user = auth()->user();
 
-        return $user->id === $this->song->user_id || $this->song->users->contains($user->id);
+        return $user->id === $this->song->user_id || $this->song->joinedUsers->contains($user->id);
     }
 
     public function rules()

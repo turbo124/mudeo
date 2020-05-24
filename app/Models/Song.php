@@ -60,9 +60,9 @@ class Song extends EntityModel
         return $this->belongsTo(User::class);
     }
 
-    public function users()
+    public function joinedUsers()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
 
     public function videos()

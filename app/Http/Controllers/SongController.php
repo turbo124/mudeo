@@ -113,7 +113,7 @@ class SongController extends BaseController
         $songs = Song::filter($filters)
             ->with('song_videos.video', 'user', 'comments.user')
             ->where($userWhere)
-            ->orWhereHas('users', function($query) use ($user) {
+            ->orWhereHas('joinedUsers', function($query) use ($user) {
                 $query->where('user_id', '=', $user->id);
             })
             ->orderBy('id', 'desc');
@@ -354,10 +354,12 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->needs_render = true;
 
-        if ($song->sharing_mode != 'off'
-            && !$song->sharing_key
-            && $user->id == $song->user_id) {
-            $song->sharing_key = \Str::random(20);
+        if ($user->id == $song->user_id) {
+            if ($song->sharing_mode != 'off' && !$song->sharing_key) {
+                $song->sharing_key = Str::random(40);
+            } else if ($song->sharing_mode == 'off') {
+                $song->sharing_key = null;
+            }
         }
 
         if ($user->hasPrivateStorage()) {
@@ -456,7 +458,13 @@ class SongController extends BaseController
     {
         $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
 
-        $song->users()->attach(auth()->user()->id);
+        $song->joinedUsers()->attach(auth()->user()->id);
+
+        if ($song->sharing_mode == 'single') {
+            $song->sharing_key = null;
+            $song->sharing_mode = 'off';
+            $song->save();
+        }
 
         return response()->json(['success'], 200);
     }
@@ -465,7 +473,7 @@ class SongController extends BaseController
     {
         $song = Song::find(request()->song_id);
 
-        $song->users()->detach(auth()->user()->id);
+        $song->joinedUsers()->detach(auth()->user()->id);
 
         return response()->json(['success'], 200);
     }
