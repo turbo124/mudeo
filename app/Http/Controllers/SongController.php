@@ -473,7 +473,11 @@ class SongController extends BaseController
     {
         $song = Song::find(request()->song_id);
 
-        $song->joined_users()->detach(auth()->user()->id);
+        if (auth()->user()->id == $song->user_id) {
+            $song->joined_users()->detach(request()->user_id);
+        } else {
+            $song->joined_users()->detach(auth()->user()->id);
+        }
 
         return response()->json(['success'], 200);
     }
