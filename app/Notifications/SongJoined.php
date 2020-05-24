@@ -26,7 +26,7 @@ class SongJoined extends Notification
         $song = $this->song;
 
         return (new MailMessage)
-                    ->subject($user->name . ' has joined ' . $song->title)
+                    ->subject($user->name . ' has joined ' . $song->title . ' 🎉')
                     ->greeting('Hello!')
                     ->line('Your song ' . $song->title . ' has a new collaborator')
                     ->line($user->name . ' - @' . $user->handle);
