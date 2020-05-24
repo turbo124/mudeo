@@ -142,6 +142,7 @@ class SongController extends BaseController
     {
         $user = auth()->user();
         $song = Song::create($request->all());
+        $song->user_id = $user->id;
         $song->needs_render = true;
 
         if ($user->hasPrivateStorage() && ! filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN)) {
