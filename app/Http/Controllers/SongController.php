@@ -151,6 +151,7 @@ class SongController extends BaseController
 
         $hashids = new Hashids('', 10);
 
+        $song->sharing_key = Str::random(40);
         $song->url = config('mudeo.app_url') . '/song/' . $hashids->encode($song->id);
         $song->video_url = config('mudeo.asset_url') . 'videos/' . $hashids->encode( $song->user_id ) . '/' . Str::random(40) . '.mp4';
 
@@ -354,14 +355,6 @@ class SongController extends BaseController
         $song->fill($request->all());
         $song->needs_render = true;
 
-        if ($user->id == $song->user_id) {
-            if ($song->sharing_mode != 'off' && !$song->sharing_key) {
-                $song->sharing_key = Str::random(40);
-            } else if ($song->sharing_mode == 'off') {
-                $song->sharing_key = null;
-            }
-        }
-
         if ($user->hasPrivateStorage()) {
             $isPublic = filter_var($request->is_public, FILTER_VALIDATE_BOOLEAN);
 
@@ -460,13 +453,7 @@ class SongController extends BaseController
 
         $song->joined_users()->attach(auth()->user()->id);
 
-        if ($song->sharing_mode == 'single') {
-            $song->sharing_key = null;
-            $song->sharing_mode = 'off';
-            $song->save();
-        }
-
-        return response()->json(['success'], 200);
+        return $this->itemResponse($song);
     }
 
     public function leave()
