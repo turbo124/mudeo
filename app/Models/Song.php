@@ -60,7 +60,7 @@ class Song extends EntityModel
         return $this->belongsTo(User::class);
     }
 
-    public function joinedUsers()
+    public function joined_users()
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }

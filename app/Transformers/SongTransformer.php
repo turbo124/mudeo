@@ -8,7 +8,6 @@ use App\Models\Track;
 
 class SongTransformer extends EntityTransformer
 {
-
     protected $defaultIncludes = [
         'song_videos',
         'comments',
@@ -16,7 +15,8 @@ class SongTransformer extends EntityTransformer
 
     protected $availableIncludes = [
         'tags',
-        'user'
+        'user',
+        'joined_users',
     ];
 
     public function transform(Song $song)
@@ -87,5 +87,12 @@ class SongTransformer extends EntityTransformer
         $transformer = new UserTransformer($this->serializer);
 
         return $this->includeItem($song->user, $transformer, User::class);
+    }
+
+    public function includeJoinedUsers(Song $song)
+    {
+        $transformer = new UserTransformer($this->serializer);
+
+        return $this->includeCollection($song->joined_users, $transformer, User::class);
     }
 }

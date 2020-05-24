@@ -90,7 +90,7 @@ class SongController extends BaseController
     public function opneIndex(SongFilters $filters)
     {
         $songs = Song::filter($filters)
-                    ->with('song_videos.video', 'user', 'comments.user')
+                    ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
                     ->where('is_approved', '=', 1)
                     ->where('is_public', '=', 1)
                     ->orderBy('id', 'desc')
@@ -111,9 +111,9 @@ class SongController extends BaseController
         }
 
         $songs = Song::filter($filters)
-            ->with('song_videos.video', 'user', 'comments.user')
+            ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
             ->where($userWhere)
-            ->orWhereHas('joinedUsers', function($query) use ($user) {
+            ->orWhereHas('joined_users', function($query) use ($user) {
                 $query->where('user_id', '=', $user->id);
             })
             ->orderBy('id', 'desc');
@@ -458,7 +458,7 @@ class SongController extends BaseController
     {
         $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
 
-        $song->joinedUsers()->attach(auth()->user()->id);
+        $song->joined_users()->attach(auth()->user()->id);
 
         if ($song->sharing_mode == 'single') {
             $song->sharing_key = null;
@@ -473,7 +473,7 @@ class SongController extends BaseController
     {
         $song = Song::find(request()->song_id);
 
-        $song->joinedUsers()->detach(auth()->user()->id);
+        $song->joined_users()->detach(auth()->user()->id);
 
         return response()->json(['success'], 200);
     }
