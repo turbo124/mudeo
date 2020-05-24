@@ -141,7 +141,9 @@ class SongController extends BaseController
     public function store(CreateSongRequest $request)
     {
         $user = auth()->user();
-        $song = Song::create($request->all());
+
+        $song = new Song;
+        $song->fill($request->all());
         $song->user_id = $user->id;
         $song->needs_render = true;
 
