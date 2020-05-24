@@ -118,7 +118,7 @@ class MakeStackedSong implements ShouldQueue
             $filterVideo = '';
             $filterAudio = '';
 
-            if ($sizes->duration > (60 * 3)) {
+            if ($sizes->duration > (65 * 3)) {
                 \Log::error("Duration ({$sizes->duration}) for {$this->song->id}: {$this->song->title} is too long");
                 exit;
             }

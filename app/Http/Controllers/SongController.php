@@ -456,10 +456,13 @@ class SongController extends BaseController
         $user = auth()->user();
 
         $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
-        $song->joined_users()->attach($user->id);
 
-        $song->user->notify(new SongJoined($song, $user));
-        User::admin()->notify(new SongJoined($song, $user));
+        if (! $song->joined_users->contains($user->id)) {
+            $song->joined_users()->attach($user->id);
+
+            $song->user->notify(new SongJoined($song, $user));
+            User::admin()->notify(new SongJoined($song, $user));
+        }
 
         return $this->itemResponse($song);
     }
