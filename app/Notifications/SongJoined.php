@@ -25,10 +25,13 @@ class SongJoined extends Notification
         $user = $this->user;
         $song = $this->song;
 
+        $label = config('mudeo.is_dance') ? 'dance' : 'song';
+
         return (new MailMessage)
                     ->subject($user->name . ' has joined ' . $song->title)
                     ->greeting('Hello!')
-                    ->line('Your song ' . $song->title . ' has a new collaborator 🎉')
-                    ->line($user->name . ' - @' . $user->handle);
+                    ->line('Your ' . $label . ' ' . $song->title . ' has a new collaborator 🎉')
+                    ->line($user->name . ' - @' . $user->handle)
+                    ->action('View ' . $label, $this->song->url);
     }
 }
