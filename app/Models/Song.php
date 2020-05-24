@@ -21,6 +21,7 @@ class Song extends EntityModel
         'api_secret',
         'videos',
         'song_videos',
+        'joined_users',
     	'isChanged',
     	'user',
     	'include',
@@ -44,7 +45,6 @@ class Song extends EntityModel
         'height',
         'blurhash',
         'sharing_key',
-        'sharing_reuse',
     ];
 
     protected $hidden = [
