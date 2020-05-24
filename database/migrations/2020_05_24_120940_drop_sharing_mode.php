@@ -25,6 +25,8 @@ class DropSharingMode extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('songs', function (Blueprint $table) {
+            $table->enum('sharing_mode', ['off', 'single', 'group'])->default('off');
+        });
     }
 }
