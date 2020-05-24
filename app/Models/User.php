@@ -33,6 +33,7 @@ class User extends Authenticatable implements CanResetPassword
         'song_flags',
         'user_flags',
         'following',
+        'is_paid',
     ];
 
     /**
