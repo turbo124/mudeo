@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Notifications\SongSubmitted;
+use App\Notifications\SongJoined;
 
 class SongController extends BaseController
 {
@@ -449,9 +450,13 @@ class SongController extends BaseController
 
     public function join()
     {
-        $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
+        $user = auth()->user();
 
-        $song->joined_users()->attach(auth()->user()->id);
+        $song = Song::where('sharing_key', '=', request()->sharing_key)->firstOrFail();
+        $song->joined_users()->attach($user->id);
+
+        $song->user->notify(new SongJoined($song, $user));
+        User::admin()->notify(new SongJoined($song, $user));
 
         return $this->itemResponse($song);
     }
