@@ -24,6 +24,7 @@ use League\OAuth1\Client\Server\Twitter;
 use App\Jobs\UploadSongToYouTube;
 use Illuminate\Support\Str;
 use App\Notifications\SongSubmitted;
+use App\Notifications\SongBuilt;
 
 class MakeStackedSong implements ShouldQueue
 {
