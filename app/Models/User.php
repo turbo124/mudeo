@@ -111,6 +111,11 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(SongFlag::class);
     }
 
+    public function user_flags()
+    {
+        return $this->hasMany(UserFlag::class);
+    }
+
     public static function admin()
     {
         return static::where('id', '=', 2)->first();

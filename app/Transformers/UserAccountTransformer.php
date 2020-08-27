@@ -12,17 +12,18 @@ use App\Models\Video;
 
 class UserAccountTransformer extends EntityTransformer
 {
-
-    protected $defaultIncludes = [];
+    protected $defaultIncludes = [
+        'song_likes',
+        'song_flags',
+        'user_flags',
+        'following',
+    ];
 
     protected $availableIncludes = [
         'songs',
         'videos',
         'song_comments',
-        'song_likes',
         'followers',
-        'following',
-        'song_flags',
     ];
 
     public function transform(User $user)
@@ -73,6 +74,14 @@ class UserAccountTransformer extends EntityTransformer
         $transformer = new SongFlagTransformer($this->serializer);
 
         return $this->includeCollection($user->song_flags, $transformer, SongFlag::class);
+
+    }
+
+    public function includeUserFlags(User $user)
+    {
+        $transformer = new UserFlagTransformer($this->serializer);
+
+        return $this->includeCollection($user->user_flags, $transformer, UserFlag::class);
 
     }
 
