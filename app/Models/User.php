@@ -139,7 +139,8 @@ class User extends Authenticatable implements CanResetPassword
 
     public function hasPrivateStorage()
     {
-        return $this->order_expires && $this->order_expires >= date('Y-m-d');
+        return true;
+        //return $this->order_expires && $this->order_expires >= date('Y-m-d');
     }
 
     public function isAdmin()
