@@ -146,7 +146,7 @@ class MakeStackedSong implements ShouldQueue
                 } else if ($layout == 'grid') {
                     $width = $sizes->min_width;
                     $height = $sizes->min_height;
-                    $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$width}:{$height}[{$count}-scale:v];$filterVideo";
+                    $filterVideo = "[{$count}:v]scale={$width}:{$height}:force_original_aspect_ratio=increase,crop={$height}:{$width}[{$count}-scale:v];$filterVideo";
                 } else if ($layout == 'column') {
                     $filterVideo = "[{$count}:v]scale={$sizes->min_width}:-2[{$count}-scale:v];$filterVideo";
                 } else if ($layout == 'row') {
@@ -188,6 +188,7 @@ class MakeStackedSong implements ShouldQueue
             $filter .= "{$filterAudio}amix=inputs={$count}[a]";
 
             $video->addFilter(new SimpleFilter(['-filter_complex', $filter]))
+                ->addFilter(new SimpleFilter(['-vsync', '2']))
                 ->addFilter(new SimpleFilter(['-map', '[v]']))
                 ->addFilter(new SimpleFilter(['-map', '[a]']))
                 ->addFilter(new SimpleFilter(['-ac', '2']))
