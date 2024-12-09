@@ -57,6 +57,7 @@ class Publish extends Command
             $this->info('No songs found');
         }
 
+        /*
         $this->info('Publish to Twitter...');
         $song = Song::whereNull('twitter_id')
             ->where('is_approved', '=', true)
@@ -71,5 +72,6 @@ class Publish extends Command
         } else {
             $this->info('No songs found');
         }
+        */
     }
 }
