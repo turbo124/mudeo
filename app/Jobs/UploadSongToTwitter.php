@@ -52,6 +52,7 @@ class UploadSongToTwitter implements ShouldQueue
             'ffmpeg.threads'   => 12,
         ]);
 
+        \Log::info('## Open: ' . $filename);
         $video = $ffmpeg->open($filename);
         $filter = "[0:v]trim=start=0:end=30,setpts=PTS-STARTPTS[v];"
             . "[0:a]atrim=start=0:end=30,asetpts=PTS-STARTPTS[a]";
@@ -76,8 +77,10 @@ class UploadSongToTwitter implements ShouldQueue
                 '-pix_fmt', 'yuv420p',
             ]);
 
+        \Log::info('## Save');
         $video->save($format, $filenameTrimmed);
 
+        \Log::info('## Init');
         $twitter = new TwitterOAuth(
             config('services.twitter.consumer_key'),
             config('services.twitter.consumer_secret'),
@@ -86,11 +89,13 @@ class UploadSongToTwitter implements ShouldQueue
         );
         $twitter->setTimeouts(120, 60);
 
+        \Log::info('## Upload');
         $response = $twitter->upload('media/upload', [
             'media' => $filenameTrimmed,
             'media_type' => 'video/mp4'
         ], true);
 
+        \Log::info('## Delete');
         unlink($filename);
         unlink($filenameTrimmed);
 
