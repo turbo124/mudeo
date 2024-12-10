@@ -94,15 +94,18 @@ class SongController extends BaseController
                     ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
                     ->where('is_approved', '=', 1)
                     ->where('is_public', '=', 1)
+                    ->when(request()->getHost() === 'mudeo.app', function($query) {
+                        return $query->where('is_featured', '=', 1);
+                    })
                     ->inRandomOrder()
-                    ->limit(150);
+                    ->limit(100);
 
-        $songs->each(function($song) {
+        $songs = $songs->get()->map(function($song) {
             if ($song->is_featured) {
                 $song->id = rand(1, 999999999);
-            } else {
-                $song->id = $song->id + 999999999;
             }
+
+            return $song;
         });
 
         return $this->listResponse($songs);
