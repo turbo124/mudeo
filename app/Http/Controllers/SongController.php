@@ -97,7 +97,7 @@ class SongController extends BaseController
                     ->when(str_contains(request()->headers->get('referer'), 'mudeo.app'), function($query) {
                         return $query->where('is_featured', '=', 1);
                     })
-                    ->inRandomOrder()
+                    ->orderBy('id', 'desc')
                     ->limit(100);
 
         return $this->listResponse($songs);

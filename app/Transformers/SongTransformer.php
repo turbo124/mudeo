@@ -22,7 +22,7 @@ class SongTransformer extends EntityTransformer
     public function transform(Song $song)
     {
         return [
-            'id' => (int) $song->id,
+            'id' => (int) (auth()->user() ? $song->id : rand(1, 999999999)),
             'user_id' => (int) $song->user_id,
             'title' => $song->title ?: '',
             'url' => $song->url ?: '',
