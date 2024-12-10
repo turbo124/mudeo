@@ -93,8 +93,9 @@ class SongController extends BaseController
         $songs = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
                     ->where('is_approved', '=', 1)
+                    ->where('is_featured', '=', 1)
                     ->where('is_public', '=', 1)
-                    ->orderBy('id', 'desc')
+                    ->inRandomOrder()
                     ->limit(100);
 
         return $this->listResponse($songs);
