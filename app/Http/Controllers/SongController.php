@@ -90,13 +90,32 @@ class SongController extends BaseController
 
     public function opneIndex(SongFilters $filters)
     {
-        $songs = Song::filter($filters)
+        $featured = Song::filter($filters)
                     ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
                     ->where('is_approved', '=', 1)
-                    ->where('is_featured', '=', 1)
                     ->where('is_public', '=', 1)
+                    ->where('is_featured', '=', 1)
                     ->inRandomOrder()
-                    ->limit(100);
+                    ->limit(50)
+                    ->get();
+
+        $featured->each(function($song) {
+            $song->id = rand(1, 999999999);
+        });
+        
+        $latest = Song::filter($filters)
+                    ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
+                    ->where('is_approved', '=', 1)
+                    ->where('is_public', '=', 1)
+                    ->orderBy('id', 'desc')
+                    ->limit(50)
+                    ->get();
+
+        $latest->each(function($song) {
+            $song->id = $song->id + 999999999;
+        });
+            
+        $songs = $featured->concat($latest);
 
         return $this->listResponse($songs);
     }
