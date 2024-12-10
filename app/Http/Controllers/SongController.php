@@ -100,14 +100,6 @@ class SongController extends BaseController
                     ->inRandomOrder()
                     ->limit(100);
 
-        $songs = $songs->get()->map(function($song) {
-            if ($song->is_featured) {
-                $song->id = rand(1, 999999999);
-            }
-
-            return $song;
-        });
-
         return $this->listResponse($songs);
     }
 
