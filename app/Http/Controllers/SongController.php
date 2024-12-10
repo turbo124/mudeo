@@ -94,7 +94,7 @@ class SongController extends BaseController
                     ->with('song_videos.video', 'user', 'comments.user', 'joined_users')
                     ->where('is_approved', '=', 1)
                     ->where('is_public', '=', 1)
-                    ->when(request()->getHost() === 'mudeo.app', function($query) {
+                    ->when(str_contains(request()->headers->get('referer'), 'mudeo.app'), function($query) {
                         return $query->where('is_featured', '=', 1);
                     })
                     ->inRandomOrder()
